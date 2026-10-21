@@ -1,1 +1,39 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --porcelain: #faf7f2;
+  --champagne: #f4ebe1;
+  --champagne-strong: #ece0d4;
+  --linen: #ede4d8;
+  --espresso: #1f1917;
+  --terracotta: #aa2d31;
+  --terracotta-dark: #8c151e;
+  --terracotta-light: #fbe9e6;
+  --rose: #d94f4f;
+  --rose-light: #f0a59a;
+  --text: #241e1c;
+  --text-2: #5c4b47;
+  --text-3: #8c6a58;
+  --error: #b3261e;
+
+  --background: var(--porcelain);
+  --surface: #ffffff;
+  --border: var(--linen);
+  --primary: var(--terracotta);
+  --primary-dark: var(--terracotta-dark);
+  --yes: var(--rose);
+
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-signature: 'Pacifico', cursive;
+  --font-hand: 'La Belle Aurore', 'Segoe Script', cursive;
+
+  --radius: 0;
+  --radius-small: 0;
+  --pill: 999px;
+
+  --shadow-1: 0 4px 20px -2px rgba(140, 106, 88, 0.1);
+  --shadow-2: 0 12px 32px -6px rgba(140, 106, 88, 0.2);
+  --shadow-panel: 0 -30px 60px rgba(20, 14, 12, 0.22);
+  --shadow-button: 0 8px 22px rgba(170, 45, 49, 0.25);
+
+  --max-width: 1180px;
+}
