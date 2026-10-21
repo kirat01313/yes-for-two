@@ -1,1 +1,223 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --porcelain: #faf7f2;
+  --champagne: #f4ebe1;
+  --champagne-strong: #ece0d4;
+  --linen: #ede4d8;
+  --espresso: #1f1917;
+  --terracotta: #aa2d31;
+  --terracotta-dark: #8c151e;
+  --terracotta-light: #fbe9e6;
+  --rose: #d94f4f;
+  --rose-light: #f0a59a;
+  --text: #241e1c;
+  --text-2: #5c4b47;
+  --text-3: #8c6a58;
+  --error: #b3261e;
+
+  --background: var(--porcelain);
+  --surface: #ffffff;
+  --border: var(--linen);
+  --primary: var(--terracotta);
+  --primary-dark: var(--terracotta-dark);
+  --yes: var(--rose);
+
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-signature: 'Pacifico', cursive;
+  --font-hand: 'La Belle Aurore', 'Segoe Script', cursive;
+
+  --radius: 0;
+  --radius-small: 0;
+  --pill: 999px;
+
+  --shadow-1: 0 4px 20px -2px rgba(140, 106, 88, 0.1);
+  --shadow-2: 0 12px 32px -6px rgba(140, 106, 88, 0.2);
+  --shadow-panel: 0 -30px 60px rgba(20, 14, 12, 0.22);
+  --shadow-button: 0 8px 22px rgba(170, 45, 49, 0.25);
+
+  --max-width: 1180px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--primary);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.material-symbols-outlined {
+  font-size: 20px;
+  line-height: 1;
+  vertical-align: middle;
+  font-variation-settings: 'FILL' 0, 'wght' 400;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400;
+}
+
+.yes {
+  font-family: var(--font-signature);
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--yes);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.8rem 1.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--pill);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s;
+}
+
+.button-primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: var(--shadow-button);
+}
+
+.button-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.button-soft {
+  background: var(--champagne);
+  color: var(--text-2);
+}
+
+.button-soft:hover {
+  background: var(--champagne-strong);
+}
+
+.button-outline {
+  border-color: var(--primary);
+  background: transparent;
+  color: var(--primary);
+}
+
+.button-outline:hover {
+  background: var(--terracotta-light);
+}
+
+.button-glass {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  backdrop-filter: blur(10px);
+}
+
+.button-glass:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.button-large {
+  padding: 1rem 2.2rem;
+  font-size: 1rem;
+}
+
+.button-small {
+  padding: 0.45rem 0.95rem;
+  font-size: 0.8rem;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: gap 0.2s;
+}
+
+.arrow-link:hover {
+  gap: 0.55rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
