@@ -1,9 +1,24 @@
 import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { TranslatePipe } from '../../pipes/translate.pipe';
+
+interface MenuLink {
+  path: string;
+  label: string;
+}
 
 @Component({
-  imports: [],
+  imports: [RouterLink, RouterLinkActive, TranslatePipe],
   selector: 'app-header',
   styleUrl: './header.css',
   templateUrl: './header.html',
 })
-export class Header {}
+export class Header {
+  readonly links: MenuLink[] = [
+    { path: '/', label: 'nav.home' },
+    { path: '/restaurant', label: 'nav.restaurant' },
+    { path: '/experience', label: 'nav.experience' },
+    { path: '/trip', label: 'nav.trip' },
+    { path: '/memories', label: 'nav.memories' },
+  ];
+}
