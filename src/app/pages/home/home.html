@@ -29,4 +29,15 @@
   <span class="scroll-hint" aria-hidden="true">
     <span class="material-symbols-outlined">keyboard_arrow_down</span>
   </span>
+  
+<section class="letter" [attr.aria-label]="'home.poemLabel' | translate">
+  <figure>
+    <blockquote>
+      @for (verse of verses; track verse; let odd = $odd) {
+        <p [class.indented]="odd">{{ verse | translate }}</p>
+      }
+    </blockquote>
+    <figcaption>Álvaro de Campos</figcaption>
+  </figure>
+</section>
 </section>

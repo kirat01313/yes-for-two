@@ -8,4 +8,6 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
   styleUrl: './home.css',
   templateUrl: './home.html',
 })
-export class Home {}
+export class Home {
+  readonly verses = ['home.poem1', 'home.poem2', 'home.poem3', 'home.poem4'];
+}

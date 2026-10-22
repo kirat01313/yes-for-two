@@ -108,6 +108,11 @@ export const en = {
     subtitle: 'You choose the kind of plan. We choose the rest.',
     startWithDinner: 'Start with dinner',
     seeHowItWorks: 'See how it works',
+        poemLabel: 'Poem by Álvaro de Campos',
+    poem1: 'All love letters are',
+    poem2: 'Ridiculous.',
+    poem3: "They wouldn't be love letters if they weren't",
+    poem4: 'Ridiculous.',
   },
 };
 
