@@ -1,0 +1,67 @@
+:host {
+  position: relative;
+  z-index: 1;
+}
+
+.footer {
+  border-top: 1px solid rgba(244, 235, 225, 0.12);
+  background: var(--espresso);
+  color: rgba(250, 247, 242, 0.75);
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 3rem 1.25rem 2rem;
+}
+
+.logo {
+  font-family: var(--font-signature);
+  font-size: 2rem;
+  line-height: 1.2;
+  color: var(--porcelain);
+}
+
+.brand p {
+  margin-top: 0.25rem;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+.brand .yes {
+  color: var(--rose-light);
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+nav a {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--porcelain);
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: var(--rose-light);
+}
+
+.credits {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.5rem;
+  border-top: 1px solid rgba(244, 235, 225, 0.12);
+  font-size: 0.75rem;
+  color: rgba(250, 247, 242, 0.5);
+}
