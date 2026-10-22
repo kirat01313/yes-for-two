@@ -138,6 +138,22 @@ export const en = {
         alt: 'Terraced vineyards in the Douro valley at sunset',
       },
     },
+        howEyebrow: 'Simple and light',
+    howTitle: 'How it works',
+    steps: {
+      choose: {
+        title: 'Choose the plan',
+        text: "Dinner, an experience or a trip. It's the only decision we ask you to make.",
+      },
+      tell: {
+        title: 'Tell us where and how much',
+        text: 'The city, the distance or the budget. We take care of the rest.',
+      },
+      say: {
+        title: 'Say',
+        text: "There's no button to say no. The place is saved on your memory map.",
+      },
+    },
   },
 };
 

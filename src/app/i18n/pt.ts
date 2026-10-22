@@ -141,5 +141,21 @@ export const pt: Dictionary = {
         alt: 'Vinhas em socalcos no Douro ao pôr do sol',
       },
     },
+        howEyebrow: 'Simples e leve',
+    howTitle: 'Como funciona',
+    steps: {
+      choose: {
+        title: 'Escolham o programa',
+        text: 'Jantar, uma experiência ou uma viagem. É a única decisão que vos pedimos.',
+      },
+      tell: {
+        title: 'Digam onde e quanto',
+        text: 'A cidade, a distância ou o orçamento. O resto fica connosco.',
+      },
+      say: {
+        title: 'Digam',
+        text: 'Não há botão para dizer não. O sítio fica guardado no vosso mapa de memórias.',
+      },
+    },
   },
 };

@@ -34,4 +34,6 @@ export class Home {
     },
     { type: 'trip', path: '/trip', icon: 'flight_takeoff', image: 'images/programs/trip.jpg' },
   ];
+
+  readonly steps = ['choose', 'tell', 'say'];
 }

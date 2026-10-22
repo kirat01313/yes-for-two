@@ -82,3 +82,25 @@
     </div>
   </div>
 </section>
+
+<section class="how" id="how-it-works" aria-labelledby="how-title">
+  <div class="content">
+    <p class="eyebrow">{{ 'home.howEyebrow' | translate }}</p>
+    <h2 class="section-title" id="how-title">{{ 'home.howTitle' | translate }}</h2>
+
+    <ol class="steps">
+      @for (step of steps; track step; let i = $index; let last = $last) {
+        <li class="step">
+          <span class="step-number" aria-hidden="true">{{ i + 1 }}</span>
+          <h3>
+            {{ 'home.steps.' + step + '.title' | translate }}
+            @if (last) {
+              <span class="yes">{{ 'app.yes' | translate }}</span>
+            }
+          </h3>
+          <p>{{ 'home.steps.' + step + '.text' | translate }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>

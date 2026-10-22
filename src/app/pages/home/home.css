@@ -246,3 +246,77 @@
 .program-body .arrow-link {
   color: var(--primary);
 }
+
+
+.how {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 4.5rem 0;
+  background: var(--espresso);
+  color: var(--champagne);
+}
+
+.how .eyebrow {
+  color: var(--rose-light);
+}
+
+.how .section-title {
+  margin-bottom: 3rem;
+  font-style: italic;
+  font-weight: 400;
+  color: #fff;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid rgba(244, 235, 225, 0.2);
+  list-style: none;
+}
+
+.step {
+  padding: 2rem 2rem 2.5rem 0;
+}
+
+.step + .step {
+  padding-left: 2rem;
+  border-left: 1px solid rgba(244, 235, 225, 0.2);
+}
+
+.step-number {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: clamp(6rem, 14vw, 10rem);
+  font-style: italic;
+  line-height: 0.9;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(244, 235, 225, 0.55);
+}
+
+.step h3 {
+  margin: 1.5rem 0 0.6rem;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.step p {
+  max-width: 22rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(244, 235, 225, 0.75);
+}
+
+@media (max-width: 760px) {
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .step,
+  .step + .step {
+    padding: 2rem 0;
+    border-left: 0;
+    border-bottom: 1px solid rgba(244, 235, 225, 0.2);
+  }
+}
