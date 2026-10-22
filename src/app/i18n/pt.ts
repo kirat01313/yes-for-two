@@ -109,7 +109,7 @@ export const pt: Dictionary = {
     subtitle: 'Vocês escolhem o tipo de programa. O resto escolhemos nós.',
     startWithDinner: 'Começar pelo jantar',
     seeHowItWorks: 'Ver como funciona',
-        poemLabel: 'Poema de Álvaro de Campos',
+    poemLabel: 'Poema de Álvaro de Campos',
     poem1: 'Todas as cartas de amor são',
     poem2: 'Ridículas.',
     poem3: 'Não seriam cartas de amor se não fossem',
