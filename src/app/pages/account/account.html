@@ -1,1 +1,91 @@
-<p>account works!</p>
+<section class="settings-page" aria-labelledby="account-title">
+  <p class="eyebrow">{{ 'accountPage.eyebrow' | translate }}</p>
+  <h1 id="account-title">{{ 'accountPage.title' | translate }}</h1>
+
+  <div class="blocks">
+    <form class="block" [formGroup]="nameForm" (ngSubmit)="saveName()" novalidate>
+      <h2>{{ 'accountPage.nameTitle' | translate }}</h2>
+      <p class="block-text">{{ 'accountPage.nameHint' | translate }}</p>
+
+      <div class="field">
+        <label for="account-name">{{ 'accountPage.nameLabel' | translate }}</label>
+        <input id="account-name" type="text" formControlName="name" autocomplete="given-name" />
+        @if (nameForm.invalid) {
+          <p class="error">{{ 'accountPage.nameTooLong' | translate }}</p>
+        }
+      </div>
+
+      <div class="block-actions">
+        <button
+          class="button button-primary"
+          type="submit"
+          [disabled]="nameForm.invalid || nameForm.pristine || nameStatus() === 'saving'"
+        >
+          {{ 'accountPage.saveName' | translate }}
+        </button>
+        @switch (nameStatus()) {
+          @case ('saved') {
+            <span class="done" role="status">{{ 'accountPage.saved' | translate }}</span>
+          }
+          @case ('error') {
+            <span class="error" role="alert">{{ 'accountPage.saveError' | translate }}</span>
+          }
+        }
+      </div>
+    </form>
+
+    <div class="block">
+      <h2>{{ 'accountPage.emailTitle' | translate }}</h2>
+      <p class="value">{{ auth.email() }}</p>
+      @if (auth.user()?.created_at; as createdAt) {
+        <p class="block-text">
+          {{ 'accountPage.createdOn' | translate }} {{ createdAt | date: 'longDate' : '' : language.locale() }}.
+        </p>
+      }
+    </div>
+
+    <form class="block" [formGroup]="passwordForm" (ngSubmit)="changePassword()" novalidate>
+      <h2>{{ 'accountPage.passwordTitle' | translate }}</h2>
+
+      <div class="field">
+        <label for="account-new-password">{{ 'accountPage.newPassword' | translate }}</label>
+        <input id="account-new-password" type="password" formControlName="newPassword" autocomplete="new-password" />
+        <p class="error">
+          @if (passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword.hasError('required')) {
+            {{ 'auth.errors.passwordRequired' | translate }}
+          } @else if (passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword.hasError('minlength')) {
+            {{ 'auth.errors.passwordMinLength' | translate }}
+          }
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="account-confirm">{{ 'accountPage.confirmPassword' | translate }}</label>
+        <input id="account-confirm" type="password" formControlName="confirmPassword" autocomplete="new-password" />
+        <p class="error">
+          @if (passwordForm.controls.confirmPassword.touched && passwordForm.hasError('fieldsDiffer')) {
+            {{ 'auth.errors.passwordsDiffer' | translate }}
+          }
+        </p>
+      </div>
+
+      <div class="block-actions">
+        <button
+          class="button button-outline"
+          type="submit"
+          [disabled]="passwordForm.invalid || passwordStatus() === 'saving'"
+        >
+          {{ 'accountPage.changePassword' | translate }}
+        </button>
+        @switch (passwordStatus()) {
+          @case ('saved') {
+            <span class="done" role="status">{{ 'accountPage.passwordChanged' | translate }}</span>
+          }
+          @case ('error') {
+            <span class="error" role="alert">{{ passwordErrorKey() | translate }}</span>
+          }
+        }
+      </div>
+    </form>
+  </div>
+</section>
