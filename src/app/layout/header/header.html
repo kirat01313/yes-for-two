@@ -16,6 +16,14 @@
     </nav>
 
     <div class="account-actions">
+      <button
+        type="button"
+        class="language-switch"
+        [attr.aria-label]="'language.switchLabel' | translate"
+        (click)="language.toggle()"
+      >
+        {{ 'language.switch' | translate }}
+      </button>
       <a class="button button-outline button-small" routerLink="/sign-in">
         {{ 'account.signIn' | translate }}
       </a>

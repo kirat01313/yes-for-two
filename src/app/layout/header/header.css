@@ -73,6 +73,25 @@
   gap: 0.5rem;
 }
 
+
+.language-switch {
+  min-width: 2.6rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--pill);
+  background: var(--surface);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.language-switch:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
 @media (max-width: 640px) {
   .inner {
     justify-content: center;
