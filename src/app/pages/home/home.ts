@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { RevealDirective } from '../../directives/reveal.directive';
 import { ProgramType } from '../../models/program';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
@@ -11,7 +12,7 @@ interface ProgramCard {
 }
 
 @Component({
-  imports: [RouterLink, TranslatePipe],
+  imports: [RouterLink, TranslatePipe, RevealDirective],
   selector: 'app-home',
   styleUrl: './home.css',
   templateUrl: './home.html',

@@ -56,8 +56,8 @@
     </div>
 
     <div class="program-grid">
-      @for (program of programs; track program.type) {
-        <a class="program" [routerLink]="program.path">
+      @for (program of programs; track program.type; let i = $index) {
+        <a class="program" [routerLink]="program.path" appReveal [delay]="i * 80">
           <div class="program-image">
             <img
               [src]="program.image"
@@ -90,7 +90,7 @@
 
     <ol class="steps">
       @for (step of steps; track step; let i = $index; let last = $last) {
-        <li class="step">
+        <li class="step" appReveal [delay]="i * 80">
           <span class="step-number" aria-hidden="true">{{ i + 1 }}</span>
           <h3>
             {{ 'home.steps.' + step + '.title' | translate }}
