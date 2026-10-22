@@ -40,4 +40,38 @@
     <figcaption>Álvaro de Campos</figcaption>
   </figure>
 </section>
+
+<section class="programs" aria-labelledby="programs-title">
+  <div class="content">
+    <div class="section-top">
+      <div>
+        <p class="eyebrow">{{ 'home.programsEyebrow' | translate }}</p>
+        <h2 class="section-title" id="programs-title">{{ 'home.programsTitle' | translate }}</h2>
+      </div>
+      <p class="section-text">{{ 'home.programsText' | translate }}</p>
+    </div>
+
+    <div class="program-grid">
+      @for (program of programs; track program.type) {
+        <a class="program" [routerLink]="program.path">
+          <div class="program-image">
+            <img [src]="program.image" [alt]="'home.programs.' + program.type + '.alt' | translate" loading="lazy" />
+            <span class="tag">
+              <span class="material-symbols-outlined" aria-hidden="true">{{ program.icon }}</span>
+              {{ 'home.programs.' + program.type + '.tag' | translate }}
+            </span>
+            <h3>{{ 'home.programs.' + program.type + '.title' | translate }}</h3>
+          </div>
+          <div class="program-body">
+            <p>{{ 'home.programs.' + program.type + '.text' | translate }}</p>
+            <span class="arrow-link">
+              {{ 'home.chooseForUs' | translate }}
+              <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+            </span>
+          </div>
+        </a>
+      }
+    </div>
+  </div>
+</section>
 </section>

@@ -1,6 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ProgramType } from '../../models/program';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+
+interface ProgramCard {
+  type: ProgramType;
+  path: string;
+  icon: string;
+  image: string;
+}
 
 @Component({
   imports: [RouterLink, TranslatePipe],
@@ -10,4 +18,10 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 })
 export class Home {
   readonly verses = ['home.poem1', 'home.poem2', 'home.poem3', 'home.poem4'];
+
+  readonly programs: ProgramCard[] = [
+    { type: 'restaurant', path: '/restaurant', icon: 'restaurant', image: 'images/programs/restaurant.jpg' },
+    { type: 'experience', path: '/experience', icon: 'palette', image: 'images/programs/experience.jpg' },
+    { type: 'trip', path: '/trip', icon: 'flight_takeoff', image: 'images/programs/trip.jpg' },
+  ];
 }

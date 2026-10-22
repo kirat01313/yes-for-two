@@ -132,3 +132,117 @@
   text-transform: uppercase;
   color: var(--text-3);
 }
+
+.programs {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 4.5rem 0;
+  background: var(--champagne);
+}
+
+.content {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.section-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.section-title {
+  margin-top: 0.4rem;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+}
+
+.section-text {
+  max-width: 30rem;
+  color: var(--text-2);
+}
+
+.program-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.program {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+}
+
+.program-image {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+}
+
+.program-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s;
+}
+
+.program:hover .program-image img {
+  transform: scale(1.05);
+}
+
+.program-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(32, 26, 24, 0.65), transparent 55%);
+}
+
+.program-image h3 {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1rem;
+  z-index: 1;
+  font-size: 2rem;
+  color: #fff;
+}
+
+.tag {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--pill);
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.tag .material-symbols-outlined {
+  font-size: 15px;
+}
+
+.program-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  color: var(--text-2);
+}
+
+.program-body .arrow-link {
+  color: var(--primary);
+}

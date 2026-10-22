@@ -114,5 +114,29 @@ export const pt: Dictionary = {
     poem2: 'Ridículas.',
     poem3: 'Não seriam cartas de amor se não fossem',
     poem4: 'Ridículas.',
+    programsEyebrow: 'Três programas',
+    programsTitle: 'O que vão fazer?',
+    programsText: 'Escolham o tipo de programa. O sítio, escolhemos nós por vocês.',
+    chooseForUs: 'Escolham por nós',
+    programs: {
+      restaurant: {
+        title: 'Restaurante',
+        text: 'Um sítio para jantar que ainda não conhecem.',
+        tag: 'Jantar',
+        alt: 'Mesa de jantar à luz de velas, com dois copos de vinho tinto',
+      },
+      experience: {
+        title: 'Experiência',
+        text: 'Museus, parques, teatro ou noite.',
+        tag: 'Cultura e noite',
+        alt: 'Casal de mãos dadas a passear numa galeria de arte iluminada pelo sol',
+      },
+      trip: {
+        title: 'Viagem',
+        text: 'Um destino que cabe no orçamento.',
+        tag: 'Escapadinha',
+        alt: 'Vinhas em socalcos no Douro ao pôr do sol',
+      },
+    },
   },
 };
