@@ -90,6 +90,20 @@ export const en = {
     changePassword: 'Change password',
     passwordChanged: 'Password changed.',
   },
+    settingsPage: {
+    eyebrow: 'Settings',
+    title: 'How the site behaves',
+    languageTitle: 'Language',
+    languageHint: 'The language of every text on the site. Your choice is remembered on this browser.',
+    languageLegend: 'Site language',
+    permissionsTitle: 'Permissions',
+    location: 'Location',
+    locationGranted: 'Allowed: suggestions and the nearby carousel use where you are.',
+    locationDenied: 'Blocked: suggestions use the city you type.',
+    locationPrompt: 'Not asked yet. The site will ask when it needs it.',
+    locationUnknown: "Your browser doesn't share the state of this permission.",
+    permissionsHint: 'To change it, use the padlock next to the address in your browser.',
+  },
 };
 
 export type Dictionary = typeof en;

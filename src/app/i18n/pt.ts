@@ -91,4 +91,18 @@ export const pt: Dictionary = {
     changePassword: 'Mudar palavra-passe',
     passwordChanged: 'Palavra-passe mudada.',
   },
+    settingsPage: {
+    eyebrow: 'Configurações',
+    title: 'Como o site se comporta',
+    languageTitle: 'Língua',
+    languageHint: 'A língua de todos os textos do site. A escolha fica guardada neste browser.',
+    languageLegend: 'Língua do site',
+    permissionsTitle: 'Permissões',
+    location: 'Localização',
+    locationGranted: 'Autorizada: as sugestões e o carrossel de lugares perto usam o sítio onde está.',
+    locationDenied: 'Bloqueada: as sugestões usam a cidade que escrever.',
+    locationPrompt: 'Ainda não foi pedida. O site pergunta quando precisar.',
+    locationUnknown: 'O browser não indica o estado desta permissão.',
+    permissionsHint: 'Para mudar, use o cadeado ao lado do endereço, no browser.',
+  },
 };

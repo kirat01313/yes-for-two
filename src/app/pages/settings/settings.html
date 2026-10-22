@@ -1,1 +1,60 @@
-<p>settings works!</p>
+<section class="settings-page" aria-labelledby="settings-title">
+  <p class="eyebrow">{{ 'settingsPage.eyebrow' | translate }}</p>
+  <h1 id="settings-title">{{ 'settingsPage.title' | translate }}</h1>
+
+  <div class="blocks">
+    <div class="block">
+      <h2>{{ 'settingsPage.languageTitle' | translate }}</h2>
+      <p class="block-text">{{ 'settingsPage.languageHint' | translate }}</p>
+
+      <fieldset class="language-options">
+        <legend class="visually-hidden">{{ 'settingsPage.languageLegend' | translate }}</legend>
+        <label>
+          <input
+            type="radio"
+            name="language"
+            value="en"
+            [checked]="language.lang() === 'en'"
+            (change)="language.set('en')"
+          />
+          English
+        </label>
+        <label lang="pt-PT">
+          <input
+            type="radio"
+            name="language"
+            value="pt"
+            [checked]="language.lang() === 'pt'"
+            (change)="language.set('pt')"
+          />
+          Português
+        </label>
+      </fieldset>
+    </div>
+
+    <div class="block">
+      <h2>{{ 'settingsPage.permissionsTitle' | translate }}</h2>
+      <p class="permission">
+        <span class="material-symbols-outlined" aria-hidden="true">my_location</span>
+        <span>
+          <strong>{{ 'settingsPage.location' | translate }}</strong>
+          @switch (location()) {
+            @case ('granted') {
+              <small>{{ 'settingsPage.locationGranted' | translate }}</small>
+            }
+            @case ('denied') {
+              <small>{{ 'settingsPage.locationDenied' | translate }}</small>
+            }
+            @case ('prompt') {
+              <small>{{ 'settingsPage.locationPrompt' | translate }}</small>
+            }
+            @default {
+              <small>{{ 'settingsPage.locationUnknown' | translate }}</small>
+            }
+          }
+        </span>
+      </p>
+      <p class="block-text">{{ 'settingsPage.permissionsHint' | translate }}</p>
+    </div>
+  </div>
+</section>
