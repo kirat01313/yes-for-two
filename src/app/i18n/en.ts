@@ -72,6 +72,24 @@ export const en = {
       unknown: "Couldn't reach the server. Try again in a moment.",
     },
   },
+    accountPage: {
+    eyebrow: 'Account',
+    title: 'Your details',
+    nameTitle: 'Your name',
+    nameHint: 'Your name appears in the account menu, at the top.',
+    nameLabel: 'Name',
+    nameTooLong: 'Your name can have at most 40 characters.',
+    saveName: 'Save name',
+    saved: 'Saved.',
+    saveError: "Couldn't save. Try again.",
+    emailTitle: 'Email',
+    createdOn: 'Account created on',
+    passwordTitle: 'Password',
+    newPassword: 'New password',
+    confirmPassword: 'Confirm',
+    changePassword: 'Change password',
+    passwordChanged: 'Password changed.',
+  },
 };
 
 export type Dictionary = typeof en;
