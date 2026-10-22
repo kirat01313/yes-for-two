@@ -43,7 +43,8 @@ export const pt: Dictionary = {
     motto: 'Decidido a dois',
     credits:
       'Lugares © OpenStreetMap contributors · Imagens: Wikipedia, Pexels e Pixabay · Meteorologia: Open-Meteo · Voos: Aviasales · Preços de hotel estimados',
-  },   auth: {
+  },
+  auth: {
     eyebrow: 'A vossa conta',
     titleSignIn: 'Entrem a dois.',
     titleCreate: 'Criem a vossa conta.',
@@ -68,12 +69,13 @@ export const pt: Dictionary = {
       user_already_exists: 'Já existe uma conta com este email. Entrem em vez de criar.',
       weak_password: 'A palavra-passe é demasiado fraca. Usem pelo menos 6 caracteres.',
       same_password: 'A nova palavra-passe tem de ser diferente da atual.',
-      over_email_send_rate_limit: 'Foram enviados demasiados emails. Esperem uns minutos e tentem outra vez.',
+      over_email_send_rate_limit:
+        'Foram enviados demasiados emails. Esperem uns minutos e tentem outra vez.',
       over_request_rate_limit: 'Demasiadas tentativas. Esperem um minuto e tentem outra vez.',
       unknown: 'Não foi possível ligar ao servidor. Tentem outra vez daqui a pouco.',
     },
   },
-    accountPage: {
+  accountPage: {
     eyebrow: 'Conta',
     title: 'Os seus dados',
     nameTitle: 'O seu nome',
@@ -91,7 +93,7 @@ export const pt: Dictionary = {
     changePassword: 'Mudar palavra-passe',
     passwordChanged: 'Palavra-passe mudada.',
   },
-    settingsPage: {
+  settingsPage: {
     eyebrow: 'Configurações',
     title: 'Como o site se comporta',
     languageTitle: 'Língua',
@@ -99,13 +101,14 @@ export const pt: Dictionary = {
     languageLegend: 'Língua do site',
     permissionsTitle: 'Permissões',
     location: 'Localização',
-    locationGranted: 'Autorizada: as sugestões e o carrossel de lugares perto usam o sítio onde está.',
+    locationGranted:
+      'Autorizada: as sugestões e o carrossel de lugares perto usam o sítio onde está.',
     locationDenied: 'Bloqueada: as sugestões usam a cidade que escrever.',
     locationPrompt: 'Ainda não foi pedida. O site pergunta quando precisar.',
     locationUnknown: 'O browser não indica o estado desta permissão.',
     permissionsHint: 'Para mudar, use o cadeado ao lado do endereço, no browser.',
   },
-    home: {
+  home: {
     subtitle: 'Vocês escolhem o tipo de programa. O resto escolhemos nós.',
     startWithDinner: 'Começar pelo jantar',
     seeHowItWorks: 'Ver como funciona',

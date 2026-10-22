@@ -39,7 +39,8 @@
       <p class="value">{{ auth.email() }}</p>
       @if (auth.user()?.created_at; as createdAt) {
         <p class="block-text">
-          {{ 'accountPage.createdOn' | translate }} {{ createdAt | date: 'longDate' : '' : language.locale() }}.
+          {{ 'accountPage.createdOn' | translate }}
+          {{ createdAt | date: 'longDate' : '' : language.locale() }}.
         </p>
       }
     </div>
@@ -49,11 +50,22 @@
 
       <div class="field">
         <label for="account-new-password">{{ 'accountPage.newPassword' | translate }}</label>
-        <input id="account-new-password" type="password" formControlName="newPassword" autocomplete="new-password" />
+        <input
+          id="account-new-password"
+          type="password"
+          formControlName="newPassword"
+          autocomplete="new-password"
+        />
         <p class="error">
-          @if (passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword.hasError('required')) {
+          @if (
+            passwordForm.controls.newPassword.touched &&
+            passwordForm.controls.newPassword.hasError('required')
+          ) {
             {{ 'auth.errors.passwordRequired' | translate }}
-          } @else if (passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword.hasError('minlength')) {
+          } @else if (
+            passwordForm.controls.newPassword.touched &&
+            passwordForm.controls.newPassword.hasError('minlength')
+          ) {
             {{ 'auth.errors.passwordMinLength' | translate }}
           }
         </p>
@@ -61,9 +73,16 @@
 
       <div class="field">
         <label for="account-confirm">{{ 'accountPage.confirmPassword' | translate }}</label>
-        <input id="account-confirm" type="password" formControlName="confirmPassword" autocomplete="new-password" />
+        <input
+          id="account-confirm"
+          type="password"
+          formControlName="confirmPassword"
+          autocomplete="new-password"
+        />
         <p class="error">
-          @if (passwordForm.controls.confirmPassword.touched && passwordForm.hasError('fieldsDiffer')) {
+          @if (
+            passwordForm.controls.confirmPassword.touched && passwordForm.hasError('fieldsDiffer')
+          ) {
             {{ 'auth.errors.passwordsDiffer' | translate }}
           }
         </p>

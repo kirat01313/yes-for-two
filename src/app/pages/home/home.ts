@@ -20,8 +20,18 @@ export class Home {
   readonly verses = ['home.poem1', 'home.poem2', 'home.poem3', 'home.poem4'];
 
   readonly programs: ProgramCard[] = [
-    { type: 'restaurant', path: '/restaurant', icon: 'restaurant', image: 'images/programs/restaurant.jpg' },
-    { type: 'experience', path: '/experience', icon: 'palette', image: 'images/programs/experience.jpg' },
+    {
+      type: 'restaurant',
+      path: '/restaurant',
+      icon: 'restaurant',
+      image: 'images/programs/restaurant.jpg',
+    },
+    {
+      type: 'experience',
+      path: '/experience',
+      icon: 'palette',
+      image: 'images/programs/experience.jpg',
+    },
     { type: 'trip', path: '/trip', icon: 'flight_takeoff', image: 'images/programs/trip.jpg' },
   ];
 }

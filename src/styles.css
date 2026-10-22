@@ -100,11 +100,15 @@ textarea {
   font-size: 20px;
   line-height: 1;
   vertical-align: middle;
-  font-variation-settings: 'FILL' 0, 'wght' 400;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400;
 }
 
 .material-symbols-outlined.filled {
-  font-variation-settings: 'FILL' 1, 'wght' 400;
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400;
 }
 
 .yes {
@@ -212,7 +216,6 @@ textarea {
   gap: 0.55rem;
 }
 
-
 .eyebrow {
   font-family: var(--font-body);
   font-size: 0.72rem;
@@ -268,7 +271,6 @@ textarea {
   font-size: 0.82rem;
   color: var(--error);
 }
-
 
 .settings-page {
   max-width: 760px;

@@ -28,7 +28,10 @@ export class Account implements OnInit {
         nonNullable: true,
         validators: [Validators.required, Validators.minLength(6)],
       }),
-      confirmPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      confirmPassword: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
     },
     { validators: fieldsMatch('newPassword', 'confirmPassword') },
   );

@@ -42,7 +42,7 @@ export const en = {
     credits:
       'Places © OpenStreetMap contributors · Images: Wikipedia, Pexels and Pixabay · Weather: Open-Meteo · Flights: Aviasales · Hotel prices are estimates',
   },
-    auth: {
+  auth: {
     eyebrow: 'Your account',
     titleSignIn: 'Sign in together.',
     titleCreate: 'Create your account.',
@@ -72,7 +72,7 @@ export const en = {
       unknown: "Couldn't reach the server. Try again in a moment.",
     },
   },
-    accountPage: {
+  accountPage: {
     eyebrow: 'Account',
     title: 'Your details',
     nameTitle: 'Your name',
@@ -90,11 +90,12 @@ export const en = {
     changePassword: 'Change password',
     passwordChanged: 'Password changed.',
   },
-    settingsPage: {
+  settingsPage: {
     eyebrow: 'Settings',
     title: 'How the site behaves',
     languageTitle: 'Language',
-    languageHint: 'The language of every text on the site. Your choice is remembered on this browser.',
+    languageHint:
+      'The language of every text on the site. Your choice is remembered on this browser.',
     languageLegend: 'Site language',
     permissionsTitle: 'Permissions',
     location: 'Location',
@@ -104,7 +105,7 @@ export const en = {
     locationUnknown: "Your browser doesn't share the state of this permission.",
     permissionsHint: 'To change it, use the padlock next to the address in your browser.',
   },
-    home: {
+  home: {
     subtitle: 'You choose the kind of plan. We choose the rest.',
     startWithDinner: 'Start with dinner',
     seeHowItWorks: 'See how it works',

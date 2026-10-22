@@ -8,7 +8,12 @@ import {
   LOCALE_ID,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
-import { TitleStrategy, provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import {
+  TitleStrategy,
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+} from '@angular/router';
 import { routes } from './app.routes';
 import { supabaseInterceptor } from './interceptors/supabase-interceptor';
 import { TranslatedTitleStrategy } from './translated-title.strategy';
