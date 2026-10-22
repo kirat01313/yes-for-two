@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 import { Experience } from './pages/experience/experience';
 import { Home } from './pages/home/home';
 import { Restaurant } from './pages/restaurant/restaurant';
@@ -14,17 +15,20 @@ export const routes: Routes = [
     path: 'memories',
     loadComponent: () => import('./pages/memories/memories').then((m) => m.Memories),
     title: 'titles.memories',
+    canActivate: [authGuard],
   },
   { path: 'sign-in', component: SignIn, title: 'titles.signIn' },
   {
     path: 'account',
     loadComponent: () => import('./pages/account/account').then((m) => m.Account),
     title: 'titles.account',
+    canActivate: [authGuard],
   },
   {
     path: 'settings',
     loadComponent: () => import('./pages/settings/settings').then((m) => m.Settings),
     title: 'titles.settings',
+    canActivate: [authGuard],
   },
   { path: '**', redirectTo: '' },
 ];
