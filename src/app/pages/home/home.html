@@ -11,7 +11,10 @@
   <div class="stage-shade" aria-hidden="true"></div>
 
   <div class="stage-text">
-    <h1 id="home-title">{{ 'app.tagline' | translate }} <span class="yes">{{ 'app.yes' | translate }}</span>.</h1>
+    <h1 id="home-title">
+      {{ 'app.tagline' | translate }} <span class="yes">{{ 'app.yes' | translate }}</span
+      >.
+    </h1>
     <p>{{ 'home.subtitle' | translate }}</p>
 
     <div class="stage-actions">
@@ -29,7 +32,8 @@
   <span class="scroll-hint" aria-hidden="true">
     <span class="material-symbols-outlined">keyboard_arrow_down</span>
   </span>
-  
+</section>
+
 <section class="letter" [attr.aria-label]="'home.poemLabel' | translate">
   <figure>
     <blockquote>
@@ -55,7 +59,11 @@
       @for (program of programs; track program.type) {
         <a class="program" [routerLink]="program.path">
           <div class="program-image">
-            <img [src]="program.image" [alt]="'home.programs.' + program.type + '.alt' | translate" loading="lazy" />
+            <img
+              [src]="program.image"
+              [alt]="'home.programs.' + program.type + '.alt' | translate"
+              loading="lazy"
+            />
             <span class="tag">
               <span class="material-symbols-outlined" aria-hidden="true">{{ program.icon }}</span>
               {{ 'home.programs.' + program.type + '.tag' | translate }}
@@ -73,5 +81,4 @@
       }
     </div>
   </div>
-</section>
 </section>
