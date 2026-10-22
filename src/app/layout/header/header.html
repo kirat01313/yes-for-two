@@ -3,7 +3,8 @@
     <a class="logo" routerLink="/">{{ 'app.name' | translate }}</a>
 
     <nav class="menu" [attr.aria-label]="'nav.main' | translate">
-      @for (link of links(); track link.path) {        <a
+      @for (link of links(); track link.path) {        
+        <a
           [routerLink]="link.path"
           routerLinkActive="active"
           ariaCurrentWhenActive="page"
