@@ -20,6 +20,8 @@ export const en = {
     account: 'Account',
     settings: 'Settings',
     signOut: 'Sign out',
+    yourAccount: 'Your account',
+    openMenu: 'Open account menu',
   },
   language: {
     switch: 'PT',

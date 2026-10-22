@@ -22,6 +22,8 @@ export const pt: Dictionary = {
     account: 'Conta',
     settings: 'Configurações',
     signOut: 'Sair',
+    yourAccount: 'A sua conta',
+    openMenu: 'Abrir o menu da conta',
   },
   language: {
     switch: 'EN',

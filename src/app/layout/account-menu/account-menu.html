@@ -1,0 +1,41 @@
+<button
+  #toggleButton
+  type="button"
+  class="avatar"
+  [class.open]="open()"
+  [attr.aria-expanded]="open()"
+  aria-controls="account-menu"
+  [attr.aria-label]="'account.openMenu' | translate"
+  (click)="toggle()"
+>
+  {{ auth.initial() }}
+</button>
+
+@if (open()) {
+  <div class="account-menu" id="account-menu">
+    <div class="account-menu-top">
+      <strong>{{ displayName() }}</strong>
+      <small>{{ auth.email() }}</small>
+    </div>
+
+    <nav [attr.aria-label]="'account.account' | translate">
+      <a routerLink="/account">
+        <span class="material-symbols-outlined" aria-hidden="true">person</span>
+        {{ 'account.account' | translate }}
+      </a>
+      <a routerLink="/memories">
+        <span class="material-symbols-outlined" aria-hidden="true">photo_library</span>
+        {{ 'nav.memories' | translate }}
+      </a>
+      <a routerLink="/settings">
+        <span class="material-symbols-outlined" aria-hidden="true">tune</span>
+        {{ 'account.settings' | translate }}
+      </a>
+    </nav>
+
+    <button type="button" class="sign-out" (click)="signOut()">
+      <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+      {{ 'account.signOut' | translate }}
+    </button>
+  </div>
+}

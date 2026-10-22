@@ -24,21 +24,12 @@ export class AuthService {
   readonly signedIn = computed(() => this.session() !== null);
   readonly email = computed(() => this.user()?.email ?? '');
 
-  readonly names = computed<string[]>(() => {
-    const names = this.user()?.user_metadata?.['names'];
-    return Array.isArray(names)
-      ? names.filter((name): name is string => typeof name === 'string' && name.trim() !== '')
-      : [];
+  readonly name = computed(() => {
+    const name = this.user()?.user_metadata?.['name'];
+    return typeof name === 'string' ? name.trim() : '';
   });
 
-  readonly initials = computed(() => {
-    const names = this.names();
-    if (names.length) {
-      return names.map((name) => name.trim().charAt(0).toUpperCase());
-    }
-    const letter = this.email().charAt(0).toUpperCase();
-    return letter ? [letter] : [];
-  });
+  readonly initial = computed(() => (this.name() || this.email()).charAt(0).toUpperCase());
 
   readonly ready: Promise<void>;
 
@@ -73,8 +64,8 @@ export class AuthService {
     );
   }
 
-  saveNames(names: string[]): Observable<void> {
-    return from(this.client.auth.updateUser({ data: { names } })).pipe(
+  saveName(name: string): Observable<void> {
+    return from(this.client.auth.updateUser({ data: { name } })).pipe(
       map(({ error }) => {
         if (error) {
           throw error;
