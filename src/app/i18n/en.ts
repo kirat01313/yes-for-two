@@ -138,7 +138,7 @@ export const en = {
         alt: 'Terraced vineyards in the Douro valley at sunset',
       },
     },
-        howEyebrow: 'Simple and light',
+    howEyebrow: 'Simple and light',
     howTitle: 'How it works',
     steps: {
       choose: {

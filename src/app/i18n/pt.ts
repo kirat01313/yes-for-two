@@ -141,7 +141,7 @@ export const pt: Dictionary = {
         alt: 'Vinhas em socalcos no Douro ao pôr do sol',
       },
     },
-        howEyebrow: 'Simples e leve',
+    howEyebrow: 'Simples e leve',
     howTitle: 'Como funciona',
     steps: {
       choose: {
