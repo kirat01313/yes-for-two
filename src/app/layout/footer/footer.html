@@ -1,0 +1,19 @@
+<footer class="footer">
+  <div class="inner">
+    <div class="brand">
+      <span class="logo">{{ 'app.name' | translate }}</span>
+      <p>{{ 'app.tagline' | translate }} <span class="yes">{{ 'app.yes' | translate }}</span>.</p>
+    </div>
+
+    <nav [attr.aria-label]="'nav.footer' | translate">
+      @for (link of links; track link.path) {
+        <a [routerLink]="link.path">{{ link.label | translate }}</a>
+      }
+    </nav>
+  </div>
+
+  <div class="inner credits">
+    <span>© {{ year }} {{ 'app.name' | translate }} · {{ 'footer.motto' | translate }}</span>
+    <span>{{ 'footer.credits' | translate }}</span>
+  </div>
+</footer>

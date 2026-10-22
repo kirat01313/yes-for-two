@@ -1,3 +1,30 @@
 import { Routes } from '@angular/router';
+import { Experience } from './pages/experience/experience';
+import { Home } from './pages/home/home';
+import { Restaurant } from './pages/restaurant/restaurant';
+import { SignIn } from './pages/sign-in/sign-in';
+import { Trip } from './pages/trip/trip';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  { path: '', component: Home, title: 'titles.home' },
+  { path: 'restaurant', component: Restaurant, title: 'titles.restaurant' },
+  { path: 'experience', component: Experience, title: 'titles.experience' },
+  { path: 'trip', component: Trip, title: 'titles.trip' },
+  {
+    path: 'memories',
+    loadComponent: () => import('./pages/memories/memories').then((m) => m.Memories),
+    title: 'titles.memories',
+  },
+  { path: 'sign-in', component: SignIn, title: 'titles.signIn' },
+  {
+    path: 'account',
+    loadComponent: () => import('./pages/account/account').then((m) => m.Account),
+    title: 'titles.account',
+  },
+  {
+    path: 'settings',
+    loadComponent: () => import('./pages/settings/settings').then((m) => m.Settings),
+    title: 'titles.settings',
+  },
+  { path: '**', redirectTo: '' },
+];
