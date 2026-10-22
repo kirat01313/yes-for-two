@@ -3,6 +3,7 @@ export const en = {
     name: 'Yes for Two',
     tagline: 'Today, say',
     yes: 'yes',
+    skipToContent: 'Skip to content',
   },
   nav: {
     main: 'Main navigation',

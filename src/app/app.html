@@ -1,1 +1,9 @@
-<router-outlet />
+<a class="skip-link" href="#content">{{ 'app.skipToContent' | translate }}</a>
+
+<app-header />
+
+<main id="content">
+  <router-outlet />
+</main>
+
+<app-footer />

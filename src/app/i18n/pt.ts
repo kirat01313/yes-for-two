@@ -5,6 +5,7 @@ export const pt: Dictionary = {
     name: 'Sim a Dois',
     tagline: 'Hoje, digam',
     yes: 'sim',
+    skipToContent: 'Saltar para o conteúdo',
   },
   nav: {
     main: 'Navegação principal',
