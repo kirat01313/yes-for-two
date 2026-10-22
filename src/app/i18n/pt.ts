@@ -105,4 +105,9 @@ export const pt: Dictionary = {
     locationUnknown: 'O browser não indica o estado desta permissão.',
     permissionsHint: 'Para mudar, use o cadeado ao lado do endereço, no browser.',
   },
+    home: {
+    subtitle: 'Vocês escolhem o tipo de programa. O resto escolhemos nós.',
+    startWithDinner: 'Começar pelo jantar',
+    seeHowItWorks: 'Ver como funciona',
+  },
 };

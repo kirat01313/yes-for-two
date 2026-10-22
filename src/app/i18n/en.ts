@@ -104,6 +104,11 @@ export const en = {
     locationUnknown: "Your browser doesn't share the state of this permission.",
     permissionsHint: 'To change it, use the padlock next to the address in your browser.',
   },
+    home: {
+    subtitle: 'You choose the kind of plan. We choose the rest.',
+    startWithDinner: 'Start with dinner',
+    seeHowItWorks: 'See how it works',
+  },
 };
 
 export type Dictionary = typeof en;
