@@ -40,6 +40,36 @@ export const en = {
     credits:
       'Places © OpenStreetMap contributors · Images: Wikipedia, Pexels and Pixabay · Weather: Open-Meteo · Flights: Aviasales · Hotel prices are estimates',
   },
+    auth: {
+    eyebrow: 'Your account',
+    titleSignIn: 'Sign in together.',
+    titleCreate: 'Create your account.',
+    intro: 'One account for the two of you: every yes is saved on a map that is only yours.',
+    imageAlt: 'A couple walking hand in hand down an old street',
+    email: 'Email',
+    password: 'Password',
+    confirmPassword: 'Confirm password',
+    emailSentBefore: 'We sent an email to',
+    emailSentAfter: 'Open the link to activate your account, then sign in here.',
+    noAccount: "Don't have an account yet?",
+    haveAccount: 'Already have an account?',
+    errors: {
+      emailRequired: 'Enter your email.',
+      emailInvalid: "This email doesn't look valid.",
+      passwordRequired: 'Enter your password.',
+      passwordMinLength: 'At least 6 characters.',
+      confirmRequired: 'Enter the password again.',
+      passwordsDiffer: "The passwords don't match.",
+      invalid_credentials: 'Wrong email or password.',
+      email_not_confirmed: 'You still need to confirm your email: open the link we sent you.',
+      user_already_exists: 'There is already an account with this email. Sign in instead.',
+      weak_password: 'This password is too weak. Use at least 6 characters.',
+      same_password: 'The new password must be different from the current one.',
+      over_email_send_rate_limit: 'Too many emails were sent. Wait a few minutes and try again.',
+      over_request_rate_limit: 'Too many attempts. Wait a minute and try again.',
+      unknown: "Couldn't reach the server. Try again in a moment.",
+    },
+  },
 };
 
 export type Dictionary = typeof en;
