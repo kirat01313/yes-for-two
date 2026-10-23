@@ -1,1 +1,74 @@
-<p>restaurant works!</p>
+<section class="search" aria-labelledby="restaurant-title">
+  <p class="eyebrow">{{ 'restaurantPage.eyebrow' | translate }}</p>
+  <h1 id="restaurant-title">{{ 'restaurantPage.title' | translate }}</h1>
+
+  <form class="filters" [formGroup]="form" (ngSubmit)="draw()" novalidate>
+    <div class="field">
+      <label for="restaurant-city">{{ 'restaurantPage.city' | translate }}</label>
+      <input
+        id="restaurant-city"
+        type="text"
+        formControlName="city"
+        autocomplete="off"
+        aria-describedby="restaurant-city-error"
+      />
+      <p class="error" id="restaurant-city-error">
+        @if (form.controls.city.touched && form.controls.city.hasError('required')) {
+          {{ 'restaurantPage.cityRequired' | translate }}
+        } @else if (form.controls.city.touched && form.controls.city.hasError('minlength')) {
+          {{ 'restaurantPage.cityShort' | translate }}
+        }
+      </p>
+    </div>
+
+    <div class="field">
+      <label for="restaurant-radius">{{ 'restaurantPage.radius' | translate }}</label>
+      <select id="restaurant-radius" formControlName="radius">
+        @for (distance of distances; track distance) {
+          <option [ngValue]="distance">
+            {{ 'restaurantPage.upTo' | translate }}
+            {{ distance | number: '1.0-1' : language.locale() }} km
+          </option>
+        }
+      </select>
+    </div>
+
+    <button
+      class="button button-primary button-large"
+      type="submit"
+      [disabled]="form.invalid || status() === 'loading'"
+    >
+      {{ 'restaurantPage.submit' | translate }}
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+    </button>
+  </form>
+
+  <p class="note">{{ 'restaurantPage.note' | translate }}</p>
+</section>
+
+<section class="result" aria-live="polite">
+  @switch (status()) {
+    @case ('loading') {
+      <app-status-notice
+        status="loading"
+        [title]="loadingTitle()"
+        text="restaurantPage.loadingText"
+      />
+    }
+    @case ('empty') {
+      <app-status-notice
+        status="empty"
+        title="restaurantPage.emptyTitle"
+        text="restaurantPage.emptyText"
+      />
+    }
+    @case ('error') {
+      <app-status-notice status="error" [title]="message().title" [text]="message().text" />
+    }
+    @case ('success') {
+      @if (suggestion(); as current) {
+        <app-suggestion-card [suggestion]="current" />
+      }
+    }
+  }
+</section>
