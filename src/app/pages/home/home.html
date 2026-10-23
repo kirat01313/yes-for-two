@@ -1,4 +1,4 @@
-<section class="stage" aria-labelledby="home-title">
+<section class="stage" appPanel aria-labelledby="home-title">
   <video
     class="stage-video"
     src="videos/woman-eyes.mp4"
@@ -34,7 +34,7 @@
   </span>
 </section>
 
-<section class="letter" [attr.aria-label]="'home.poemLabel' | translate">
+<section class="letter" appPanel [attr.aria-label]="'home.poemLabel' | translate">
   <figure>
     <blockquote>
       @for (verse of verses; track verse; let odd = $odd) {
@@ -45,7 +45,7 @@
   </figure>
 </section>
 
-<section class="programs" aria-labelledby="programs-title">
+<section class="programs" appPanel aria-labelledby="programs-title">
   <div class="content">
     <div class="section-top">
       <div>
@@ -83,7 +83,7 @@
   </div>
 </section>
 
-<section class="how" id="how-it-works" aria-labelledby="how-title">
+<section class="how" id="how-it-works" appPanel aria-labelledby="how-title">
   <div class="content">
     <p class="eyebrow">{{ 'home.howEyebrow' | translate }}</p>
     <h2 class="section-title" id="how-title">{{ 'home.howTitle' | translate }}</h2>

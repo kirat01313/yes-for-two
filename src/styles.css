@@ -331,6 +331,13 @@ textarea {
   transform: none;
 }
 
+.panel {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  box-shadow: var(--shadow-panel);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
