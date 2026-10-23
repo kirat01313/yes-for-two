@@ -3,6 +3,7 @@
   height: 100vh;
   height: 100svh;
   margin-left: calc(50% - 50vw);
+  margin-bottom: 25vh;
   overflow: hidden;
   background: var(--espresso);
 }
@@ -91,6 +92,7 @@
   height: 145vh;
   height: 145svh;
   margin-left: calc(50% - 50vw);
+  margin-bottom: 15vh;
   background: var(--porcelain);
 }
 
@@ -144,9 +146,16 @@
 .letter figcaption.visible {
   opacity: 1;
 }
+
 .programs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 100vw;
+  min-height: 100vh;
+  min-height: 100svh;
   margin-left: calc(50% - 50vw);
+  margin-bottom: 25vh;
   padding: 4.5rem 0;
   background: var(--champagne);
 }
