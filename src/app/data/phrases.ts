@@ -1,4 +1,68 @@
+import { DestinationType } from '../models/destination';
 import { Phrase } from '../models/suggestion';
+
+export const TRIP_PHRASES: Record<DestinationType, Phrase[]> = {
+  city: [
+    {
+      text: {
+        en: 'New streets to get lost in, hand in hand.',
+        pt: 'Ruas novas para se perderem de mão dada.',
+      },
+    },
+    {
+      text: {
+        en: 'A city that does not know you yet. Let it meet you as two.',
+        pt: 'Uma cidade que ainda não vos conhece. Deixem que vos conheça a dois.',
+      },
+    },
+    {
+      text: {
+        en: 'Coffee in a square, dinner by the river and no plans in between.',
+        pt: 'Café numa praça, jantar à beira-rio e nenhum plano pelo meio.',
+      },
+    },
+  ],
+  beach: [
+    {
+      text: {
+        en: 'Salt on the skin and nowhere else to be.',
+        pt: 'Sal na pele e nenhum outro sítio onde estar.',
+      },
+    },
+    {
+      text: {
+        en: 'The sea has room for two. And for everything you never said.',
+        pt: 'O mar tem lugar para dois. E para tudo o que ainda não disseram.',
+      },
+    },
+    {
+      text: {
+        en: 'Sunsets are better when someone holds your hand.',
+        pt: 'O pôr do sol é melhor quando alguém vos dá a mão.',
+      },
+    },
+  ],
+  nature: [
+    {
+      text: {
+        en: 'Fewer screens, more mountains, the two of you.',
+        pt: 'Menos ecrãs, mais montanha, vocês os dois.',
+      },
+    },
+    {
+      text: {
+        en: 'Trails, silence and a view worth the climb.',
+        pt: 'Trilhos, silêncio e uma vista que vale a subida.',
+      },
+    },
+    {
+      text: {
+        en: 'Where the phone has no signal, you find each other.',
+        pt: 'Onde o telemóvel perde a rede, vocês encontram-se.',
+      },
+    },
+  ],
+};
 
 export const PHRASES_FOR_TWO: Phrase[] = [
   {
