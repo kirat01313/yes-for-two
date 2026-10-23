@@ -19,6 +19,14 @@ export interface Destination {
   phrase_pt: string;
   types: DestinationType[];
   region: Region;
+  iata: string | null;
+  country_code: string | null;
+}
+
+export interface CountryCost {
+  country_code: string;
+  night: number;
+  region: Region;
 }
 
 export interface DayForecast {
