@@ -34,17 +34,18 @@
   </span>
 </section>
 
-<section class="letter" appPanel [attr.aria-label]="'home.poemLabel' | translate">
-  <figure>
-    <blockquote>
-      @for (verse of verses; track verse; let odd = $odd) {
-        <p [class.indented]="odd">{{ verse | translate }}</p>
-      }
-    </blockquote>
-    <figcaption>Álvaro de Campos</figcaption>
-  </figure>
+<section class="letter" appPanel #letter [attr.aria-label]="'home.poemLabel' | translate">
+  <div class="letter-sticky">
+    <figure>
+      <blockquote>
+        @for (verse of verses; track verse; let i = $index, odd = $odd) {
+          <p [class.indented]="odd" [style.mask-image]="mask(i)">{{ verse | translate }}</p>
+        }
+      </blockquote>
+      <figcaption [class.visible]="writingProgress() > 0.97">Álvaro de Campos</figcaption>
+    </figure>
+  </div>
 </section>
-
 <section class="programs" appPanel aria-labelledby="programs-title">
   <div class="content">
     <div class="section-top">
