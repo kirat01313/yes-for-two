@@ -12,7 +12,7 @@ export interface Suggestion {
   name: Text;
   address: string;
   place: Text;
-  category: string;
+  category: Text;
   icon: string;
   image: string | null;
   lat: number;
