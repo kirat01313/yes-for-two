@@ -1,0 +1,104 @@
+<article class="suggestion">
+  <div class="image">
+    @if (suggestion.image) {
+      <img [src]="suggestion.image" [alt]="suggestion.name | translate" />
+    } @else {
+      <div class="illustration">
+        <span class="material-symbols-outlined" aria-hidden="true">{{ suggestion.icon }}</span>
+      </div>
+    }
+    <span class="tag">
+      <span class="material-symbols-outlined" aria-hidden="true">{{ suggestion.icon }}</span>
+      {{ suggestion.category | translate }}
+    </span>
+  </div>
+
+  <div class="body">
+    <p class="eyebrow">{{ 'card.eyebrow.' + suggestion.type | translate }}</p>
+    <h2>{{ suggestion.name | translate }}</h2>
+
+    <figure class="phrase">
+      <blockquote>{{ suggestion.phrase.text | translate }}</blockquote>
+      @if (suggestion.phrase.author) {
+        <figcaption>{{ suggestion.phrase.author }}</figcaption>
+      }
+    </figure>
+
+    <dl class="details">
+      <div>
+        <dt>{{ 'card.where' | translate }}</dt>
+        <dd>{{ suggestion.place | translate }}</dd>
+      </div>
+      @if (suggestion.distanceKm !== undefined) {
+        <div>
+          <dt>{{ 'card.distance' | translate }}</dt>
+          <dd>{{ suggestion.distanceKm | distance }}</dd>
+        </div>
+      }
+      @if (suggestion.pricePerPerson !== undefined) {
+        <div>
+          <dt>{{ suggestion.nights }} {{ 'card.nights' | translate }}</dt>
+          <dd>
+            {{
+              suggestion.pricePerPerson | currency: 'EUR' : 'symbol' : '1.0-0' : language.locale()
+            }}
+            {{ 'card.perPerson' | translate }}
+          </dd>
+        </div>
+      }
+    </dl>
+
+    @if (suggestion.forecast?.length) {
+      <ul class="weather" [attr.aria-label]="'card.forecast' | translate">
+        @for (day of suggestion.forecast; track day.date) {
+          <li>
+            <span class="day">{{ day.date | date: 'EEE' : undefined : language.locale() }}</span>
+            <span class="material-symbols-outlined" aria-hidden="true">{{ day.icon }}</span>
+            <strong>{{ day.max }}°</strong> {{ day.min }}°
+          </li>
+        }
+      </ul>
+    }
+
+    <a class="arrow-link" [href]="suggestion.mapUrl" target="_blank" rel="noopener">
+      {{ 'card.openMap' | translate }}
+      <span class="material-symbols-outlined" aria-hidden="true">north_east</span>
+    </a>
+
+    @if (memoryId) {
+      <div class="confirmation">
+        <p>
+          {{ 'card.saidYes' | translate }} <span class="yes">{{ 'app.yes' | translate }}</span
+          >. {{ 'card.saved' | translate }}
+        </p>
+        <a
+          class="button button-soft button-small"
+          routerLink="/memories"
+          [queryParams]="{ id: memoryId }"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">pin_drop</span>
+          {{ 'card.seeOnMap' | translate }}
+        </a>
+      </div>
+    } @else {
+      <div class="yes-buttons">
+        <button
+          type="button"
+          class="button button-primary button-large"
+          [disabled]="saving"
+          (click)="sayYes()"
+        >
+          {{ 'card.yes' | translate }}
+        </button>
+        <button
+          type="button"
+          class="button button-outline button-large"
+          [disabled]="saving"
+          (click)="sayYes()"
+        >
+          {{ 'card.ofCourse' | translate }}
+        </button>
+      </div>
+    }
+  </div>
+</article>
