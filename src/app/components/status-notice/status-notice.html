@@ -1,0 +1,23 @@
+<div
+  class="notice"
+  [class.notice-error]="status === 'error'"
+  [attr.role]="status === 'loading' ? 'status' : null"
+>
+  @switch (status) {
+    @case ('loading') {
+      <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span>
+    }
+    @case ('empty') {
+      <span class="material-symbols-outlined" aria-hidden="true">travel_explore</span>
+    }
+    @case ('error') {
+      <span class="material-symbols-outlined" aria-hidden="true">wifi_off</span>
+    }
+  }
+
+  <h2>{{ title | translate }}</h2>
+
+  @if (text) {
+    <p>{{ text | translate }}</p>
+  }
+</div>

@@ -1,0 +1,199 @@
+.suggestion {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  min-height: min(78vh, 680px);
+  background: var(--surface);
+  box-shadow: var(--shadow-2);
+  animation: appear 0.5s ease-out;
+}
+
+.image {
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+  background: var(--champagne);
+}
+
+.image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.illustration {
+  display: grid;
+  place-items: center;
+  height: 100%;
+}
+
+.illustration .material-symbols-outlined {
+  font-size: 72px;
+  color: var(--primary);
+}
+
+.tag {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--pill);
+  background: rgba(255, 255, 255, 0.94);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--terracotta);
+}
+
+.tag .material-symbols-outlined {
+  font-size: 16px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: clamp(1.75rem, 4vw, 3rem);
+}
+
+.body h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.phrase {
+  margin: 0;
+}
+
+.phrase blockquote {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--text-2);
+}
+
+.phrase figcaption {
+  margin-top: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.details {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.5rem 0 0;
+  padding: 1rem 0;
+  border-top: 1px solid var(--linen);
+  border-bottom: 1px solid var(--linen);
+}
+
+.details div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.details dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.details dd {
+  margin: 0;
+  font-size: 0.92rem;
+  text-align: right;
+}
+
+.weather {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.weather li {
+  padding: 0.6rem 0.25rem;
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--text-2);
+}
+
+.weather li + li {
+  border-left: 1px solid var(--linen);
+}
+
+.weather .day {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.weather .material-symbols-outlined {
+  display: block;
+  margin: 0.3rem auto;
+  font-size: 24px;
+  color: var(--text-3);
+}
+
+.weather strong {
+  color: var(--text);
+}
+
+.yes-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.yes-buttons .button {
+  flex: 1;
+  min-width: 150px;
+}
+
+.confirmation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding: 1rem 1.25rem;
+  background: var(--champagne);
+  animation: appear 0.35s ease-out;
+}
+
+.confirmation p {
+  font-weight: 600;
+}
+
+.confirmation .yes {
+  font-size: 1.2rem;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@media (max-width: 860px) {
+  .suggestion {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+}

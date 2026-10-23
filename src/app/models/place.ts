@@ -1,3 +1,5 @@
+import { Text } from './language';
+
 export interface City {
   name: string;
   lat: number;
@@ -23,6 +25,6 @@ export interface Place {
 export interface NearbyPlace extends Place {
   street: string;
   distance: number;
-  category: string;
+  category: Text;
   icon: string;
 }
