@@ -96,8 +96,9 @@ export class Home implements AfterViewInit, OnDestroy {
   private updateWriting(): void {
     const letter = this.letter?.nativeElement;
     if (!letter || this.reduceMotion) return;
-    const start = window.innerHeight * 0.75;
+    const screen = window.innerHeight;
     const top = letter.getBoundingClientRect().top;
-    this.writingProgress.set(Math.min(1, Math.max(0, (start - top) / start)));
+    const progress = (screen * 0.4 - top) / (screen * 0.7);
+    this.writingProgress.set(Math.min(1, Math.max(0, progress)));
   }
 }
