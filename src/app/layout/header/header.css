@@ -73,7 +73,6 @@
   gap: 0.5rem;
 }
 
-
 .language-switch {
   min-width: 2.6rem;
   padding: 0.45rem 0.7rem;
@@ -96,4 +95,43 @@
   .inner {
     justify-content: center;
   }
+}
+
+:host(.over-image) {
+  position: fixed;
+  left: 0;
+  right: 0;
+}
+
+:host(.transparent) .header {
+  border-color: transparent;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+:host(.transparent) .logo {
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+:host(.transparent) .menu {
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+}
+
+:host(.transparent) .menu a {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+:host(.transparent) .menu a.active {
+  color: var(--primary);
+}
+
+:host(.transparent) .button-outline {
+  border-color: rgba(255, 255, 255, 0.7);
+  color: #fff;
+}
+
+:host(.transparent) .button-outline:hover {
+  background: rgba(255, 255, 255, 0.16);
 }

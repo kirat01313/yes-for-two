@@ -42,7 +42,7 @@ export const en = {
     credits:
       'Places © OpenStreetMap contributors · Images: Wikipedia, Pexels and Pixabay · Weather: Open-Meteo · Flights: Aviasales · Hotel prices are estimates',
   },
-    auth: {
+  auth: {
     eyebrow: 'Your account',
     titleSignIn: 'Sign in together.',
     titleCreate: 'Create your account.',
@@ -72,7 +72,7 @@ export const en = {
       unknown: "Couldn't reach the server. Try again in a moment.",
     },
   },
-    accountPage: {
+  accountPage: {
     eyebrow: 'Account',
     title: 'Your details',
     nameTitle: 'Your name',
@@ -90,11 +90,12 @@ export const en = {
     changePassword: 'Change password',
     passwordChanged: 'Password changed.',
   },
-    settingsPage: {
+  settingsPage: {
     eyebrow: 'Settings',
     title: 'How the site behaves',
     languageTitle: 'Language',
-    languageHint: 'The language of every text on the site. Your choice is remembered on this browser.',
+    languageHint:
+      'The language of every text on the site. Your choice is remembered on this browser.',
     languageLegend: 'Site language',
     permissionsTitle: 'Permissions',
     location: 'Location',
@@ -103,6 +104,56 @@ export const en = {
     locationPrompt: 'Not asked yet. The site will ask when it needs it.',
     locationUnknown: "Your browser doesn't share the state of this permission.",
     permissionsHint: 'To change it, use the padlock next to the address in your browser.',
+  },
+  home: {
+    subtitle: 'You choose the kind of plan. We choose the rest.',
+    startWithDinner: 'Start with dinner',
+    seeHowItWorks: 'See how it works',
+    poemLabel: 'Poem by Álvaro de Campos',
+    poem1: 'All love letters are',
+    poem2: 'Ridiculous.',
+    poem3: "They wouldn't be love letters if they weren't",
+    poem4: 'Ridiculous.',
+    programsEyebrow: 'Three plans',
+    programsTitle: 'What will you do?',
+    programsText: 'Choose the kind of plan. We choose the place for you.',
+    chooseForUs: 'Choose for us',
+    programs: {
+      restaurant: {
+        title: 'Restaurant',
+        text: "A place for dinner you don't know yet.",
+        tag: 'Dinner',
+        alt: 'A candlelit dinner table with two glasses of red wine',
+      },
+      experience: {
+        title: 'Experience',
+        text: 'Museums, parks, theatre or a night out.',
+        tag: 'Culture and nights out',
+        alt: 'A couple holding hands in an art gallery lit by the sun',
+      },
+      trip: {
+        title: 'Trip',
+        text: 'A destination that fits your budget.',
+        tag: 'Getaway',
+        alt: 'Terraced vineyards in the Douro valley at sunset',
+      },
+    },
+    howEyebrow: 'Simple and light',
+    howTitle: 'How it works',
+    steps: {
+      choose: {
+        title: 'Choose the plan',
+        text: "Dinner, an experience or a trip. It's the only decision we ask you to make.",
+      },
+      tell: {
+        title: 'Tell us where and how much',
+        text: 'The city, the distance or the budget. We take care of the rest.',
+      },
+      say: {
+        title: 'Say',
+        text: "There's no button to say no. The place is saved on your memory map.",
+      },
+    },
   },
 };
 

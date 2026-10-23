@@ -100,11 +100,15 @@ textarea {
   font-size: 20px;
   line-height: 1;
   vertical-align: middle;
-  font-variation-settings: 'FILL' 0, 'wght' 400;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400;
 }
 
 .material-symbols-outlined.filled {
-  font-variation-settings: 'FILL' 1, 'wght' 400;
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400;
 }
 
 .yes {
@@ -212,7 +216,6 @@ textarea {
   gap: 0.55rem;
 }
 
-
 .eyebrow {
   font-family: var(--font-body);
   font-size: 0.72rem;
@@ -269,7 +272,6 @@ textarea {
   color: var(--error);
 }
 
-
 .settings-page {
   max-width: 760px;
   margin: 0 auto;
@@ -314,6 +316,26 @@ textarea {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--primary);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: none;
+}
+
+.panel {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  box-shadow: var(--shadow-panel);
 }
 
 @media (prefers-reduced-motion: reduce) {

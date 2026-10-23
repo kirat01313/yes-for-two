@@ -43,7 +43,8 @@ export const pt: Dictionary = {
     motto: 'Decidido a dois',
     credits:
       'Lugares © OpenStreetMap contributors · Imagens: Wikipedia, Pexels e Pixabay · Meteorologia: Open-Meteo · Voos: Aviasales · Preços de hotel estimados',
-  },   auth: {
+  },
+  auth: {
     eyebrow: 'A vossa conta',
     titleSignIn: 'Entrem a dois.',
     titleCreate: 'Criem a vossa conta.',
@@ -68,12 +69,13 @@ export const pt: Dictionary = {
       user_already_exists: 'Já existe uma conta com este email. Entrem em vez de criar.',
       weak_password: 'A palavra-passe é demasiado fraca. Usem pelo menos 6 caracteres.',
       same_password: 'A nova palavra-passe tem de ser diferente da atual.',
-      over_email_send_rate_limit: 'Foram enviados demasiados emails. Esperem uns minutos e tentem outra vez.',
+      over_email_send_rate_limit:
+        'Foram enviados demasiados emails. Esperem uns minutos e tentem outra vez.',
       over_request_rate_limit: 'Demasiadas tentativas. Esperem um minuto e tentem outra vez.',
       unknown: 'Não foi possível ligar ao servidor. Tentem outra vez daqui a pouco.',
     },
   },
-    accountPage: {
+  accountPage: {
     eyebrow: 'Conta',
     title: 'Os seus dados',
     nameTitle: 'O seu nome',
@@ -91,7 +93,7 @@ export const pt: Dictionary = {
     changePassword: 'Mudar palavra-passe',
     passwordChanged: 'Palavra-passe mudada.',
   },
-    settingsPage: {
+  settingsPage: {
     eyebrow: 'Configurações',
     title: 'Como o site se comporta',
     languageTitle: 'Língua',
@@ -99,10 +101,61 @@ export const pt: Dictionary = {
     languageLegend: 'Língua do site',
     permissionsTitle: 'Permissões',
     location: 'Localização',
-    locationGranted: 'Autorizada: as sugestões e o carrossel de lugares perto usam o sítio onde está.',
+    locationGranted:
+      'Autorizada: as sugestões e o carrossel de lugares perto usam o sítio onde está.',
     locationDenied: 'Bloqueada: as sugestões usam a cidade que escrever.',
     locationPrompt: 'Ainda não foi pedida. O site pergunta quando precisar.',
     locationUnknown: 'O browser não indica o estado desta permissão.',
     permissionsHint: 'Para mudar, use o cadeado ao lado do endereço, no browser.',
+  },
+  home: {
+    subtitle: 'Vocês escolhem o tipo de programa. O resto escolhemos nós.',
+    startWithDinner: 'Começar pelo jantar',
+    seeHowItWorks: 'Ver como funciona',
+    poemLabel: 'Poema de Álvaro de Campos',
+    poem1: 'Todas as cartas de amor são',
+    poem2: 'Ridículas.',
+    poem3: 'Não seriam cartas de amor se não fossem',
+    poem4: 'Ridículas.',
+    programsEyebrow: 'Três programas',
+    programsTitle: 'O que vão fazer?',
+    programsText: 'Escolham o tipo de programa. O sítio, escolhemos nós por vocês.',
+    chooseForUs: 'Escolham por nós',
+    programs: {
+      restaurant: {
+        title: 'Restaurante',
+        text: 'Um sítio para jantar que ainda não conhecem.',
+        tag: 'Jantar',
+        alt: 'Mesa de jantar à luz de velas, com dois copos de vinho tinto',
+      },
+      experience: {
+        title: 'Experiência',
+        text: 'Museus, parques, teatro ou noite.',
+        tag: 'Cultura e noite',
+        alt: 'Casal de mãos dadas a passear numa galeria de arte iluminada pelo sol',
+      },
+      trip: {
+        title: 'Viagem',
+        text: 'Um destino que cabe no orçamento.',
+        tag: 'Escapadinha',
+        alt: 'Vinhas em socalcos no Douro ao pôr do sol',
+      },
+    },
+    howEyebrow: 'Simples e leve',
+    howTitle: 'Como funciona',
+    steps: {
+      choose: {
+        title: 'Escolham o programa',
+        text: 'Jantar, uma experiência ou uma viagem. É a única decisão que vos pedimos.',
+      },
+      tell: {
+        title: 'Digam onde e quanto',
+        text: 'A cidade, a distância ou o orçamento. O resto fica connosco.',
+      },
+      say: {
+        title: 'Digam',
+        text: 'Não há botão para dizer não. O sítio fica guardado no vosso mapa de memórias.',
+      },
+    },
   },
 };

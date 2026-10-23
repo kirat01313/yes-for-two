@@ -1,1 +1,108 @@
-<p>home works!</p>
+<section class="stage" appPanel aria-labelledby="home-title">
+  <video
+    #video
+    class="stage-video"
+    src="videos/woman-eyes.mp4"
+    autoplay
+    loop
+    playsinline
+    [muted]="true"
+    aria-hidden="true"
+  ></video>
+  <div class="stage-shade" aria-hidden="true"></div>
+
+  <div class="stage-text">
+    <h1 id="home-title">
+      {{ 'app.tagline' | translate }} <span class="yes">{{ 'app.yes' | translate }}</span
+      >.
+    </h1>
+    <p>{{ 'home.subtitle' | translate }}</p>
+
+    <div class="stage-actions">
+      <a class="button button-primary" routerLink="/restaurant">
+        <span class="material-symbols-outlined" aria-hidden="true">restaurant</span>
+        {{ 'home.startWithDinner' | translate }}
+      </a>
+      <a class="button button-glass" routerLink="/" fragment="how-it-works">
+        <span class="material-symbols-outlined" aria-hidden="true">explore</span>
+        {{ 'home.seeHowItWorks' | translate }}
+      </a>
+    </div>
+  </div>
+
+  <span class="scroll-hint" aria-hidden="true">
+    <span class="material-symbols-outlined">keyboard_arrow_down</span>
+  </span>
+</section>
+
+<section class="letter" appPanel #letter [attr.aria-label]="'home.poemLabel' | translate">
+  <div class="letter-sticky">
+    <figure>
+      <blockquote>
+        @for (verse of verses; track verse; let i = $index, odd = $odd) {
+          <p [class.indented]="odd" [style.mask-image]="mask(i)">{{ verse | translate }}</p>
+        }
+      </blockquote>
+      <figcaption [class.visible]="writingProgress() > 0.97">Álvaro de Campos</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="programs" appPanel aria-labelledby="programs-title">
+  <div class="content">
+    <div class="section-top">
+      <div>
+        <p class="eyebrow">{{ 'home.programsEyebrow' | translate }}</p>
+        <h2 class="section-title" id="programs-title">{{ 'home.programsTitle' | translate }}</h2>
+      </div>
+      <p class="section-text">{{ 'home.programsText' | translate }}</p>
+    </div>
+
+    <div class="program-grid">
+      @for (program of programs; track program.type; let i = $index) {
+        <a class="program" [routerLink]="program.path" appReveal [delay]="i * 80">
+          <div class="program-image">
+            <img
+              [src]="program.image"
+              [alt]="'home.programs.' + program.type + '.alt' | translate"
+              loading="lazy"
+            />
+            <span class="tag">
+              <span class="material-symbols-outlined" aria-hidden="true">{{ program.icon }}</span>
+              {{ 'home.programs.' + program.type + '.tag' | translate }}
+            </span>
+            <h3>{{ 'home.programs.' + program.type + '.title' | translate }}</h3>
+          </div>
+          <div class="program-body">
+            <p>{{ 'home.programs.' + program.type + '.text' | translate }}</p>
+            <span class="arrow-link">
+              {{ 'home.chooseForUs' | translate }}
+              <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+            </span>
+          </div>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how-it-works" appPanel aria-labelledby="how-title">
+  <div class="content">
+    <p class="eyebrow">{{ 'home.howEyebrow' | translate }}</p>
+    <h2 class="section-title" id="how-title">{{ 'home.howTitle' | translate }}</h2>
+
+    <ol class="steps">
+      @for (step of steps; track step; let i = $index; let last = $last) {
+        <li class="step" appReveal [delay]="i * 80">
+          <span class="step-number" aria-hidden="true">{{ i + 1 }}</span>
+          <h3>
+            {{ 'home.steps.' + step + '.title' | translate }}
+            @if (last) {
+              <span class="yes">{{ 'app.yes' | translate }}</span>
+            }
+          </h3>
+          <p>{{ 'home.steps.' + step + '.text' | translate }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>

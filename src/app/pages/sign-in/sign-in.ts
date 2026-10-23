@@ -34,7 +34,10 @@ export class SignIn implements OnInit {
 
   readonly form = new FormGroup(
     {
-      email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+      email: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.email],
+      }),
       password: new FormControl('', {
         nonNullable: true,
         validators: [Validators.required, Validators.minLength(6)],
@@ -79,7 +82,9 @@ export class SignIn implements OnInit {
     this.errorKey.set('');
 
     const request: Observable<SignUpResult | void> =
-      this.currentMode() === 'sign-in' ? this.auth.signIn(email, password) : this.auth.signUp(email, password);
+      this.currentMode() === 'sign-in'
+        ? this.auth.signIn(email, password)
+        : this.auth.signUp(email, password);
 
     request.subscribe({
       next: (result) => {

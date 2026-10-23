@@ -6,12 +6,15 @@
   <div class="panel">
     <div class="box">
       <p class="eyebrow">{{ 'auth.eyebrow' | translate }}</p>
-      <h1>{{ (currentMode() === 'sign-in' ? 'auth.titleSignIn' : 'auth.titleCreate') | translate }}</h1>
+      <h1>
+        {{ (currentMode() === 'sign-in' ? 'auth.titleSignIn' : 'auth.titleCreate') | translate }}
+      </h1>
       <p class="intro">{{ 'auth.intro' | translate }}</p>
 
       @if (emailSentTo()) {
         <p class="notice" role="status">
-          {{ 'auth.emailSentBefore' | translate }} {{ emailSentTo() }}. {{ 'auth.emailSentAfter' | translate }}
+          {{ 'auth.emailSentBefore' | translate }} {{ emailSentTo() }}.
+          {{ 'auth.emailSentAfter' | translate }}
         </p>
       }
 
@@ -39,7 +42,9 @@
           <p class="error">
             @if (form.controls.password.touched && form.controls.password.hasError('required')) {
               {{ 'auth.errors.passwordRequired' | translate }}
-            } @else if (form.controls.password.touched && form.controls.password.hasError('minlength')) {
+            } @else if (
+              form.controls.password.touched && form.controls.password.hasError('minlength')
+            ) {
               {{ 'auth.errors.passwordMinLength' | translate }}
             }
           </p>
@@ -48,9 +53,17 @@
         @if (currentMode() === 'create') {
           <div class="field">
             <label for="sign-in-confirm">{{ 'auth.confirmPassword' | translate }}</label>
-            <input id="sign-in-confirm" type="password" formControlName="confirmPassword" autocomplete="new-password" />
+            <input
+              id="sign-in-confirm"
+              type="password"
+              formControlName="confirmPassword"
+              autocomplete="new-password"
+            />
             <p class="error">
-              @if (form.controls.confirmPassword.touched && form.controls.confirmPassword.hasError('required')) {
+              @if (
+                form.controls.confirmPassword.touched &&
+                form.controls.confirmPassword.hasError('required')
+              ) {
                 {{ 'auth.errors.confirmRequired' | translate }}
               } @else if (form.controls.confirmPassword.touched && form.hasError('fieldsDiffer')) {
                 {{ 'auth.errors.passwordsDiffer' | translate }}
@@ -63,18 +76,28 @@
           <p class="error" role="alert">{{ errorKey() | translate }}</p>
         }
 
-        <button class="button button-primary button-large" type="submit" [disabled]="form.invalid || sending()">
-          {{ (currentMode() === 'sign-in' ? 'account.signIn' : 'account.createAccount') | translate }}
+        <button
+          class="button button-primary button-large"
+          type="submit"
+          [disabled]="form.invalid || sending()"
+        >
+          {{
+            (currentMode() === 'sign-in' ? 'account.signIn' : 'account.createAccount') | translate
+          }}
         </button>
       </form>
 
       <p class="switch-mode">
         @if (currentMode() === 'sign-in') {
           {{ 'auth.noAccount' | translate }}
-          <button type="button" (click)="changeMode('create')">{{ 'account.createAccount' | translate }}</button>
+          <button type="button" (click)="changeMode('create')">
+            {{ 'account.createAccount' | translate }}
+          </button>
         } @else {
           {{ 'auth.haveAccount' | translate }}
-          <button type="button" (click)="changeMode('sign-in')">{{ 'account.signIn' | translate }}</button>
+          <button type="button" (click)="changeMode('sign-in')">
+            {{ 'account.signIn' | translate }}
+          </button>
         }
       </p>
     </div>

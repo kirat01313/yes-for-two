@@ -1,4 +1,12 @@
-import { Component, ElementRef, HostListener, ViewChild, computed, inject, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  ViewChild,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationStart, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
@@ -22,7 +30,9 @@ export class AccountMenu {
 
   readonly open = signal(false);
 
-  readonly displayName = computed(() => this.auth.name() || this.language.translate('account.yourAccount'));
+  readonly displayName = computed(
+    () => this.auth.name() || this.language.translate('account.yourAccount'),
+  );
 
   constructor() {
     this.router.events
