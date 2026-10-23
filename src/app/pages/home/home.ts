@@ -33,6 +33,7 @@ interface ProgramCard {
   },
 })
 export class Home implements AfterViewInit, OnDestroy {
+  @ViewChild('video') video?: ElementRef<HTMLVideoElement>;
   @ViewChild('letter') letter?: ElementRef<HTMLElement>;
 
   private readonly language = inject(LanguageService);
@@ -67,6 +68,7 @@ export class Home implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     if (this.reduceMotion) {
       this.writingProgress.set(1);
+      this.video?.nativeElement.pause();
     } else {
       this.updateWriting();
     }
@@ -81,6 +83,7 @@ export class Home implements AfterViewInit, OnDestroy {
     this.frame = requestAnimationFrame(() => {
       this.frame = 0;
       this.updateWriting();
+      this.pauseCoveredVideo();
     });
   }
 
@@ -100,5 +103,13 @@ export class Home implements AfterViewInit, OnDestroy {
     const top = letter.getBoundingClientRect().top;
     const progress = (screen * 0.4 - top) / (screen * 0.7);
     this.writingProgress.set(Math.min(1, Math.max(0, progress)));
+  }
+
+  private pauseCoveredVideo(): void {
+    const video = this.video?.nativeElement;
+    if (!video || this.reduceMotion) return;
+    const covered = window.scrollY > window.innerHeight;
+    if (covered && !video.paused) video.pause();
+    if (!covered && video.paused) video.play().catch(() => {});
   }
 }
