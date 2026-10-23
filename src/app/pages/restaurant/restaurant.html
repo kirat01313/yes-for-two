@@ -1,74 +1,105 @@
-<section class="search" aria-labelledby="restaurant-title">
-  <p class="eyebrow">{{ 'restaurantPage.eyebrow' | translate }}</p>
-  <h1 id="restaurant-title">{{ 'restaurantPage.title' | translate }}</h1>
+<div class="stack">
+  <app-page-hero
+    appPanel
+    [image]="heroImage"
+    alt="restaurantPage.heroAlt"
+    eyebrow="restaurantPage.eyebrow"
+    title="restaurantPage.title"
+  >
+    <form class="filter-bar" [formGroup]="form" (ngSubmit)="draw()" novalidate>
+      <div class="field bar-field">
+        <label for="restaurant-city">{{ 'search.city' | translate }}</label>
+        <div class="field-with-button">
+          <input
+            id="restaurant-city"
+            type="text"
+            formControlName="city"
+            autocomplete="off"
+            aria-describedby="restaurant-city-error"
+          />
+          <button
+            type="button"
+            class="icon-button"
+            (click)="useLocation()"
+            [attr.aria-label]="'search.useLocation' | translate"
+            [title]="'search.useLocation' | translate"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">my_location</span>
+          </button>
+        </div>
+        <p class="error" id="restaurant-city-error">
+          @if (form.controls.city.touched && form.controls.city.hasError('required')) {
+            {{ 'search.cityRequired' | translate }}
+          } @else if (form.controls.city.touched && form.controls.city.hasError('minlength')) {
+            {{ 'search.cityShort' | translate }}
+          }
+        </p>
+      </div>
 
-  <form class="filters" [formGroup]="form" (ngSubmit)="draw()" novalidate>
-    <div class="field">
-      <label for="restaurant-city">{{ 'restaurantPage.city' | translate }}</label>
-      <input
-        id="restaurant-city"
-        type="text"
-        formControlName="city"
-        autocomplete="off"
-        aria-describedby="restaurant-city-error"
+      <div class="field bar-field">
+        <label for="restaurant-radius">{{ 'search.radius' | translate }}</label>
+        <select id="restaurant-radius" formControlName="radius">
+          @for (distance of distances; track distance) {
+            <option [ngValue]="distance">
+              {{ 'search.upTo' | translate }}
+              {{ distance | number: '1.0-1' : language.locale() }} km
+            </option>
+          }
+        </select>
+      </div>
+
+      <app-choice-selector
+        class="bar-field"
+        key="restaurant-cuisines"
+        label="restaurantPage.cuisine"
+        [group]="form.controls.cuisines"
+        [options]="cuisines"
+        allText="restaurantPage.allCuisines"
+        errorMessage="restaurantPage.cuisineError"
       />
-      <p class="error" id="restaurant-city-error">
-        @if (form.controls.city.touched && form.controls.city.hasError('required')) {
-          {{ 'restaurantPage.cityRequired' | translate }}
-        } @else if (form.controls.city.touched && form.controls.city.hasError('minlength')) {
-          {{ 'restaurantPage.cityShort' | translate }}
+
+      <div class="bar-action">
+        <button
+          class="button button-primary button-large"
+          type="submit"
+          [disabled]="form.invalid || status() === 'loading'"
+        >
+          {{ 'search.submit' | translate }}
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+        </button>
+      </div>
+    </form>
+    <p class="bar-note">{{ 'restaurantPage.note' | translate }}</p>
+  </app-page-hero>
+
+  @if (status() !== 'idle') {
+    <section class="result-panel" appPanel #result aria-live="polite">
+      <div class="result-content">
+        @switch (status()) {
+          @case ('loading') {
+            <app-status-notice
+              status="loading"
+              [title]="loadingTitle()"
+              text="search.loadingText"
+            />
+          }
+          @case ('empty') {
+            <app-status-notice
+              status="empty"
+              title="restaurantPage.emptyTitle"
+              text="restaurantPage.emptyText"
+            />
+          }
+          @case ('error') {
+            <app-status-notice status="error" [title]="message().title" [text]="message().text" />
+          }
+          @case ('success') {
+            @if (suggestion(); as current) {
+              <app-suggestion-card [suggestion]="current" />
+            }
+          }
         }
-      </p>
-    </div>
-
-    <div class="field">
-      <label for="restaurant-radius">{{ 'restaurantPage.radius' | translate }}</label>
-      <select id="restaurant-radius" formControlName="radius">
-        @for (distance of distances; track distance) {
-          <option [ngValue]="distance">
-            {{ 'restaurantPage.upTo' | translate }}
-            {{ distance | number: '1.0-1' : language.locale() }} km
-          </option>
-        }
-      </select>
-    </div>
-
-    <button
-      class="button button-primary button-large"
-      type="submit"
-      [disabled]="form.invalid || status() === 'loading'"
-    >
-      {{ 'restaurantPage.submit' | translate }}
-      <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
-    </button>
-  </form>
-
-  <p class="note">{{ 'restaurantPage.note' | translate }}</p>
-</section>
-
-<section class="result" aria-live="polite">
-  @switch (status()) {
-    @case ('loading') {
-      <app-status-notice
-        status="loading"
-        [title]="loadingTitle()"
-        text="restaurantPage.loadingText"
-      />
-    }
-    @case ('empty') {
-      <app-status-notice
-        status="empty"
-        title="restaurantPage.emptyTitle"
-        text="restaurantPage.emptyText"
-      />
-    }
-    @case ('error') {
-      <app-status-notice status="error" [title]="message().title" [text]="message().text" />
-    }
-    @case ('success') {
-      @if (suggestion(); as current) {
-        <app-suggestion-card [suggestion]="current" />
-      }
-    }
+      </div>
+    </section>
   }
-</section>
+</div>

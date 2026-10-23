@@ -1,7 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, forkJoin, map, of, tap, timeout } from 'rxjs';
-import { CUISINES, CUISINE_NAMES } from '../data/categories';
+import {
+  CUISINES,
+  CUISINE_NAMES,
+  EXPERIENCE_TYPES,
+  PLACE_TYPES,
+  experiencesQuery,
+} from '../data/categories';
 import { NominatimResult, OverpassResponse } from '../models/api-responses';
 import { City, NearbyPlace, Place } from '../models/place';
 import { distanceKm } from '../utils/geo';
@@ -9,6 +15,7 @@ import { distanceKm } from '../utils/geo';
 const OVERPASS_URL = 'https://overpass-api.de/api/interpreter';
 const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
 const RESTAURANT_RADIUS_KM = 5;
+const EXPERIENCE_RADIUS_KM = 8;
 const CACHE_DAY = 24 * 60 * 60 * 1000;
 
 @Injectable({ providedIn: 'root' })
@@ -41,6 +48,39 @@ export class PlacesService {
                 cuisine?.name ?? { en: 'Restaurant', pt: 'Restaurante' },
               icon: cuisine?.icon ?? 'restaurant',
             };
+          }),
+      ),
+    );
+  }
+
+  findExperiences(city: City, radiusKm: number, types: string[]): Observable<NearbyPlace[]> {
+    const radius = EXPERIENCE_RADIUS_KM * 1000;
+    const acceptedTags = EXPERIENCE_TYPES.filter((type) => types.includes(type.value)).flatMap(
+      (type) => type.tags,
+    );
+    const words = ['museums', 'parks', 'bars', 'theatres'];
+
+    return this.allNearby(
+      'experiences',
+      city,
+      experiencesQuery(radius, city.lat, city.lon),
+      words,
+    ).pipe(
+      map((places) =>
+        places
+          .map((place) => this.toNearbyPlace(place, city))
+          .filter((place) => place.distance <= radiusKm)
+          .map((place) => ({
+            place,
+            key: place.tags['tourism'] ?? place.tags['amenity'] ?? place.tags['leisure'] ?? '',
+          }))
+          .filter(({ key }) => acceptedTags.includes(key))
+          .map(({ place, key }) => {
+            const type = PLACE_TYPES[key] ?? {
+              name: { en: 'Experience', pt: 'Experiência' },
+              icon: 'explore',
+            };
+            return { ...place, category: type.name, icon: type.icon };
           }),
       ),
     );

@@ -1,1 +1,106 @@
-<p>experience works!</p>
+<div class="stack">
+  <app-page-hero
+    appPanel
+    [image]="heroImage"
+    [focus]="heroFocus"
+    alt="experiencePage.heroAlt"
+    eyebrow="experiencePage.eyebrow"
+    title="experiencePage.title"
+  >
+    <form class="filter-bar" [formGroup]="form" (ngSubmit)="draw()" novalidate>
+      <div class="field bar-field">
+        <label for="experience-city">{{ 'search.city' | translate }}</label>
+        <div class="field-with-button">
+          <input
+            id="experience-city"
+            type="text"
+            formControlName="city"
+            autocomplete="off"
+            aria-describedby="experience-city-error"
+          />
+          <button
+            type="button"
+            class="icon-button"
+            (click)="useLocation()"
+            [attr.aria-label]="'search.useLocation' | translate"
+            [title]="'search.useLocation' | translate"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">my_location</span>
+          </button>
+        </div>
+        <p class="error" id="experience-city-error">
+          @if (form.controls.city.touched && form.controls.city.hasError('required')) {
+            {{ 'search.cityRequired' | translate }}
+          } @else if (form.controls.city.touched && form.controls.city.hasError('minlength')) {
+            {{ 'search.cityShort' | translate }}
+          }
+        </p>
+      </div>
+
+      <div class="field bar-field">
+        <label for="experience-radius">{{ 'search.radius' | translate }}</label>
+        <select id="experience-radius" formControlName="radius">
+          @for (distance of distances; track distance) {
+            <option [ngValue]="distance">
+              {{ 'search.upTo' | translate }}
+              {{ distance | number: '1.0-1' : language.locale() }} km
+            </option>
+          }
+        </select>
+      </div>
+
+      <app-choice-selector
+        class="bar-field"
+        key="experience-types"
+        label="experiencePage.types"
+        [group]="form.controls.types"
+        [options]="types"
+        allText="experiencePage.allTypes"
+        errorMessage="experiencePage.typesError"
+      />
+
+      <div class="bar-action">
+        <button
+          class="button button-primary button-large"
+          type="submit"
+          [disabled]="form.invalid || status() === 'loading'"
+        >
+          {{ 'search.submit' | translate }}
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+        </button>
+      </div>
+    </form>
+    <p class="bar-note">{{ 'experiencePage.note' | translate }}</p>
+  </app-page-hero>
+
+  @if (status() !== 'idle') {
+    <section class="result-panel" appPanel #result aria-live="polite">
+      <div class="result-content">
+        @switch (status()) {
+          @case ('loading') {
+            <app-status-notice
+              status="loading"
+              [title]="loadingTitle()"
+              text="search.loadingText"
+            />
+          }
+          @case ('empty') {
+            <app-status-notice
+              status="empty"
+              title="experiencePage.emptyTitle"
+              text="experiencePage.emptyText"
+            />
+          }
+          @case ('error') {
+            <app-status-notice status="error" [title]="message().title" [text]="message().text" />
+          }
+          @case ('success') {
+            @if (suggestion(); as current) {
+              <app-suggestion-card [suggestion]="current" />
+            }
+          }
+        }
+      </div>
+    </section>
+  }
+</div>

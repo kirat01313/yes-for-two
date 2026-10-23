@@ -20,7 +20,7 @@ const ALL_LINKS: MenuLink[] = [
   { path: '/memories', label: 'nav.memories' },
 ];
 
-const IMAGE_PATHS = ['/'];
+const IMAGE_PATHS = ['/', '/restaurant', '/experience'];
 
 @Component({
   imports: [RouterLink, RouterLinkActive, TranslatePipe, AccountMenu],

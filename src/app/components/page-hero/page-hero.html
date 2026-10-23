@@ -1,0 +1,21 @@
+<section class="hero">
+  <div class="hero-background">
+    <img
+      class="hero-image"
+      [src]="image"
+      [alt]="alt | translate"
+      [style.object-position]="focus"
+      fetchpriority="high"
+    />
+    <div class="hero-shade" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-text">
+      <p class="eyebrow">{{ eyebrow | translate }}</p>
+      <h1>{{ title | translate }}</h1>
+    </div>
+
+    <ng-content />
+  </div>
+</section>
