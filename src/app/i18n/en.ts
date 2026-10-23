@@ -155,6 +155,9 @@ export const en = {
       },
     },
   },
+  places: {
+    walk: 'min walk',
+  },
 };
 
 export type Dictionary = typeof en;

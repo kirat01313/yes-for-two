@@ -158,4 +158,7 @@ export const pt: Dictionary = {
       },
     },
   },
+  places: {
+    walk: 'min a pé',
+  },
 };
