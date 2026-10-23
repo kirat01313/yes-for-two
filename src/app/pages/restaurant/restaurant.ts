@@ -1,11 +1,23 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, OnDestroy, inject, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Injector,
+  OnDestroy,
+  ViewChild,
+  afterNextRender,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription, map, switchMap } from 'rxjs';
+import { ChoiceSelector } from '../../components/choice-selector/choice-selector';
+import { PageHero } from '../../components/page-hero/page-hero';
 import { StatusNotice } from '../../components/status-notice/status-notice';
 import { SuggestionCard } from '../../components/suggestion-card/suggestion-card';
 import { CUISINES } from '../../data/categories';
 import { DINNER_PHRASES, PHRASES_FOR_TWO } from '../../data/phrases';
+import { PanelDirective } from '../../directives/panel.directive';
 import { Text } from '../../models/language';
 import { City, NearbyPlace } from '../../models/place';
 import { RequestStatus } from '../../models/program';
@@ -15,9 +27,19 @@ import { GeoService } from '../../services/geo.service';
 import { LanguageService } from '../../services/language.service';
 import { PlacesService } from '../../services/places.service';
 import { googleMapsLink, pickRandom } from '../../utils/geo';
+import { choiceGroup, selectedValues } from '../../utils/validators';
 
 @Component({
-  imports: [ReactiveFormsModule, DecimalPipe, TranslatePipe, StatusNotice, SuggestionCard],
+  imports: [
+    ReactiveFormsModule,
+    DecimalPipe,
+    TranslatePipe,
+    PageHero,
+    ChoiceSelector,
+    StatusNotice,
+    SuggestionCard,
+    PanelDirective,
+  ],
   selector: 'app-restaurant',
   styleUrl: './restaurant.css',
   templateUrl: './restaurant.html',
@@ -25,8 +47,14 @@ import { googleMapsLink, pickRandom } from '../../utils/geo';
 export class Restaurant implements OnDestroy {
   private readonly geo = inject(GeoService);
   private readonly places = inject(PlacesService);
+  private readonly injector = inject(Injector);
   readonly language = inject(LanguageService);
 
+  @ViewChild('result') result?: ElementRef<HTMLElement>;
+
+  readonly heroImage =
+    'https://images.pexels.com/photos/36129264/pexels-photo-36129264.jpeg?auto=compress&cs=tinysrgb&w=1920';
+  readonly cuisines = CUISINES;
   readonly distances = [0.5, 1, 2, 3, 5];
 
   readonly form = new FormGroup({
@@ -34,7 +62,11 @@ export class Restaurant implements OnDestroy {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(2)],
     }),
-    radius: new FormControl(2, { nonNullable: true, validators: [Validators.required] }),
+    radius: new FormControl(2, {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(0.5), Validators.max(5)],
+    }),
+    cuisines: choiceGroup(CUISINES.map((cuisine) => cuisine.value)),
   });
 
   readonly status = signal<RequestStatus>('idle');
@@ -44,6 +76,18 @@ export class Restaurant implements OnDestroy {
 
   private request?: Subscription;
 
+  useLocation(): void {
+    this.geo
+      .currentLocation()
+      .pipe(switchMap(({ lat, lon }) => this.geo.placeName(lat, lon)))
+      .subscribe({
+        next: (name) => {
+          if (name) this.form.controls.city.setValue(name);
+        },
+        error: () => this.form.controls.city.markAsTouched(),
+      });
+  }
+
   draw(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -51,10 +95,11 @@ export class Restaurant implements OnDestroy {
     }
 
     const { city, radius } = this.form.getRawValue();
-    const cuisines = CUISINES.map((cuisine) => cuisine.value);
+    const cuisines = selectedValues(this.form.controls.cuisines);
 
     this.searchedCity.set(city);
     this.status.set('loading');
+    this.showResult();
     this.request?.unsubscribe();
 
     this.request = this.geo
@@ -81,9 +126,9 @@ export class Restaurant implements OnDestroy {
             error.message === 'city-not-found'
               ? {
                   title: { en: `We couldn't find “${city}”.`, pt: `Não encontrámos «${city}».` },
-                  text: 'restaurantPage.notFoundText',
+                  text: 'search.notFoundText',
                 }
-              : { title: 'restaurantPage.errorTitle', text: 'restaurantPage.errorText' },
+              : { title: 'search.errorTitle', text: 'search.errorText' },
           );
           this.status.set('error');
         },
@@ -100,6 +145,12 @@ export class Restaurant implements OnDestroy {
 
   ngOnDestroy(): void {
     this.request?.unsubscribe();
+  }
+
+  private showResult(): void {
+    afterNextRender(() => this.result?.nativeElement.scrollIntoView({ behavior: 'smooth' }), {
+      injector: this.injector,
+    });
   }
 
   private toSuggestion(restaurant: NearbyPlace, city: City): Suggestion {
