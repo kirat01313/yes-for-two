@@ -2,7 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
-import { Memory, NewMemory } from '../models/memory';
+import { Memory, MemoryFormData, NewMemory } from '../models/memory';
+import { PROGRAMS } from '../models/program';
 import { Suggestion } from '../models/suggestion';
 import { SUPABASE_REST_URL } from '../supabase';
 import { todayIso } from '../utils/validators';
@@ -36,6 +37,42 @@ export class MemoriesService {
     return this.http
       .patch<Memory[]>(this.url, changes, { params: { id: `eq.${id}` }, headers: this.returnRow })
       .pipe(map(([row]) => row));
+  }
+
+  addManual(data: MemoryFormData): Observable<Memory> {
+    return this.add({
+      type: data.type,
+      name: data.name.trim(),
+      category: this.language.translate(`nav.${data.type}`),
+      place: data.location.name,
+      nights: null,
+      price: null,
+      icon: this.iconOf(data.type),
+      image: null,
+      lat: data.location.lat,
+      lon: data.location.lon,
+      date: data.date,
+      went: true,
+      note: data.note.trim(),
+      origin: 'manual',
+    });
+  }
+
+  edit(memory: Memory, data: MemoryFormData): Observable<Memory> {
+    const changes: Partial<Memory> = {
+      name: data.name.trim(),
+      type: data.type,
+      place: data.location.name,
+      lat: data.location.lat,
+      lon: data.location.lon,
+      date: data.date,
+      note: data.note.trim(),
+    };
+    if (data.type !== memory.type) {
+      changes.category = this.language.translate(`nav.${data.type}`);
+      changes.icon = this.iconOf(data.type);
+    }
+    return this.update(memory.id, changes);
   }
 
   delete(id: number): Observable<void> {
@@ -87,6 +124,10 @@ export class MemoriesService {
       suggestion = null;
     }
     return suggestion ? this.saveSuggestion(suggestion) : of(null);
+  }
+
+  private iconOf(type: Memory['type']): string {
+    return PROGRAMS.find((program) => program.value === type)!.icon;
   }
 
   private saveLater(suggestion: Suggestion): void {
