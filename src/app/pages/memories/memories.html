@@ -77,34 +77,12 @@
               [id]="'memory-' + memory.id"
               [class.highlighted]="highlighted() === memory.id"
             >
-              <div class="memory-image">
-                @if (memory.image) {
-                  <img [src]="memory.image" alt="" loading="lazy" />
-                } @else {
-                  <span class="material-symbols-outlined" aria-hidden="true">{{
-                    memory.icon
-                  }}</span>
-                }
-              </div>
-
-              <div class="memory-text">
-                <p class="memory-type">
-                  {{ memory.category }} · {{ memory.place }}
-                  @if (memory.went) {
-                    <span class="went">· {{ 'memoriesPage.went' | translate }}</span>
-                  }
-                </p>
-                <h2>{{ memory.name }}</h2>
-                <p class="memory-date">
-                  {{ 'memoriesPage.saidYes' | translate }}
-                  <span class="yes">{{ 'memoriesPage.yes' | translate }}</span>
-                  {{ 'memoriesPage.on' | translate }}
-                  {{ memory.date | date: 'longDate' : '' : language.locale() }}
-                </p>
-                @if (memory.note) {
-                  <p class="memory-note">{{ memory.note }}</p>
-                }
-              </div>
+              <app-memory-card
+                [memory]="memory"
+                [saving]="savingId() === memory.id"
+                (wentThere)="markAsWent($event)"
+                (saveNote)="saveNote($event)"
+              />
             </li>
           }
         </ul>

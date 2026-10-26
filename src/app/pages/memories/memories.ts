@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import {
   Component,
   Injector,
@@ -11,11 +10,11 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { MemoryCard } from '../../components/memory-card/memory-card';
 import { StatusNotice } from '../../components/status-notice/status-notice';
 import { Memory } from '../../models/memory';
 import { PROGRAMS, ProgramType, RequestStatus } from '../../models/program';
 import { TranslatePipe } from '../../pipes/translate.pipe';
-import { LanguageService } from '../../services/language.service';
 import { MemoriesService } from '../../services/memories.service';
 
 interface Filter {
@@ -24,7 +23,7 @@ interface Filter {
 }
 
 @Component({
-  imports: [FormsModule, RouterLink, DatePipe, TranslatePipe, StatusNotice],
+  imports: [FormsModule, RouterLink, TranslatePipe, StatusNotice, MemoryCard],
   selector: 'app-memories',
   styleUrl: './memories.css',
   templateUrl: './memories.html',
@@ -32,7 +31,6 @@ interface Filter {
 export class Memories implements OnInit {
   private readonly memoriesService = inject(MemoriesService);
   private readonly injector = inject(Injector);
-  readonly language = inject(LanguageService);
 
   @Input() id?: string;
 
@@ -49,6 +47,7 @@ export class Memories implements OnInit {
   readonly filter = signal<ProgramType | ''>('');
   readonly search = signal('');
   readonly highlighted = signal<number | null>(null);
+  readonly savingId = signal<number | null>(null);
 
   readonly visible = computed(() => {
     const text = this.search().trim().toLowerCase();
@@ -78,6 +77,27 @@ export class Memories implements OnInit {
 
   chooseFilter(value: ProgramType | ''): void {
     this.filter.set(value);
+  }
+
+  markAsWent(memory: Memory): void {
+    this.update(memory.id, { went: true });
+  }
+
+  saveNote({ memory, note }: { memory: Memory; note: string }): void {
+    this.update(memory.id, { note });
+  }
+
+  private update(id: number, changes: Partial<Memory>): void {
+    this.savingId.set(id);
+    this.memoriesService.update(id, changes).subscribe({
+      next: (updated) => {
+        this.memories.update((memories) =>
+          memories.map((memory) => (memory.id === id ? updated : memory)),
+        );
+        this.savingId.set(null);
+      },
+      error: () => this.savingId.set(null),
+    });
   }
 
   private goTo(id: number): void {
