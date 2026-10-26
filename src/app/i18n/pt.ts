@@ -340,6 +340,7 @@ export const pt: Dictionary = {
     saveChanges: 'Guardar alterações',
     saving: 'A guardar…',
     close: 'Fechar',
+    findingImage: 'A procurar uma foto do sítio…',
   },
   places: {
     walk: 'min a pé',

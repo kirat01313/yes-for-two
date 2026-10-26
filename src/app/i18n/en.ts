@@ -336,6 +336,7 @@ export const en = {
     saveChanges: 'Save changes',
     saving: 'Saving…',
     close: 'Close',
+    findingImage: 'Looking for a photo of the place…',
   },
   places: {
     walk: 'min walk',

@@ -48,7 +48,7 @@ export class MemoriesService {
       nights: null,
       price: null,
       icon: this.iconOf(data.type),
-      image: null,
+      image: data.image ?? null,
       lat: data.location.lat,
       lon: data.location.lon,
       date: data.date,
@@ -68,6 +68,7 @@ export class MemoriesService {
       date: data.date,
       note: data.note.trim(),
     };
+    if (data.image !== undefined) changes.image = data.image;
     if (data.type !== memory.type) {
       changes.category = this.language.translate(`nav.${data.type}`);
       changes.icon = this.iconOf(data.type);

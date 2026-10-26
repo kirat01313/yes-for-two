@@ -1,11 +1,23 @@
-import { Component, EventEmitter, Input, OnChanges, Output, inject, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { Text } from '../../models/language';
 import { Memory, MemoryFormData } from '../../models/memory';
 import { FoundPlace } from '../../models/place';
 import { PROGRAMS, ProgramType } from '../../models/program';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { GeoService } from '../../services/geo.service';
+import { LanguageService } from '../../services/language.service';
+import { WikipediaService } from '../../services/wikipedia.service';
 import { notInFuture, todayIso } from '../../utils/validators';
 
 type ChosenLocation = MemoryFormData['location'];
@@ -19,8 +31,11 @@ const DEFAULT_IMAGE =
   styleUrl: './memory-form.css',
   templateUrl: './memory-form.html',
 })
-export class MemoryForm implements OnChanges {
+export class MemoryForm implements OnChanges, OnDestroy {
   private readonly geo = inject(GeoService);
+  private readonly wikipedia = inject(WikipediaService);
+  private readonly language = inject(LanguageService);
+  private imageRequest?: Subscription;
 
   @Input() memory: Memory | null = null;
   @Input() saving = false;
@@ -37,6 +52,8 @@ export class MemoryForm implements OnChanges {
   readonly searching = signal(false);
   readonly searched = signal(false);
   readonly locationLabel = signal('');
+  readonly foundImage = signal<string | null | undefined>(undefined);
+  readonly findingImage = signal(false);
 
   readonly form = new FormGroup({
     name: new FormControl('', {
@@ -62,6 +79,8 @@ export class MemoryForm implements OnChanges {
   });
 
   get image(): string {
+    const found = this.foundImage();
+    if (found !== undefined) return found ?? DEFAULT_IMAGE;
     return this.memory?.image ?? DEFAULT_IMAGE;
   }
 
@@ -73,6 +92,7 @@ export class MemoryForm implements OnChanges {
     const memory = this.memory;
     this.results.set([]);
     this.searched.set(false);
+    this.foundImage.set(undefined);
 
     if (!memory) {
       this.form.reset({
@@ -118,6 +138,7 @@ export class MemoryForm implements OnChanges {
     }
     this.results.set([]);
     this.searched.set(false);
+    this.findImage(place);
   }
 
   changeLocation(): void {
@@ -132,6 +153,28 @@ export class MemoryForm implements OnChanges {
       return;
     }
     const { name, type, location, date, note } = this.form.getRawValue();
-    this.save.emit({ name, type: type as ProgramType, location: location!, date, note });
+    this.save.emit({
+      name,
+      type: type as ProgramType,
+      location: location!,
+      date,
+      note,
+      image: this.foundImage(),
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.imageRequest?.unsubscribe();
+  }
+
+  private findImage(place: FoundPlace): void {
+    this.imageRequest?.unsubscribe();
+    this.findingImage.set(true);
+    this.imageRequest = this.wikipedia
+      .placeImage(place.name, place.city, place.lat, place.lon, this.language.lang())
+      .subscribe((image) => {
+        this.foundImage.set(image);
+        this.findingImage.set(false);
+      });
   }
 }

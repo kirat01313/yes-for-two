@@ -7,8 +7,14 @@
   <span class="material-symbols-outlined" aria-hidden="true">close</span>
 </button>
 
-<div class="form-image">
+<div class="form-image" [class.finding]="findingImage()">
   <img [src]="image" alt="" />
+  @if (findingImage()) {
+    <p class="image-status" role="status">
+      <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span>
+      {{ 'memoryForm.findingImage' | translate }}
+    </p>
+  }
 </div>
 
 <form class="form-body" [formGroup]="form" (ngSubmit)="submit()" novalidate>
