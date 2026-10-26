@@ -285,7 +285,8 @@ export const en = {
     emptyTitle: 'No memories yet.',
     emptyText: 'Every yes you say is kept here, ready to look back on.',
     firstYes: 'Say your first yes',
-    confirmDelete: 'Delete «{name}» from your memories? This cannot be undone.',
+    confirmDelete:
+      'Delete «{name}» from your memories? Its photos are deleted too. This cannot be undone.',
     deleteError: "We couldn't delete the memory. Try again in a moment.",
     addMemory: 'Add a memory',
     formLabel: 'Memory form',
@@ -360,6 +361,12 @@ export const en = {
     emptyTitle: 'The book is still empty.',
     emptyText: 'Say yes to a place or add a memory, and it will show here.',
     goToMemories: 'Go to Memories',
+    addPhotos: 'Add photos',
+    uploading: 'Sending photos…',
+    deletePhoto: 'Delete this photo',
+    confirmDeletePhoto: 'Delete this photo from the book?',
+    uploadError: "We couldn't send one of the photos. Try a JPEG or PNG photo under 5 MB.",
+    deletePhotoError: "We couldn't delete the photo. Try again in a moment.",
   },
   places: {
     walk: 'min walk',

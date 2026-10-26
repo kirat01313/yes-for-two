@@ -33,7 +33,17 @@
         <p class="intro">{{ 'galleryPage.intro' | translate }}</p>
       </header>
 
-      <app-memory-book [memories]="memories()" [photos]="photos()" />
+      @if (photoError()) {
+        <p class="error photo-error" role="alert">{{ photoError() | translate }}</p>
+      }
+
+      <app-memory-book
+        [memories]="memories()"
+        [photos]="photos()"
+        [uploadingId]="uploadingId()"
+        (addPhotos)="addPhotos($event)"
+        (deletePhoto)="deletePhoto($event)"
+      />
     }
   }
 </section>

@@ -9,13 +9,14 @@ import {
   signal,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { switchMap, tap } from 'rxjs';
+import { concatMap, from, switchMap, tap } from 'rxjs';
 import { MemoryBook } from '../../components/memory-book/memory-book';
 import { StatusNotice } from '../../components/status-notice/status-notice';
 import { Memory } from '../../models/memory';
 import { MemoryPhoto } from '../../models/photo';
 import { RequestStatus } from '../../models/program';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { LanguageService } from '../../services/language.service';
 import { MemoriesService } from '../../services/memories.service';
 import { PhotosService } from '../../services/photos.service';
 
@@ -29,6 +30,7 @@ export class Gallery implements OnInit {
   private readonly memoriesService = inject(MemoriesService);
   private readonly photosService = inject(PhotosService);
   private readonly injector = inject(Injector);
+  private readonly language = inject(LanguageService);
 
   @Input() id?: string;
 
@@ -37,6 +39,8 @@ export class Gallery implements OnInit {
   readonly status = signal<RequestStatus>('loading');
   readonly memories = signal<Memory[]>([]);
   readonly photos = signal<Record<number, MemoryPhoto[]>>({});
+  readonly uploadingId = signal<number | null>(null);
+  readonly photoError = signal('');
 
   ngOnInit(): void {
     this.memoriesService
@@ -55,6 +59,40 @@ export class Gallery implements OnInit {
           if (this.status() === 'loading') this.status.set('error');
         },
       });
+  }
+
+  addPhotos({ memory, files }: { memory: Memory; files: File[] }): void {
+    this.uploadingId.set(memory.id);
+    this.photoError.set('');
+
+    from(files)
+      .pipe(concatMap((file) => this.photosService.add(memory.id, file)))
+      .subscribe({
+        next: (photo) =>
+          this.photos.update((photos) => ({
+            ...photos,
+            [memory.id]: [...(photos[memory.id] ?? []), photo],
+          })),
+        error: () => {
+          this.uploadingId.set(null);
+          this.photoError.set('galleryPage.uploadError');
+        },
+        complete: () => this.uploadingId.set(null),
+      });
+  }
+
+  deletePhoto(photo: MemoryPhoto): void {
+    if (!confirm(this.language.translate('galleryPage.confirmDeletePhoto'))) return;
+
+    this.photoError.set('');
+    this.photosService.delete(photo).subscribe({
+      next: () =>
+        this.photos.update((photos) => ({
+          ...photos,
+          [photo.memoryId]: (photos[photo.memoryId] ?? []).filter((item) => item.id !== photo.id),
+        })),
+      error: () => this.photoError.set('galleryPage.deletePhotoError'),
+    });
   }
 
   private goTo(id: number): void {

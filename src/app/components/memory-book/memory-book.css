@@ -198,6 +198,37 @@
   background: rgba(236, 224, 212, 0.85);
 }
 
+.delete-photo {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--pill);
+  background: rgba(255, 253, 248, 0.92);
+  color: var(--text-2);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.delete-photo .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.polaroid:hover .delete-photo,
+.delete-photo:focus-visible {
+  opacity: 1;
+}
+
+.delete-photo:hover {
+  color: var(--error);
+}
+
 .empty-collage {
   display: grid;
   grid-column: 1 / -1;
@@ -270,6 +301,46 @@
 .polaroid.small {
   width: 92px;
   padding: 5px 5px 18px;
+}
+
+.story-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.add-photos {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--primary);
+  border-radius: var(--pill);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.add-photos:hover {
+  background: var(--terracotta-light);
+}
+
+.add-photos:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.add-photos.uploading {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+@media (hover: none) {
+  .delete-photo {
+    opacity: 1;
+  }
 }
 
 .page-number {

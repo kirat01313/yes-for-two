@@ -102,10 +102,20 @@
 
 <ng-template #leftPage let-memory let-number="number">
   <div class="collage" [attr.data-count]="collage(memory).length">
-    @for (url of collage(memory); track url; let i = $index) {
+    @for (item of collage(memory); track item.url; let i = $index) {
       <figure class="polaroid" [style.--tilt]="tilt(i)">
         <span class="tape" aria-hidden="true"></span>
-        <img [src]="url" [alt]="memory.name" loading="lazy" />
+        <img [src]="item.url" [alt]="memory.name" loading="lazy" />
+        @if (item.photo; as photo) {
+          <button
+            type="button"
+            class="delete-photo"
+            [attr.aria-label]="'galleryPage.deletePhoto' | translate"
+            (click)="deletePhoto.emit(photo)"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+          </button>
+        }
       </figure>
     } @empty {
       <div class="empty-collage">
@@ -129,17 +139,44 @@
 
     @if (extraPhotos(memory).length) {
       <div class="extra-photos">
-        @for (url of extraPhotos(memory); track url; let i = $index) {
+        @for (item of extraPhotos(memory); track item.url; let i = $index) {
           <figure class="polaroid small" [style.--tilt]="tilt(i + 3)">
-            <img [src]="url" [alt]="memory.name" loading="lazy" />
+            <img [src]="item.url" [alt]="memory.name" loading="lazy" />
+            @if (item.photo; as photo) {
+              <button
+                type="button"
+                class="delete-photo"
+                [attr.aria-label]="'galleryPage.deletePhoto' | translate"
+                (click)="deletePhoto.emit(photo)"
+              >
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+              </button>
+            }
           </figure>
         }
       </div>
     }
 
-    <a class="text-button" routerLink="/memories" [queryParams]="{ id: memory.id }">
-      {{ 'galleryPage.seeInMemories' | translate }}
-    </a>
+    <div class="story-actions">
+      <label class="add-photos" [class.uploading]="uploadingId === memory.id">
+        <span class="material-symbols-outlined" aria-hidden="true">add_a_photo</span>
+        {{
+          (uploadingId === memory.id ? 'galleryPage.uploading' : 'galleryPage.addPhotos')
+            | translate
+        }}
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          multiple
+          class="visually-hidden"
+          [disabled]="uploadingId !== null"
+          (change)="chooseFiles(memory, $event)"
+        />
+      </label>
+      <a class="text-button" routerLink="/memories" [queryParams]="{ id: memory.id }">
+        {{ 'galleryPage.seeInMemories' | translate }}
+      </a>
+    </div>
   </div>
   <span class="page-number">{{ number }}</span>
 </ng-template>

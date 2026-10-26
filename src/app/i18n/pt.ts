@@ -289,7 +289,8 @@ export const pt: Dictionary = {
     emptyTitle: 'Ainda não há memórias.',
     emptyText: 'Cada sim que disserem fica guardado aqui, para recordarem depois.',
     firstYes: 'Digam o primeiro sim',
-    confirmDelete: 'Apagar «{name}» das vossas memórias? Não dá para desfazer.',
+    confirmDelete:
+      'Apagar «{name}» das vossas memórias? As fotos desta memória também são apagadas. Não dá para desfazer.',
     deleteError: 'Não foi possível apagar a memória. Tentem outra vez daqui a pouco.',
     addMemory: 'Adicionar memória',
     formLabel: 'Formulário da memória',
@@ -364,6 +365,13 @@ export const pt: Dictionary = {
     emptyTitle: 'O livro ainda está vazio.',
     emptyText: 'Digam sim a um lugar ou adicionem uma memória, e ela aparece aqui.',
     goToMemories: 'Ir para as Memórias',
+    addPhotos: 'Adicionar fotos',
+    uploading: 'A enviar fotos…',
+    deletePhoto: 'Apagar esta foto',
+    confirmDeletePhoto: 'Apagar esta foto do livro?',
+    uploadError:
+      'Não foi possível enviar uma das fotos. Experimentem uma foto JPEG ou PNG com menos de 5 MB.',
+    deletePhotoError: 'Não foi possível apagar a foto. Tentem outra vez daqui a pouco.',
   },
   places: {
     walk: 'min a pé',

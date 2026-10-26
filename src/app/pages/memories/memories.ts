@@ -170,17 +170,20 @@ export class Memories implements OnInit {
 
     this.savingId.set(memory.id);
     this.listError.set('');
-    this.memoriesService.delete(memory.id).subscribe({
-      next: () => {
-        this.memories.update((memories) => memories.filter((item) => item.id !== memory.id));
-        this.savingId.set(null);
-        if (!this.memories().length) this.status.set('empty');
-      },
-      error: () => {
-        this.savingId.set(null);
-        this.listError.set('memoriesPage.deleteError');
-      },
-    });
+    this.photosService
+      .deleteFromMemory(memory.id)
+      .pipe(switchMap(() => this.memoriesService.delete(memory.id)))
+      .subscribe({
+        next: () => {
+          this.memories.update((memories) => memories.filter((item) => item.id !== memory.id));
+          this.savingId.set(null);
+          if (!this.memories().length) this.status.set('empty');
+        },
+        error: () => {
+          this.savingId.set(null);
+          this.listError.set('memoriesPage.deleteError');
+        },
+      });
   }
 
   private update(id: number, changes: Partial<Memory>): void {

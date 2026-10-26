@@ -3,8 +3,10 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  EventEmitter,
   Injector,
   Input,
+  Output,
   ViewChild,
   afterNextRender,
   computed,
@@ -21,6 +23,11 @@ import { scrollToStep, stagePosition } from '../../utils/scroll';
 const SCREENS_PER_PAGE = 0.8;
 const COLLAGE_SIZE = 4;
 const TILTS = [-4, 3, -2, 5, -3, 2];
+
+interface CollagePhoto {
+  url: string;
+  photo: MemoryPhoto | null;
+}
 
 @Component({
   imports: [DatePipe, NgTemplateOutlet, RouterLink, TranslatePipe],
@@ -42,6 +49,10 @@ export class MemoryBook {
     this.updateAfterRender();
   }
   @Input() photos: Record<number, MemoryPhoto[]> = {};
+  @Input() uploadingId: number | null = null;
+
+  @Output() addPhotos = new EventEmitter<{ memory: Memory; files: File[] }>();
+  @Output() deletePhoto = new EventEmitter<MemoryPhoto>();
 
   @ViewChild('stage') stage?: ElementRef<HTMLElement>;
 
@@ -77,12 +88,19 @@ export class MemoryBook {
     });
   }
 
-  collage(memory: Memory): string[] {
+  collage(memory: Memory): CollagePhoto[] {
     return this.allPhotos(memory).slice(0, COLLAGE_SIZE);
   }
 
-  extraPhotos(memory: Memory): string[] {
+  extraPhotos(memory: Memory): CollagePhoto[] {
     return this.allPhotos(memory).slice(COLLAGE_SIZE, COLLAGE_SIZE + 2);
+  }
+
+  chooseFiles(memory: Memory, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = Array.from(input.files ?? []);
+    if (files.length) this.addPhotos.emit({ memory, files });
+    input.value = '';
   }
 
   tilt(index: number): string {
@@ -132,9 +150,9 @@ export class MemoryBook {
     if (stage) scrollToStep(stage, index, SCREENS_PER_PAGE, behavior);
   }
 
-  private allPhotos(memory: Memory): string[] {
-    const own = (this.photos[memory.id] ?? []).map((photo) => photo.url);
-    return memory.image ? [memory.image, ...own] : own;
+  private allPhotos(memory: Memory): CollagePhoto[] {
+    const own = (this.photos[memory.id] ?? []).map((photo) => ({ url: photo.url, photo }));
+    return memory.image ? [{ url: memory.image, photo: null }, ...own] : own;
   }
 
   private onScroll = (): void => {
