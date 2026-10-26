@@ -170,6 +170,23 @@
   outline-offset: 4px;
 }
 
+.delete-memory {
+  justify-self: start;
+  margin-top: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.8rem;
+  color: var(--text-3);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.delete-memory:hover {
+  color: var(--error);
+}
+
 .photo-count {
   font-size: 0.75rem;
   letter-spacing: 0.12em;
@@ -207,24 +224,16 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 0.25rem 1rem;
   margin-top: 0.85rem;
 }
 
 .plaque-text {
-  font-size: 0.92rem;
-  color: var(--text-2);
-}
-
-.plaque-number {
-  margin-right: 0.35rem;
-  font-size: 0.75rem;
-  color: var(--text-3);
-}
-
-.plaque-text em {
+  flex: 1;
   font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-style: italic;
   color: var(--text);
 }
 

@@ -116,6 +116,30 @@ export class Gallery implements OnInit {
     });
   }
 
+  async deleteMemory(memory: Memory): Promise<void> {
+    const question = this.language
+      .translate('memoriesPage.confirmDelete')
+      .replace('{name}', memory.name);
+    if (!(await this.confirm.ask(question))) return;
+
+    this.photoError.set('');
+    this.photosService
+      .deleteFromMemory(memory.id)
+      .pipe(switchMap(() => this.memoriesService.delete(memory.id)))
+      .subscribe({
+        next: () => {
+          this.memories.update((memories) => memories.filter((item) => item.id !== memory.id));
+          this.photos.update((photos) => {
+            const rest = { ...photos };
+            delete rest[memory.id];
+            return rest;
+          });
+          if (!this.memories().length) this.status.set('empty');
+        },
+        error: () => this.photoError.set('memoriesPage.deleteError'),
+      });
+  }
+
   private replacePhoto(photo: MemoryPhoto): void {
     this.photos.update((photos) => ({
       ...photos,

@@ -351,7 +351,6 @@ export const en = {
     indexLabel: 'Works in the exhibition',
     wallLabel: 'Your photos of this memory',
     photos: 'photos',
-    untitled: 'Untitled',
     noPhotos: 'Your photos of this place will hang here.',
     seeInMemories: 'See it in Memories',
     seeOnMaps: 'See on Google Maps',
@@ -375,6 +374,7 @@ export const en = {
     cancel: 'Cancel',
     tooMany: 'Each memory holds up to 20 photos. We sent the ones that fit.',
     captionError: "We couldn't save the note. Try again in a moment.",
+    deleteMemory: 'Delete this memory',
   },
   confirm: {
     title: 'Delete it?',

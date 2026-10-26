@@ -356,7 +356,6 @@ export const pt: Dictionary = {
     indexLabel: 'Obras da exposição',
     wallLabel: 'As vossas fotos desta memória',
     photos: 'fotos',
-    untitled: 'Sem título',
     noPhotos: 'As vossas fotos deste sítio vão ficar penduradas aqui.',
     seeInMemories: 'Ver nas Memórias',
     seeOnMaps: 'Ver no Google Maps',
@@ -381,6 +380,7 @@ export const pt: Dictionary = {
     cancel: 'Cancelar',
     tooMany: 'Cada memória leva até 20 fotos. Enviámos as que cabiam.',
     captionError: 'Não foi possível guardar a nota. Tentem outra vez daqui a pouco.',
+    deleteMemory: 'Apagar esta memória',
   },
   confirm: {
     title: 'Apagar mesmo?',
