@@ -387,6 +387,11 @@ export const en = {
     hintEnd: '.',
     recentLabel: 'Your latest yeses',
     latest: 'Your latest yes',
+    emptyStart: 'No memories yet. Say',
+    emptyEnd: ' to a suggestion and it shows up here.',
+    startDinner: 'Start with dinner',
+    addPlace: 'Add a place you have been',
+    pinLabel: '{name}: see it in the album',
   },
   places: {
     walk: 'min walk',

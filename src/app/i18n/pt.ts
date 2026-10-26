@@ -392,6 +392,11 @@ export const pt: Dictionary = {
     hintEnd: ' mais recente.',
     recentLabel: 'Os vossos sins mais recentes',
     latest: 'O sim mais recente',
+    emptyStart: 'Ainda não há memórias. Digam',
+    emptyEnd: ' a uma sugestão e ela aparece aqui.',
+    startDinner: 'Começar pelo jantar',
+    addPlace: 'Juntar um sítio onde já foram',
+    pinLabel: '{name}: ver no álbum',
   },
   places: {
     walk: 'min a pé',

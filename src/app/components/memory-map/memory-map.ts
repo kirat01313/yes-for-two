@@ -15,7 +15,14 @@ import {
 } from '@angular/core';
 import type { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import type { Feature, FeatureCollection } from 'geojson';
-import { GeoJSONSource, Map as MapLibreMap, NavigationControl, setWorkerUrl } from 'maplibre-gl';
+import { RouterLink } from '@angular/router';
+import {
+  GeoJSONSource,
+  Map as MapLibreMap,
+  Marker,
+  NavigationControl,
+  setWorkerUrl,
+} from 'maplibre-gl';
 import { LAND_DOTS } from '../../data/land-dots';
 import { Memory } from '../../models/memory';
 import { TranslatePipe } from '../../pipes/translate.pipe';
@@ -43,7 +50,7 @@ interface Camera {
 }
 
 @Component({
-  imports: [DatePipe, TranslatePipe],
+  imports: [DatePipe, RouterLink, TranslatePipe],
   selector: 'app-memory-map',
   styleUrl: './memory-map.css',
   templateUrl: './memory-map.html',
@@ -52,7 +59,9 @@ export class MemoryMap implements AfterViewInit, OnChanges, OnDestroy {
   readonly language = inject(LanguageService);
 
   @Input({ required: true }) memories: Memory[] = [];
+  @Input() covers: Record<number, string> = {};
   @Output() select = new EventEmitter<number>();
+  @Output() add = new EventEmitter<void>();
 
   @ViewChild('section') section!: ElementRef<HTMLElement>;
   @ViewChild('map') mapElement!: ElementRef<HTMLDivElement>;
@@ -66,6 +75,8 @@ export class MemoryMap implements AfterViewInit, OnChanges, OnDestroy {
 
   private map?: MapLibreMap;
   private loaded = false;
+  private pins: Marker[] = [];
+  private highlight?: Marker;
   private target: Camera | null = null;
   private lastProgress = -1;
   private frame = 0;
@@ -215,8 +226,72 @@ export class MemoryMap implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   private drawMemories(): void {
-    (this.map?.getSource('yeses') as GeoJSONSource | undefined)?.setData(this.yesPoints());
-    (this.map?.getSource('route') as GeoJSONSource | undefined)?.setData(this.route());
+    const map = this.map;
+    if (!map) return;
+    (map.getSource('yeses') as GeoJSONSource | undefined)?.setData(this.yesPoints());
+    (map.getSource('route') as GeoJSONSource | undefined)?.setData(this.route());
+
+    this.pins.forEach((pin) => pin.remove());
+    this.pins = this.memories.map((memory) =>
+      new Marker({ element: this.createPin(memory), anchor: 'top', offset: [0, -29] })
+        .setLngLat([memory.lon, memory.lat])
+        .addTo(map),
+    );
+
+    this.highlight?.remove();
+    const latest = this.latest;
+    this.highlight = latest
+      ? new Marker({ element: this.createHighlight(latest), anchor: 'center' })
+          .setLngLat([latest.lon, latest.lat])
+          .addTo(map)
+      : undefined;
+  }
+
+  private createHighlight(memory: Memory): HTMLElement {
+    const highlight = document.createElement('div');
+    highlight.className = 'highlight';
+    const ring = document.createElement('span');
+    ring.className = 'ring';
+    const name = document.createElement('span');
+    name.className = 'highlight-name';
+    name.textContent = memory.name;
+    highlight.append(ring, name);
+    return highlight;
+  }
+
+  private createPin(memory: Memory): HTMLElement {
+    const pin = document.createElement('button');
+    pin.type = 'button';
+    pin.className = `pin ${memory.went ? 'pin-went' : 'pin-yes'}`;
+    pin.setAttribute(
+      'aria-label',
+      this.language.translate('memoryMap.pinLabel').replace('{name}', memory.name),
+    );
+
+    const photo = document.createElement('span');
+    photo.className = 'pin-photo';
+    const icon = document.createElement('span');
+    icon.className = 'material-symbols-outlined';
+    icon.textContent = memory.icon;
+
+    const image = memory.image ?? this.covers[memory.id];
+    if (image) {
+      const img = document.createElement('img');
+      img.src = image;
+      img.alt = '';
+      img.addEventListener('error', () => img.replaceWith(icon));
+      photo.append(img);
+    } else {
+      photo.append(icon);
+    }
+
+    const name = document.createElement('span');
+    name.className = 'pin-name';
+    name.textContent = memory.name;
+
+    pin.append(photo, name);
+    pin.addEventListener('click', () => this.select.emit(memory.id));
+    return pin;
   }
 
   private worldZoom(): number {
@@ -277,6 +352,10 @@ export class MemoryMap implements AfterViewInit, OnChanges, OnDestroy {
       right: 0,
     };
     this.map.jumpTo({ center: [lon, lat], zoom, padding });
+
+    const element = this.mapElement.nativeElement;
+    element.classList.toggle('with-pins', zoom > 9);
+    element.classList.toggle('with-highlight', zoom < 7);
   }
 
   private onScroll = (): void => {

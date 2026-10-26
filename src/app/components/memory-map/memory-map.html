@@ -1,16 +1,32 @@
-<section class="map-section" #section [class.still]="reduceMotion">
+<section class="map-section" #section [class.still]="reduceMotion" [class.empty]="!memories.length">
   <div class="screen">
     <div #map class="map" role="region" [attr.aria-label]="'memoryMap.label' | translate"></div>
 
-    <div class="top" [style.opacity]="titleOpacity()">
+    <div class="top" [style.opacity]="memories.length ? titleOpacity() : 1">
       <div class="title">
         <p class="eyebrow">{{ 'memoryMap.eyebrow' | translate }}</p>
         <h1>{{ 'memoryMap.title' | translate }}</h1>
-        <p>
-          {{ 'memoryMap.hintStart' | translate }}
-          <span class="yes">{{ 'app.yes' | translate }}</span
-          >{{ 'memoryMap.hintEnd' | translate }}
-        </p>
+        @if (memories.length) {
+          <p>
+            {{ 'memoryMap.hintStart' | translate }}
+            <span class="yes">{{ 'app.yes' | translate }}</span
+            >{{ 'memoryMap.hintEnd' | translate }}
+          </p>
+        } @else {
+          <p>
+            {{ 'memoryMap.emptyStart' | translate }}
+            <span class="yes">{{ 'app.yes' | translate }}</span
+            >{{ 'memoryMap.emptyEnd' | translate }}
+          </p>
+          <div class="empty-actions">
+            <a class="button button-primary" routerLink="/restaurant">
+              {{ 'memoryMap.startDinner' | translate }}
+            </a>
+            <button type="button" class="button button-outline" (click)="add.emit()">
+              {{ 'memoryMap.addPlace' | translate }}
+            </button>
+          </div>
+        }
       </div>
 
       <ol class="recent" [attr.aria-label]="'memoryMap.recentLabel' | translate">

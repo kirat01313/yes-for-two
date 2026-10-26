@@ -90,6 +90,14 @@ export class Memories implements OnInit {
       );
   });
 
+  readonly covers = computed(() => {
+    const covers: Record<number, string> = {};
+    for (const [id, photos] of Object.entries(this.photos())) {
+      if (photos[0]) covers[Number(id)] = photos[0].url;
+    }
+    return covers;
+  });
+
   readonly wentCount = computed(() => this.memories().filter((memory) => memory.went).length);
 
   ngOnInit(): void {

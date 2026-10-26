@@ -3,7 +3,8 @@
 }
 
 app-memory-map {
-  margin: -3.5rem 0 4rem;
+  margin-top: -3.5rem;
+  margin-bottom: 4rem;
 }
 
 .album-top {
@@ -74,14 +75,6 @@ app-memory-map {
 .search input {
   height: 38px;
   font-size: 1rem;
-}
-
-.empty-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
 }
 
 .form-dialog {

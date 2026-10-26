@@ -10,6 +10,7 @@
   height: 260svh;
 }
 
+.map-section.empty,
 .map-section.still {
   height: 100vh;
   height: 100svh;
@@ -99,6 +100,14 @@
   font-variant-numeric: tabular-nums;
 }
 
+.empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  pointer-events: auto;
+}
+
 .coordinates,
 .arrival {
   position: absolute;
@@ -164,9 +173,143 @@
   }
 }
 
+.map ::ng-deep .highlight {
+  position: relative;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.map ::ng-deep .highlight > * {
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.map.with-highlight ::ng-deep .highlight > * {
+  opacity: 1;
+}
+
+.map ::ng-deep .ring {
+  position: absolute;
+  top: -13px;
+  left: -13px;
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid var(--primary);
+  border-radius: 50%;
+}
+
+.map.with-highlight ::ng-deep .ring {
+  animation: pulse 2.4s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+.map ::ng-deep .highlight-name {
+  position: absolute;
+  right: 18px;
+  bottom: 12px;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.map ::ng-deep .pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.map ::ng-deep .pin > * {
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.map.with-pins ::ng-deep .pin {
+  pointer-events: auto;
+}
+
+.map.with-pins ::ng-deep .pin > * {
+  opacity: 1;
+}
+
+.map ::ng-deep .pin-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  overflow: hidden;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  outline: 2.5px solid var(--primary);
+  background: var(--champagne);
+  color: var(--primary);
+  box-shadow: 0 6px 16px rgba(31, 25, 23, 0.25);
+  transition: transform 0.2s;
+}
+
+.map ::ng-deep .pin:hover .pin-photo,
+.map ::ng-deep .pin:focus-visible .pin-photo {
+  transform: scale(1.12);
+}
+
+.map ::ng-deep .pin-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.map ::ng-deep .pin-photo .material-symbols-outlined {
+  font-size: 26px;
+}
+
+.map ::ng-deep .pin-yes .pin-photo {
+  outline: 2px dashed var(--text-3);
+  background: #ffffff;
+  color: var(--text-3);
+}
+
+.map ::ng-deep .pin-name {
+  max-width: 130px;
+  margin-top: 6px;
+  padding: 3px 9px;
+  overflow: hidden;
+  border-radius: var(--pill);
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(31, 25, 23, 0.2);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.map ::ng-deep .maplibregl-ctrl-group {
+  border-radius: 0;
+  box-shadow: 0 6px 18px rgba(31, 25, 23, 0.18);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .scroll-down {
-    animation: none;
+  .scroll-down,
+  .map ::ng-deep .ring {
+    animation: none !important;
   }
 }
 
