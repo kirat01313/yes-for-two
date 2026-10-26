@@ -47,6 +47,12 @@ export function setAll(group: ChoiceGroup, checked: boolean): void {
   group.markAsTouched();
 }
 
+export function notInFuture(control: AbstractControl): ValidationErrors | null {
+  const value = control.value as string;
+  if (!value) return null;
+  return value > todayIso() ? { futureDate: true } : null;
+}
+
 export function todayIso(): string {
   const today = new Date();
   const twoDigits = (value: number) => String(value).padStart(2, '0');

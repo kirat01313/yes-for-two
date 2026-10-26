@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { PhotonResponse } from '../models/api-responses';
-import { City } from '../models/place';
+import { City, FoundPlace } from '../models/place';
 import { LanguageService } from './language.service';
 
 const PHOTON_URL = 'https://photon.komoot.io';
@@ -28,6 +28,33 @@ export class GeoService {
           const [lon, lat] = place.geometry.coordinates;
           return { name: place.properties.name ?? name, lat, lon };
         }),
+      );
+  }
+
+  findPlaces(text: string): Observable<FoundPlace[]> {
+    return this.http
+      .get<PhotonResponse>(`${PHOTON_URL}/api/`, {
+        params: { q: text, limit: 6, lang: this.photonLang() },
+      })
+      .pipe(
+        map((response) =>
+          response.features
+            .filter((feature) => feature.properties.name)
+            .map((feature) => {
+              const properties = feature.properties;
+              const name = properties.name!;
+              const city = properties.city ?? properties.town ?? properties.village ?? name;
+              const street = properties.street
+                ? `${properties.street}${properties.housenumber ? ' ' + properties.housenumber : ''}`
+                : '';
+              const description = [street, city, properties.country]
+                .filter((part) => part && part !== name)
+                .join(', ');
+              const [lon, lat] = feature.geometry.coordinates;
+              return { name, description, city, lat, lon };
+            }),
+        ),
+        catchError(() => of([])),
       );
   }
 
