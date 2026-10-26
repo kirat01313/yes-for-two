@@ -333,6 +333,10 @@ textarea {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
+.filter-bar-wide {
+  grid-template-columns: repeat(5, minmax(0, 1fr)) auto;
+}
+
 .bar-field {
   position: relative;
   padding: 1rem 1.5rem 0.6rem;
@@ -426,7 +430,8 @@ textarea {
 }
 
 @media (max-width: 1000px) {
-  .filter-bar {
+  .filter-bar,
+  .filter-bar-wide {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -445,7 +450,8 @@ textarea {
 }
 
 @media (max-width: 560px) {
-  .filter-bar {
+  .filter-bar,
+  .filter-bar-wide {
     grid-template-columns: minmax(0, 1fr);
   }
 
