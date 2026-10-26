@@ -23,4 +23,6 @@ export interface Suggestion {
   nights?: number;
   pricePerPerson?: number;
   forecast?: DayForecast[];
+  dates?: { from: string; to: string };
+  linkText?: Text;
 }

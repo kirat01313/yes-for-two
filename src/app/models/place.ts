@@ -28,3 +28,14 @@ export interface NearbyPlace extends Place {
   category: Text;
   icon: string;
 }
+
+export interface KnownPlace {
+  id: string;
+  name: string;
+  type: string;
+  icon: string;
+  image: string;
+  lat: number;
+  lon: number;
+  distance: number;
+}

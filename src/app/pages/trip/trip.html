@@ -1,1 +1,131 @@
-<p>trip works!</p>
+<div class="stack">
+  <app-page-hero
+    appPanel
+    [image]="heroImage"
+    alt="tripPage.heroAlt"
+    eyebrow="tripPage.eyebrow"
+    title="tripPage.title"
+  >
+    <form class="filter-bar filter-bar-wide" [formGroup]="form" (ngSubmit)="draw()" novalidate>
+      <div class="field bar-field">
+        <label for="trip-origin">{{ 'tripPage.from' | translate }}</label>
+        <div class="field-with-button">
+          <input
+            id="trip-origin"
+            type="text"
+            formControlName="origin"
+            list="trip-origin-options"
+            autocomplete="off"
+            aria-describedby="trip-origin-error"
+          />
+          <datalist id="trip-origin-options">
+            @for (option of originOptions(); track option.code) {
+              <option [value]="option.name">{{ option.country }}</option>
+            }
+          </datalist>
+          <button
+            type="button"
+            class="icon-button"
+            (click)="useNearestAirport()"
+            [attr.aria-label]="'tripPage.nearestAirport' | translate"
+            [title]="'tripPage.nearestAirport' | translate"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">my_location</span>
+          </button>
+        </div>
+        <p class="error" id="trip-origin-error">
+          @if (form.controls.origin.touched && form.controls.origin.hasError('required')) {
+            {{ 'tripPage.originRequired' | translate }}
+          }
+        </p>
+      </div>
+
+      <div class="field bar-field">
+        <label for="trip-budget">{{ 'tripPage.budget' | translate }}</label>
+        <select id="trip-budget" formControlName="budget">
+          @for (budget of budgets; track budget) {
+            <option [ngValue]="budget">
+              {{ 'tripPage.upTo' | translate }}
+              {{ budget | currency: 'EUR' : 'symbol' : '1.0-0' : language.locale() }}
+              {{ 'tripPage.perPerson' | translate }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="field bar-field">
+        <label for="trip-nights">{{ 'tripPage.nights' | translate }}</label>
+        <select id="trip-nights" formControlName="nights">
+          @for (range of nightRanges; track range.value) {
+            <option [ngValue]="range.value">
+              {{ range.min }}–{{ range.max }} {{ 'tripPage.nightsUnit' | translate }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <app-choice-selector
+        class="bar-field"
+        key="trip-types"
+        label="tripPage.types"
+        [group]="form.controls.types"
+        [options]="types"
+        allText="tripPage.allTypes"
+        errorMessage="tripPage.typesError"
+      />
+
+      <app-choice-selector
+        class="bar-field"
+        key="trip-regions"
+        label="tripPage.regions"
+        [group]="form.controls.regions"
+        [options]="regions"
+        allText="tripPage.allRegions"
+        errorMessage="tripPage.regionsError"
+      />
+
+      <div class="bar-action">
+        <button
+          class="button button-primary button-large"
+          type="submit"
+          [disabled]="form.invalid || status() === 'loading'"
+        >
+          {{ 'search.submit' | translate }}
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+        </button>
+      </div>
+    </form>
+    <p class="bar-note">{{ 'tripPage.note' | translate }}</p>
+  </app-page-hero>
+
+  @if (status() !== 'idle') {
+    <section class="result-panel" appPanel #result aria-live="polite">
+      <div class="result-content">
+        @switch (status()) {
+          @case ('loading') {
+            <app-status-notice
+              status="loading"
+              title="tripPage.loadingTitle"
+              text="tripPage.loadingText"
+            />
+          }
+          @case ('empty') {
+            <app-status-notice status="empty" [title]="message().title" [text]="message().text" />
+          }
+          @case ('error') {
+            <app-status-notice
+              status="error"
+              title="tripPage.errorTitle"
+              text="tripPage.errorText"
+            />
+          }
+          @case ('success') {
+            @if (suggestion(); as current) {
+              <app-suggestion-card [suggestion]="current" />
+            }
+          }
+        }
+      </div>
+    </section>
+  }
+</div>

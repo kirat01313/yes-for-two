@@ -35,6 +35,15 @@
           <dd>{{ suggestion.distanceKm | distance }}</dd>
         </div>
       }
+      @if (suggestion.dates; as dates) {
+        <div>
+          <dt>{{ 'card.when' | translate }}</dt>
+          <dd>
+            {{ dates.from | date: 'd MMM' : undefined : language.locale() }} –
+            {{ dates.to | date: 'd MMM' : undefined : language.locale() }}
+          </dd>
+        </div>
+      }
       @if (suggestion.pricePerPerson !== undefined) {
         <div>
           <dt>{{ suggestion.nights }} {{ 'card.nights' | translate }}</dt>
@@ -61,7 +70,7 @@
     }
 
     <a class="arrow-link" [href]="suggestion.mapUrl" target="_blank" rel="noopener">
-      {{ 'card.openMap' | translate }}
+      {{ suggestion.linkText ?? 'card.openMap' | translate }}
       <span class="material-symbols-outlined" aria-hidden="true">north_east</span>
     </a>
 
