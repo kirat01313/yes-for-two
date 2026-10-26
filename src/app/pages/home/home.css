@@ -147,7 +147,7 @@
   opacity: 1;
 }
 
-.programs {
+.nearby-panel {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -158,6 +158,19 @@
   margin-bottom: 25vh;
   padding: 4.5rem 0;
   background: var(--champagne);
+}
+
+.programs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100vw;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin-left: calc(50% - 50vw);
+  margin-bottom: 25vh;
+  padding: 4.5rem 0;
+  background: var(--porcelain);
 }
 
 .content {

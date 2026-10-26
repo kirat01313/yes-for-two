@@ -9,6 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Nearby } from '../../components/nearby/nearby';
 import { PanelDirective } from '../../directives/panel.directive';
 import { RevealDirective } from '../../directives/reveal.directive';
 import { ProgramType } from '../../models/program';
@@ -23,7 +24,7 @@ interface ProgramCard {
 }
 
 @Component({
-  imports: [RouterLink, TranslatePipe, RevealDirective, PanelDirective],
+  imports: [RouterLink, TranslatePipe, RevealDirective, PanelDirective, Nearby],
   selector: 'app-home',
   styleUrl: './home.css',
   templateUrl: './home.html',

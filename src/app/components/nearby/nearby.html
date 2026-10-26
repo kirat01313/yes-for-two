@@ -1,0 +1,76 @@
+<section class="nearby" aria-labelledby="nearby-title">
+  <div class="top">
+    <div>
+      <p class="eyebrow">{{ 'nearby.eyebrow' | translate }}</p>
+      <h2 id="nearby-title">
+        @if (status() === 'success') {
+          {{ (usedLocation() ? 'nearby.around' : 'nearby.in') | translate }} {{ placeName() }}
+        } @else {
+          {{ 'nearby.title' | translate }}
+        }
+      </h2>
+    </div>
+
+    @if (status() === 'success' && !usedLocation()) {
+      <button type="button" class="button button-soft button-small" (click)="load(true)">
+        <span class="material-symbols-outlined" aria-hidden="true">my_location</span>
+        {{ 'nearby.useLocation' | translate }}
+      </button>
+    }
+  </div>
+
+  @switch (status()) {
+    @case ('success') {
+      <div class="window">
+        <ul class="queue" [style.--duration]="duration()">
+          @for (place of repeatedQueue(); track $index; let i = $index) {
+            <li [attr.aria-hidden]="i >= highlights().length ? 'true' : null">
+              <a
+                class="card"
+                [href]="place.mapUrl"
+                target="_blank"
+                rel="noopener"
+                [attr.tabindex]="i >= highlights().length ? -1 : null"
+              >
+                <img [src]="place.image" [alt]="place.name" loading="lazy" />
+                <span class="distance">
+                  <strong>{{ shortDistance(place.distance) }}</strong>
+                  <small>km<br />{{ 'nearby.fromYou' | translate }}</small>
+                </span>
+                <span class="text">
+                  <small>{{ place.type }}</small>
+                  <strong>{{ place.name }}</strong>
+                  <span class="open">
+                    {{ 'nearby.openMap' | translate }}
+                    <span class="material-symbols-outlined" aria-hidden="true">north_east</span>
+                  </span>
+                </span>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+    @case ('empty') {
+      <p class="notice">{{ 'nearby.empty' | translate }}</p>
+    }
+    @case ('error') {
+      <p class="notice">
+        {{ 'nearby.error' | translate }}
+        <button type="button" class="button button-soft button-small" (click)="load(false)">
+          {{ 'nearby.retry' | translate }}
+        </button>
+      </p>
+    }
+    @default {
+      <div class="window">
+        <ul class="queue queue-still" aria-hidden="true">
+          @for (n of [1, 2, 3, 4, 5]; track n) {
+            <li><span class="card card-empty"></span></li>
+          }
+        </ul>
+      </div>
+      <p class="visually-hidden" role="status">{{ 'nearby.loading' | translate }}</p>
+    }
+  }
+</section>

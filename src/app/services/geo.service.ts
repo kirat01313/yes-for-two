@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 import { PhotonResponse } from '../models/api-responses';
 import { City } from '../models/place';
 import { LanguageService } from './language.service';
@@ -45,6 +45,36 @@ export class GeoService {
           );
         }),
       );
+  }
+
+  nearbyCentres(lat: number, lon: number): Observable<City[]> {
+    const params = new HttpParams({
+      fromObject: {
+        lat,
+        lon,
+        radius: 50,
+        limit: 6,
+        lang: this.photonLang(),
+        osm_tag: ['place:city', 'place:town'],
+      },
+    });
+
+    return this.http.get<PhotonResponse>(`${PHOTON_URL}/reverse`, { params }).pipe(
+      map((response) =>
+        response.features
+          .filter((feature) => feature.properties.name)
+          .sort(
+            (a, b) =>
+              Number(b.properties.osm_value === 'city') - Number(a.properties.osm_value === 'city'),
+          )
+          .map((feature) => ({
+            name: feature.properties.name!,
+            lon: feature.geometry.coordinates[0],
+            lat: feature.geometry.coordinates[1],
+          })),
+      ),
+      catchError(() => of([])),
+    );
   }
 
   currentLocation(): Observable<{ lat: number; lon: number }> {
