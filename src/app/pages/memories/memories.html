@@ -11,30 +11,24 @@
       />
     }
     @case ('empty') {
-      <app-status-notice
-        status="empty"
-        title="memoriesPage.emptyTitle"
-        text="memoriesPage.emptyText"
-      />
-      <div class="empty-actions">
-        <a class="button button-primary" routerLink="/restaurant">
-          {{ 'memoriesPage.firstYes' | translate }}
-        </a>
-        <button type="button" class="button button-outline" (click)="openForm()">
-          <span class="material-symbols-outlined" aria-hidden="true">add</span>
-          {{ 'memoriesPage.addMemory' | translate }}
-        </button>
-      </div>
+      <app-memory-map [memories]="[]" (add)="openForm()" />
     }
     @case ('success') {
+      <app-memory-map
+        [memories]="memories()"
+        [covers]="covers()"
+        (select)="showMemory($event)"
+        (add)="openForm()"
+      />
+
       <div class="album-top">
         <div>
           <p class="eyebrow">{{ 'memoriesPage.eyebrow' | translate }}</p>
-          <h1 id="memories-title">
+          <h2 id="memories-title">
             {{ 'memoriesPage.titleStart' | translate }}
             <span class="yes">{{ 'memoriesPage.titleYes' | translate }}</span
             >{{ 'memoriesPage.titleEnd' | translate }}
-          </h1>
+          </h2>
           <p class="counter">
             {{ wentCount() }}
             {{ (wentCount() === 1 ? 'memoriesPage.wentOne' : 'memoriesPage.wentMany') | translate }}

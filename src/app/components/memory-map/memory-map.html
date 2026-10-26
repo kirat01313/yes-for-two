@@ -1,0 +1,60 @@
+<section class="map-section" #section [class.still]="reduceMotion" [class.empty]="!memories.length">
+  <div class="screen">
+    <div #map class="map" role="region" [attr.aria-label]="'memoryMap.label' | translate"></div>
+
+    <div class="top" [style.opacity]="memories.length ? titleOpacity() : 1">
+      <div class="title">
+        <p class="eyebrow">{{ 'memoryMap.eyebrow' | translate }}</p>
+        <h1>{{ 'memoryMap.title' | translate }}</h1>
+        @if (memories.length) {
+          <p>
+            {{ 'memoryMap.hintStart' | translate }}
+            <span class="yes">{{ 'app.yes' | translate }}</span
+            >{{ 'memoryMap.hintEnd' | translate }}
+          </p>
+        } @else {
+          <p>
+            {{ 'memoryMap.emptyStart' | translate }}
+            <span class="yes">{{ 'app.yes' | translate }}</span
+            >{{ 'memoryMap.emptyEnd' | translate }}
+          </p>
+          <div class="empty-actions">
+            <a class="button button-primary" routerLink="/restaurant">
+              {{ 'memoryMap.startDinner' | translate }}
+            </a>
+            <button type="button" class="button button-outline" (click)="add.emit()">
+              {{ 'memoryMap.addPlace' | translate }}
+            </button>
+          </div>
+        }
+      </div>
+
+      <ol class="recent" [attr.aria-label]="'memoryMap.recentLabel' | translate">
+        @for (memory of recent; track memory.id; let first = $first) {
+          <li>
+            <button type="button" [class.latest]="first" (click)="select.emit(memory.id)">
+              <span class="recent-name">{{ memory.name }}</span>
+              <span class="recent-date">{{
+                memory.date | date: 'd MMM' : '' : language.locale()
+              }}</span>
+            </button>
+          </li>
+        }
+      </ol>
+    </div>
+
+    @if (latest; as memory) {
+      <p class="coordinates" [style.opacity]="titleOpacity()">{{ coordinates }}</p>
+
+      <div class="arrival" [style.opacity]="arrivalOpacity()">
+        <small>{{ 'memoryMap.latest' | translate }}</small>
+        <strong>{{ memory.name }}</strong>
+        <span>{{ memory.date | date: 'longDate' : '' : language.locale() }}</span>
+      </div>
+
+      <span class="scroll-down" aria-hidden="true" [style.opacity]="titleOpacity()">
+        <span class="material-symbols-outlined">keyboard_arrow_down</span>
+      </span>
+    }
+  </div>
+</section>

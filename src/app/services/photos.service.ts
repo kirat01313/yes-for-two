@@ -9,7 +9,11 @@ interface PhotoRow {
   id: number;
   memory_id: number;
   path: string;
+  caption: string;
 }
+
+export const MAX_PHOTOS = 20;
+export const MAX_CAPTION = 140;
 
 const BUCKET = 'photos';
 const URL_LIFETIME = 60 * 60;
@@ -27,7 +31,7 @@ export class PhotosService {
     return this.http
       .get<PhotoRow[]>(this.url, {
         params: {
-          select: 'id,memory_id,path',
+          select: 'id,memory_id,path,caption',
           memory_id: `in.(${memoryIds.join(',')})`,
           order: 'created_at',
         },
@@ -52,6 +56,7 @@ export class PhotosService {
                   memoryId: row.memory_id,
                   path: row.path,
                   url,
+                  caption: row.caption,
                 });
               });
               return byMemory;
@@ -81,11 +86,24 @@ export class PhotosService {
         from(this.bucket().createSignedUrl(path, URL_LIFETIME)).pipe(
           map(({ data, error }) => {
             if (error || !data) throw error ?? new Error('no-url');
-            return { id: row.id, memoryId, path, url: data.signedUrl };
+            return { id: row.id, memoryId, path, url: data.signedUrl, caption: '' };
           }),
         ),
       ),
     );
+  }
+
+  updateCaption(photo: MemoryPhoto, caption: string): Observable<MemoryPhoto> {
+    return this.http
+      .patch<PhotoRow[]>(
+        this.url,
+        { caption },
+        {
+          params: { id: `eq.${photo.id}` },
+          headers: new HttpHeaders({ Prefer: 'return=representation' }),
+        },
+      )
+      .pipe(map(([row]) => ({ ...photo, caption: row.caption })));
   }
 
   delete(photo: MemoryPhoto): Observable<void> {

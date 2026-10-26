@@ -102,21 +102,21 @@
 
 <ng-template #leftPage let-memory let-number="number">
   <div class="collage" [attr.data-count]="collage(memory).length">
-    @for (item of collage(memory); track item.url; let i = $index) {
-      <figure class="polaroid" [style.--tilt]="tilt(i)">
-        <span class="tape" aria-hidden="true"></span>
-        <img [src]="item.url" [alt]="memory.name" loading="lazy" />
-        @if (item.photo; as photo) {
-          <button
-            type="button"
-            class="delete-photo"
-            [attr.aria-label]="'galleryPage.deletePhoto' | translate"
-            (click)="deletePhoto.emit(photo)"
-          >
-            <span class="material-symbols-outlined" aria-hidden="true">close</span>
-          </button>
-        }
-      </figure>
+    @for (item of collage(memory); track $index; let i = $index) {
+      @if (item.kind === 'photo') {
+        <figure class="polaroid" [style.--tilt]="tilt(i)">
+          <span class="tape" aria-hidden="true"></span>
+          <img [src]="item.url" [alt]="memory.name" loading="lazy" />
+          @if (item.caption) {
+            <figcaption>{{ item.caption }}</figcaption>
+          }
+        </figure>
+      } @else {
+        <div class="note-card" [style.--tilt]="tilt(i)">
+          <span class="tape" aria-hidden="true"></span>
+          <p>{{ item.text }}</p>
+        </div>
+      }
     } @empty {
       <div class="empty-collage">
         <span class="material-symbols-outlined" aria-hidden="true">{{ memory.icon }}</span>
@@ -129,50 +129,122 @@
 
 <ng-template #rightPage let-memory let-number="number">
   <div class="story">
-    <p class="story-type">{{ memory.category }} · {{ memory.place }}</p>
-    <h2>{{ memory.name }}</h2>
-    <p class="story-date">{{ memory.date | date: 'longDate' : '' : language.locale() }}</p>
+    <header class="story-top">
+      <p class="story-type">{{ memory.category }} · {{ memory.place }}</p>
+      <h2>{{ memory.name }}</h2>
+      <p class="story-date">{{ memory.date | date: 'longDate' : '' : language.locale() }}</p>
+    </header>
 
-    <p class="hand-note" [class.empty]="!memory.note">
-      {{ memory.note || ('galleryPage.noNote' | translate) }}
-    </p>
+    @if (ownPhotos(memory).length) {
+      <div
+        class="carousel"
+        [attr.aria-label]="'galleryPage.carouselLabel' | translate"
+        role="group"
+      >
+        <div class="carousel-track" #track>
+          @for (photo of ownPhotos(memory); track photo.id; let i = $index) {
+            <figure class="slide">
+              <div class="slide-photo">
+                <img [src]="photo.url" [alt]="memory.name" loading="lazy" />
+                <button
+                  type="button"
+                  class="delete-photo"
+                  [attr.aria-label]="'galleryPage.deletePhoto' | translate"
+                  (click)="deletePhoto.emit(photo)"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                </button>
+                <span class="slide-count">{{ i + 1 }} / {{ ownPhotos(memory).length }}</span>
+              </div>
 
-    @if (extraPhotos(memory).length) {
-      <div class="extra-photos">
-        @for (item of extraPhotos(memory); track item.url; let i = $index) {
-          <figure class="polaroid small" [style.--tilt]="tilt(i + 3)">
-            <img [src]="item.url" [alt]="memory.name" loading="lazy" />
-            @if (item.photo; as photo) {
-              <button
-                type="button"
-                class="delete-photo"
-                [attr.aria-label]="'galleryPage.deletePhoto' | translate"
-                (click)="deletePhoto.emit(photo)"
-              >
-                <span class="material-symbols-outlined" aria-hidden="true">close</span>
-              </button>
-            }
-          </figure>
+              @if (editingPhotoId() === photo.id) {
+                <form
+                  class="caption-form"
+                  (submit)="$event.preventDefault(); submitCaption(photo, caption.value)"
+                >
+                  <label class="visually-hidden" [for]="'caption-' + photo.id">
+                    {{ 'galleryPage.captionLabel' | translate }}
+                  </label>
+                  <input
+                    #caption
+                    [id]="'caption-' + photo.id"
+                    type="text"
+                    autocomplete="off"
+                    [maxLength]="maxCaption"
+                    [value]="photo.caption"
+                    [placeholder]="'galleryPage.captionPlaceholder' | translate"
+                  />
+                  <button type="submit" class="text-button">
+                    {{ 'galleryPage.save' | translate }}
+                  </button>
+                  <button type="button" class="text-button muted" (click)="editCaption(null)">
+                    {{ 'galleryPage.cancel' | translate }}
+                  </button>
+                </form>
+              } @else {
+                <figcaption class="slide-caption">
+                  @if (photo.caption) {
+                    <span class="hand">{{ photo.caption }}</span>
+                  }
+                  <button
+                    type="button"
+                    class="text-button"
+                    [disabled]="savingCaptionId === photo.id"
+                    (click)="editCaption(photo)"
+                  >
+                    {{
+                      (photo.caption ? 'galleryPage.editCaption' : 'galleryPage.writeCaption')
+                        | translate
+                    }}
+                  </button>
+                </figcaption>
+              }
+            </figure>
+          }
+        </div>
+
+        @if (ownPhotos(memory).length > 1) {
+          <button
+            type="button"
+            class="carousel-arrow carousel-previous"
+            [attr.aria-label]="'galleryPage.previousPhoto' | translate"
+            (click)="slide(track, -1)"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
+          </button>
+          <button
+            type="button"
+            class="carousel-arrow carousel-next"
+            [attr.aria-label]="'galleryPage.nextPhoto' | translate"
+            (click)="slide(track, 1)"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+          </button>
         }
       </div>
+    } @else {
+      <p class="no-uploads">{{ 'galleryPage.noUploads' | translate }}</p>
     }
 
     <div class="story-actions">
-      <label class="add-photos" [class.uploading]="uploadingId === memory.id">
-        <span class="material-symbols-outlined" aria-hidden="true">add_a_photo</span>
-        {{
-          (uploadingId === memory.id ? 'galleryPage.uploading' : 'galleryPage.addPhotos')
-            | translate
-        }}
-        <input
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          multiple
-          class="visually-hidden"
-          [disabled]="uploadingId !== null"
-          (change)="chooseFiles(memory, $event)"
-        />
-      </label>
+      @if (canAddPhotos(memory)) {
+        <label class="add-photos" [class.uploading]="uploadingId === memory.id">
+          <span class="material-symbols-outlined" aria-hidden="true">add_a_photo</span>
+          {{
+            (uploadingId === memory.id ? 'galleryPage.uploading' : 'galleryPage.addPhotos')
+              | translate
+          }}
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            multiple
+            class="visually-hidden"
+            [disabled]="uploadingId !== null"
+            (change)="chooseFiles(memory, $event)"
+          />
+        </label>
+      }
+      <span class="photo-count">{{ ownPhotos(memory).length }}/{{ maxPhotos }}</span>
       <a class="text-button" routerLink="/memories" [queryParams]="{ id: memory.id }">
         {{ 'galleryPage.seeInMemories' | translate }}
       </a>
