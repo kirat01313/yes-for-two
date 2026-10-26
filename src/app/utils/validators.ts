@@ -46,3 +46,9 @@ export function setAll(group: ChoiceGroup, checked: boolean): void {
   }
   group.markAsTouched();
 }
+
+export function todayIso(): string {
+  const today = new Date();
+  const twoDigits = (value: number) => String(value).padStart(2, '0');
+  return `${today.getFullYear()}-${twoDigits(today.getMonth() + 1)}-${twoDigits(today.getDate())}`;
+}
