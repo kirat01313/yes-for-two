@@ -28,6 +28,7 @@ export class MemoryCard implements OnChanges {
 
   @Output() wentThere = new EventEmitter<Memory>();
   @Output() saveNote = new EventEmitter<{ memory: Memory; note: string }>();
+  @Output() edit = new EventEmitter<Memory>();
   @Output() remove = new EventEmitter<Memory>();
 
   readonly noteLimit = 280;

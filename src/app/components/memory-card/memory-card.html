@@ -12,12 +12,19 @@
     @if (memory.went) {
       <span class="went">· {{ 'memoryCard.went' | translate }}</span>
     }
+    @if (memory.origin === 'manual') {
+      <span class="added">· {{ 'memoryCard.addedByYou' | translate }}</span>
+    }
   </p>
   <h2>{{ memory.name }}</h2>
   <p class="memory-date">
-    {{ 'memoryCard.saidYes' | translate }}
-    <span class="yes">{{ 'app.yes' | translate }}</span>
-    {{ 'memoryCard.on' | translate }}
+    @if (memory.origin === 'manual') {
+      {{ 'memoryCard.wentOn' | translate }}
+    } @else {
+      {{ 'memoryCard.saidYes' | translate }}
+      <span class="yes">{{ 'app.yes' | translate }}</span>
+      {{ 'memoryCard.on' | translate }}
+    }
     {{ memory.date | date: 'longDate' : '' : language.locale() }}
   </p>
 
@@ -77,6 +84,9 @@
   </div>
 
   <div class="actions secondary-actions">
+    <button type="button" class="text-button" [disabled]="saving" (click)="edit.emit(memory)">
+      {{ 'memoryCard.edit' | translate }}
+    </button>
     <button
       type="button"
       class="text-button danger"

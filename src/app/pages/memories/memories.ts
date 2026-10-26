@@ -1,8 +1,10 @@
 import {
   Component,
+  ElementRef,
   Injector,
   Input,
   OnInit,
+  ViewChild,
   afterNextRender,
   computed,
   inject,
@@ -11,8 +13,9 @@ import {
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MemoryCard } from '../../components/memory-card/memory-card';
+import { MemoryForm } from '../../components/memory-form/memory-form';
 import { StatusNotice } from '../../components/status-notice/status-notice';
-import { Memory } from '../../models/memory';
+import { Memory, MemoryFormData } from '../../models/memory';
 import { PROGRAMS, ProgramType, RequestStatus } from '../../models/program';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { LanguageService } from '../../services/language.service';
@@ -24,7 +27,7 @@ interface Filter {
 }
 
 @Component({
-  imports: [FormsModule, RouterLink, TranslatePipe, StatusNotice, MemoryCard],
+  imports: [FormsModule, RouterLink, TranslatePipe, StatusNotice, MemoryCard, MemoryForm],
   selector: 'app-memories',
   styleUrl: './memories.css',
   templateUrl: './memories.html',
@@ -35,6 +38,8 @@ export class Memories implements OnInit {
   private readonly language = inject(LanguageService);
 
   @Input() id?: string;
+
+  @ViewChild('formDialog') formDialog?: ElementRef<HTMLDialogElement>;
 
   readonly filters: Filter[] = [
     { value: '', label: 'memoriesPage.all' },
@@ -51,6 +56,11 @@ export class Memories implements OnInit {
   readonly highlighted = signal<number | null>(null);
   readonly savingId = signal<number | null>(null);
   readonly listError = signal('');
+
+  readonly formOpen = signal(false);
+  readonly editing = signal<Memory | null>(null);
+  readonly savingForm = signal(false);
+  readonly formError = signal('');
 
   readonly visible = computed(() => {
     const text = this.search().trim().toLowerCase();
@@ -90,6 +100,48 @@ export class Memories implements OnInit {
     this.update(memory.id, { note });
   }
 
+  openForm(memory: Memory | null = null): void {
+    this.editing.set(memory);
+    this.formError.set('');
+    this.formOpen.set(true);
+    this.formDialog?.nativeElement.showModal();
+  }
+
+  closeForm(): void {
+    this.formDialog?.nativeElement.close();
+  }
+
+  formClosed(): void {
+    if (!this.formDialog?.nativeElement.open) this.formOpen.set(false);
+  }
+
+  saveForm(data: MemoryFormData): void {
+    const memory = this.editing();
+    const request = memory
+      ? this.memoriesService.edit(memory, data)
+      : this.memoriesService.addManual(data);
+
+    this.savingForm.set(true);
+    this.formError.set('');
+    request.subscribe({
+      next: (saved) => {
+        this.memories.update((memories) =>
+          [...memories.filter((item) => item.id !== saved.id), saved].sort((a, b) =>
+            b.date.localeCompare(a.date),
+          ),
+        );
+        this.status.set('success');
+        this.savingForm.set(false);
+        this.closeForm();
+        this.goTo(saved.id);
+      },
+      error: () => {
+        this.savingForm.set(false);
+        this.formError.set('memoriesPage.saveError');
+      },
+    });
+  }
+
   deleteMemory(memory: Memory): void {
     const question = this.language
       .translate('memoriesPage.confirmDelete')
@@ -125,6 +177,8 @@ export class Memories implements OnInit {
   }
 
   private goTo(id: number): void {
+    this.filter.set('');
+    this.search.set('');
     this.highlighted.set(id);
     afterNextRender(
       () => document.getElementById(`memory-${id}`)?.scrollIntoView({ block: 'center' }),

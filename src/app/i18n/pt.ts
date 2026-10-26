@@ -289,6 +289,9 @@ export const pt: Dictionary = {
     firstYes: 'Digam o primeiro sim',
     confirmDelete: 'Apagar «{name}» das vossas memórias? Não dá para desfazer.',
     deleteError: 'Não foi possível apagar a memória. Tentem outra vez daqui a pouco.',
+    addMemory: 'Adicionar memória',
+    formLabel: 'Formulário da memória',
+    saveError: 'Não foi possível guardar a memória. Tentem outra vez daqui a pouco.',
   },
   memoryCard: {
     went: 'Fomos',
@@ -305,6 +308,9 @@ export const pt: Dictionary = {
     editNote: 'Editar a nota',
     cancel: 'Cancelar',
     delete: 'Apagar memória',
+    edit: 'Editar memória',
+    wentOn: 'Foram a',
+    addedByYou: 'Adicionada por vocês',
   },
   memoryForm: {
     newEyebrow: 'Nova memória',

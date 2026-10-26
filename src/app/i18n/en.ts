@@ -285,6 +285,9 @@ export const en = {
     firstYes: 'Say your first yes',
     confirmDelete: 'Delete «{name}» from your memories? This cannot be undone.',
     deleteError: "We couldn't delete the memory. Try again in a moment.",
+    addMemory: 'Add a memory',
+    formLabel: 'Memory form',
+    saveError: "We couldn't save the memory. Try again in a moment.",
   },
   memoryCard: {
     went: 'We went',
@@ -301,6 +304,9 @@ export const en = {
     editNote: 'Edit the note',
     cancel: 'Cancel',
     delete: 'Delete memory',
+    edit: 'Edit memory',
+    wentOn: 'You went on',
+    addedByYou: 'Added by you',
   },
   memoryForm: {
     newEyebrow: 'New memory',
