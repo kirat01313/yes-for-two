@@ -41,8 +41,10 @@
         [memories]="memories()"
         [photos]="photos()"
         [uploadingId]="uploadingId()"
+        [savingCaptionId]="savingCaptionId()"
         (addPhotos)="addPhotos($event)"
         (deletePhoto)="deletePhoto($event)"
+        (saveCaption)="saveCaption($event)"
       />
     }
   }

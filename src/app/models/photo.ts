@@ -3,4 +3,5 @@ export interface MemoryPhoto {
   memoryId: number;
   path: string;
   url: string;
+  caption: string;
 }

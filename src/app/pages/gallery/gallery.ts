@@ -18,7 +18,7 @@ import { RequestStatus } from '../../models/program';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { LanguageService } from '../../services/language.service';
 import { MemoriesService } from '../../services/memories.service';
-import { PhotosService } from '../../services/photos.service';
+import { MAX_PHOTOS, PhotosService } from '../../services/photos.service';
 
 @Component({
   imports: [RouterLink, TranslatePipe, StatusNotice, MemoryBook],
@@ -40,6 +40,7 @@ export class Gallery implements OnInit {
   readonly memories = signal<Memory[]>([]);
   readonly photos = signal<Record<number, MemoryPhoto[]>>({});
   readonly uploadingId = signal<number | null>(null);
+  readonly savingCaptionId = signal<number | null>(null);
   readonly photoError = signal('');
 
   ngOnInit(): void {
@@ -62,10 +63,12 @@ export class Gallery implements OnInit {
   }
 
   addPhotos({ memory, files }: { memory: Memory; files: File[] }): void {
-    this.uploadingId.set(memory.id);
-    this.photoError.set('');
+    const room = MAX_PHOTOS - (this.photos()[memory.id]?.length ?? 0);
+    this.photoError.set(files.length > room ? 'galleryPage.tooMany' : '');
+    if (room <= 0) return;
 
-    from(files)
+    this.uploadingId.set(memory.id);
+    from(files.slice(0, room))
       .pipe(concatMap((file) => this.photosService.add(memory.id, file)))
       .subscribe({
         next: (photo) =>
@@ -81,6 +84,21 @@ export class Gallery implements OnInit {
       });
   }
 
+  saveCaption({ photo, caption }: { photo: MemoryPhoto; caption: string }): void {
+    this.savingCaptionId.set(photo.id);
+    this.photoError.set('');
+    this.photosService.updateCaption(photo, caption).subscribe({
+      next: (updated) => {
+        this.replacePhoto(updated);
+        this.savingCaptionId.set(null);
+      },
+      error: () => {
+        this.savingCaptionId.set(null);
+        this.photoError.set('galleryPage.captionError');
+      },
+    });
+  }
+
   deletePhoto(photo: MemoryPhoto): void {
     if (!confirm(this.language.translate('galleryPage.confirmDeletePhoto'))) return;
 
@@ -93,6 +111,15 @@ export class Gallery implements OnInit {
         })),
       error: () => this.photoError.set('galleryPage.deletePhotoError'),
     });
+  }
+
+  private replacePhoto(photo: MemoryPhoto): void {
+    this.photos.update((photos) => ({
+      ...photos,
+      [photo.memoryId]: (photos[photo.memoryId] ?? []).map((item) =>
+        item.id === photo.id ? photo : item,
+      ),
+    }));
   }
 
   private goTo(id: number): void {

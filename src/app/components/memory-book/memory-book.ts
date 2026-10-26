@@ -18,16 +18,14 @@ import { Memory } from '../../models/memory';
 import { MemoryPhoto } from '../../models/photo';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { LanguageService } from '../../services/language.service';
+import { MAX_CAPTION, MAX_PHOTOS } from '../../services/photos.service';
 import { scrollToStep, stagePosition } from '../../utils/scroll';
 
 const SCREENS_PER_PAGE = 0.8;
 const COLLAGE_SIZE = 4;
 const TILTS = [-4, 3, -2, 5, -3, 2];
 
-interface CollagePhoto {
-  url: string;
-  photo: MemoryPhoto | null;
-}
+type CollageItem = { kind: 'photo'; url: string; caption: string } | { kind: 'note'; text: string };
 
 @Component({
   imports: [DatePipe, NgTemplateOutlet, RouterLink, TranslatePipe],
@@ -50,15 +48,21 @@ export class MemoryBook {
   }
   @Input() photos: Record<number, MemoryPhoto[]> = {};
   @Input() uploadingId: number | null = null;
+  @Input() savingCaptionId: number | null = null;
 
   @Output() addPhotos = new EventEmitter<{ memory: Memory; files: File[] }>();
   @Output() deletePhoto = new EventEmitter<MemoryPhoto>();
+  @Output() saveCaption = new EventEmitter<{ photo: MemoryPhoto; caption: string }>();
 
   @ViewChild('stage') stage?: ElementRef<HTMLElement>;
+
+  readonly maxPhotos = MAX_PHOTOS;
+  readonly maxCaption = MAX_CAPTION;
 
   readonly list = signal<Memory[]>([]);
   readonly position = signal(0);
   readonly wide = signal(this.wideQuery.matches);
+  readonly editingPhotoId = signal<number | null>(null);
 
   readonly current = computed(() => Math.round(this.position()));
   readonly last = computed(() => this.list().length - 1);
@@ -88,12 +92,27 @@ export class MemoryBook {
     });
   }
 
-  collage(memory: Memory): CollagePhoto[] {
-    return this.allPhotos(memory).slice(0, COLLAGE_SIZE);
+  collage(memory: Memory): CollageItem[] {
+    const own = this.ownPhotos(memory).map((photo): CollageItem => ({
+      kind: 'photo',
+      url: photo.url,
+      caption: photo.caption,
+    }));
+    const photos: CollageItem[] = memory.image
+      ? [{ kind: 'photo', url: memory.image, caption: '' }, ...own]
+      : own;
+
+    if (!memory.note) return photos.slice(0, COLLAGE_SIZE);
+    const note: CollageItem = { kind: 'note', text: memory.note };
+    return [...photos.slice(0, 1), note, ...photos.slice(1, COLLAGE_SIZE - 1)];
   }
 
-  extraPhotos(memory: Memory): CollagePhoto[] {
-    return this.allPhotos(memory).slice(COLLAGE_SIZE, COLLAGE_SIZE + 2);
+  ownPhotos(memory: Memory): MemoryPhoto[] {
+    return this.photos[memory.id] ?? [];
+  }
+
+  canAddPhotos(memory: Memory): boolean {
+    return this.ownPhotos(memory).length < MAX_PHOTOS;
   }
 
   chooseFiles(memory: Memory, event: Event): void {
@@ -101,6 +120,19 @@ export class MemoryBook {
     const files = Array.from(input.files ?? []);
     if (files.length) this.addPhotos.emit({ memory, files });
     input.value = '';
+  }
+
+  editCaption(photo: MemoryPhoto | null): void {
+    this.editingPhotoId.set(photo?.id ?? null);
+  }
+
+  submitCaption(photo: MemoryPhoto, caption: string): void {
+    this.saveCaption.emit({ photo, caption: caption.trim() });
+    this.editingPhotoId.set(null);
+  }
+
+  slide(track: HTMLElement, direction: 1 | -1): void {
+    track.scrollBy({ left: direction * track.clientWidth, behavior: 'smooth' });
   }
 
   tilt(index: number): string {
@@ -148,11 +180,6 @@ export class MemoryBook {
     }
     const stage = this.stage?.nativeElement;
     if (stage) scrollToStep(stage, index, SCREENS_PER_PAGE, behavior);
-  }
-
-  private allPhotos(memory: Memory): CollagePhoto[] {
-    const own = (this.photos[memory.id] ?? []).map((photo) => ({ url: photo.url, photo }));
-    return memory.image ? [{ url: memory.image, photo: null }, ...own] : own;
   }
 
   private onScroll = (): void => {

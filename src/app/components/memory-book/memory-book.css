@@ -14,16 +14,19 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
+  width: 100vw;
   height: 100vh;
   height: 100svh;
+  margin-left: calc(50% - 50vw);
+  padding: 4.75rem 2vw 1rem;
 }
 
 .book {
   position: relative;
-  width: min(1100px, 100%, calc(70svh * 1.55));
-  aspect-ratio: 1.55;
-  perspective: 2400px;
+  width: min(1560px, 96vw, calc((100svh - 9.5rem) * 1.75));
+  aspect-ratio: 1.75;
+  perspective: 2600px;
 }
 
 .page {
@@ -32,7 +35,7 @@
   bottom: 0;
   width: 50%;
   overflow: hidden;
-  padding: clamp(1.5rem, 3vw, 2.75rem);
+  padding: clamp(1.25rem, 2.6vw, 2.75rem);
   background: var(--paper);
 }
 
@@ -170,14 +173,49 @@
   width: 55%;
 }
 
-.polaroid {
+.polaroid,
+.note-card {
   position: relative;
   width: 100%;
   margin: 0;
-  padding: 8px 8px 30px;
+  padding: 8px 8px 34px;
   background: #ffffff;
   box-shadow: 0 10px 24px -8px rgba(31, 25, 23, 0.35);
   transform: rotate(var(--tilt, 0deg));
+}
+
+.polaroid figcaption {
+  position: absolute;
+  right: 10px;
+  bottom: 6px;
+  left: 10px;
+  overflow: hidden;
+  font-family: var(--font-hand);
+  font-size: 0.95rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  color: var(--text-2);
+}
+
+.note-card {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1 / 1.12;
+  padding: 1.5rem 1.25rem;
+  background: #fff6e3;
+}
+
+.note-card p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 8;
+  font-family: var(--font-hand);
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
+  line-height: 1.6;
+  text-align: center;
+  color: var(--text);
 }
 
 .polaroid img {
@@ -196,37 +234,6 @@
   height: 22px;
   transform: translateX(-50%) rotate(-3deg);
   background: rgba(236, 224, 212, 0.85);
-}
-
-.delete-photo {
-  position: absolute;
-  top: 0.6rem;
-  right: 0.6rem;
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--pill);
-  background: rgba(255, 253, 248, 0.92);
-  color: var(--text-2);
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.delete-photo .material-symbols-outlined {
-  font-size: 18px;
-}
-
-.polaroid:hover .delete-photo,
-.delete-photo:focus-visible {
-  opacity: 1;
-}
-
-.delete-photo:hover {
-  color: var(--error);
 }
 
 .empty-collage {
@@ -251,9 +258,14 @@
 .story {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.6rem;
+  gap: 1rem;
   height: 100%;
+}
+
+.story-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .story-type {
@@ -276,31 +288,170 @@
   color: var(--text-2);
 }
 
-.hand-note {
-  display: grid;
+.carousel {
+  position: relative;
   flex: 1;
-  place-items: center;
+  min-height: 0;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  display: flex;
+  flex: 0 0 100%;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-height: 0;
+  margin: 0;
+  scroll-snap-align: start;
+}
+
+.slide-photo {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: var(--champagne);
+}
+
+.slide-photo img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-count {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--pill);
+  background: rgba(255, 253, 248, 0.9);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.delete-photo {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--pill);
+  background: rgba(255, 253, 248, 0.92);
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.delete-photo .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.delete-photo:hover {
+  color: var(--error);
+}
+
+.slide-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem;
+  min-height: 1.8rem;
+}
+
+.slide-caption .hand {
   font-family: var(--font-hand);
-  font-size: clamp(1.25rem, 1.9vw, 1.75rem);
-  line-height: 1.7;
-  text-align: center;
+  font-size: 1.15rem;
   color: var(--text);
 }
 
-.hand-note.empty {
+.caption-form {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 1.8rem;
+  border-bottom: 1px solid var(--text-3);
+}
+
+.caption-form:focus-within {
+  border-bottom-color: var(--primary);
+}
+
+.caption-form input {
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+}
+
+.caption-form input:focus {
+  outline: none;
+}
+
+.text-button.muted {
   color: var(--text-3);
 }
 
-.extra-photos {
-  display: flex;
-  gap: 1rem;
-  align-self: center;
+.carousel-arrow {
+  position: absolute;
+  top: calc(50% - 1.2rem);
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: var(--pill);
+  background: rgba(255, 253, 248, 0.92);
+  color: var(--primary);
+  box-shadow: var(--shadow-1);
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 
-.polaroid.small {
-  width: 92px;
-  padding: 5px 5px 18px;
+.carousel-previous {
+  left: 0.6rem;
+}
+
+.carousel-next {
+  right: 0.6rem;
+}
+
+.no-uploads {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  padding: 1.5rem;
+  border: 1px dashed var(--linen);
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--text-3);
+}
+
+.photo-count {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
 }
 
 .story-actions {
@@ -337,12 +488,6 @@
   cursor: progress;
 }
 
-@media (hover: none) {
-  .delete-photo {
-    opacity: 1;
-  }
-}
-
 .page-number {
   position: absolute;
   bottom: 1rem;
@@ -369,6 +514,11 @@
   width: 100%;
   min-height: 420px;
   box-shadow: none;
+}
+
+.narrow-spread .carousel {
+  height: 380px;
+  flex: none;
 }
 
 .narrow-spread .page-left {
