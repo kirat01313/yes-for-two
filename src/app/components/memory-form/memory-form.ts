@@ -10,6 +10,9 @@ import { notInFuture, todayIso } from '../../utils/validators';
 
 type ChosenLocation = MemoryFormData['location'];
 
+const DEFAULT_IMAGE =
+  'https://images.pexels.com/photos/28957805/pexels-photo-28957805.jpeg?auto=compress&cs=tinysrgb&w=1200';
+
 @Component({
   imports: [ReactiveFormsModule, TranslatePipe],
   selector: 'app-memory-form',
@@ -57,6 +60,10 @@ export class MemoryForm implements OnChanges {
       validators: [Validators.maxLength(this.noteLimit)],
     }),
   });
+
+  get image(): string {
+    return this.memory?.image ?? DEFAULT_IMAGE;
+  }
 
   get controls() {
     return this.form.controls;

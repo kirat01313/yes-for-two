@@ -339,6 +339,7 @@ export const pt: Dictionary = {
     add: 'Adicionar memória',
     saveChanges: 'Guardar alterações',
     saving: 'A guardar…',
+    close: 'Fechar',
   },
   places: {
     walk: 'min a pé',

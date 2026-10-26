@@ -335,6 +335,7 @@ export const en = {
     add: 'Add memory',
     saveChanges: 'Save changes',
     saving: 'Saving…',
+    close: 'Close',
   },
   places: {
     walk: 'min walk',

@@ -61,6 +61,7 @@ export class Memories implements OnInit {
   readonly editing = signal<Memory | null>(null);
   readonly savingForm = signal(false);
   readonly formError = signal('');
+  pressedOutside = false;
 
   readonly visible = computed(() => {
     const text = this.search().trim().toLowerCase();
@@ -109,6 +110,11 @@ export class Memories implements OnInit {
 
   closeForm(): void {
     this.formDialog?.nativeElement.close();
+  }
+
+  closeIfOutside(event: MouseEvent): void {
+    if (this.pressedOutside && event.target === event.currentTarget) this.closeForm();
+    this.pressedOutside = false;
   }
 
   formClosed(): void {

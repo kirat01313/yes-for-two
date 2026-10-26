@@ -1,4 +1,17 @@
-<form class="memory-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+<button
+  type="button"
+  class="close-button"
+  [attr.aria-label]="'memoryForm.close' | translate"
+  (click)="cancel.emit()"
+>
+  <span class="material-symbols-outlined" aria-hidden="true">close</span>
+</button>
+
+<div class="form-image">
+  <img [src]="image" alt="" />
+</div>
+
+<form class="form-body" [formGroup]="form" (ngSubmit)="submit()" novalidate>
   <header class="form-top">
     <p class="eyebrow">
       {{ (memory ? 'memoryForm.editEyebrow' : 'memoryForm.newEyebrow') | translate }}
@@ -6,7 +19,7 @@
     <h2>{{ memory ? memory.name : ('memoryForm.newTitle' | translate) }}</h2>
   </header>
 
-  <div class="field">
+  <div class="line-field">
     <label for="memory-name">{{ 'memoryForm.name' | translate }}</label>
     <input
       id="memory-name"
@@ -26,7 +39,7 @@
     </p>
   </div>
 
-  <fieldset class="field">
+  <fieldset class="line-field">
     <legend>{{ 'memoryForm.type' | translate }}</legend>
     <div class="types">
       @for (program of programs; track program.value) {
@@ -44,10 +57,10 @@
     </p>
   </fieldset>
 
-  <div class="field">
+  <div class="line-field">
     <label for="memory-search">{{ 'memoryForm.where' | translate }}</label>
     @if (controls.location.value) {
-      <div class="chosen-location">
+      <div class="line chosen-location">
         <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
         <span class="chosen-label">{{ locationLabel() }}</span>
         <button type="button" class="text-button" (click)="changeLocation()">
@@ -55,7 +68,7 @@
         </button>
       </div>
     } @else {
-      <div class="field-with-button">
+      <div class="line">
         <input
           id="memory-search"
           type="text"
@@ -66,11 +79,15 @@
         />
         <button
           type="button"
-          class="button button-outline"
+          class="search-button"
           [disabled]="searching()"
+          [attr.aria-label]="'memoryForm.search' | translate"
+          [title]="'memoryForm.search' | translate"
           (click)="searchPlaces()"
         >
-          {{ (searching() ? 'memoryForm.searching' : 'memoryForm.search') | translate }}
+          <span class="material-symbols-outlined" [class.spin]="searching()" aria-hidden="true">{{
+            searching() ? 'progress_activity' : 'search'
+          }}</span>
         </button>
       </div>
 
@@ -98,7 +115,7 @@
     </p>
   </div>
 
-  <div class="field">
+  <div class="line-field date-field">
     <label for="memory-date">
       {{
         (memory && memory.origin === 'draw' ? 'memoryForm.yesDate' : 'memoryForm.wentDate')
@@ -115,12 +132,12 @@
     </p>
   </div>
 
-  <div class="field">
+  <div class="line-field">
     <label for="memory-note">{{ 'memoryForm.note' | translate }}</label>
     <textarea
       id="memory-note"
       formControlName="note"
-      rows="4"
+      rows="2"
       [placeholder]="'memoryCard.notePlaceholder' | translate"
     ></textarea>
     <small class="counter" [class.error]="controls.note.invalid">
@@ -132,15 +149,10 @@
     <p class="error" role="alert">{{ error | translate }}</p>
   }
 
-  <div class="form-actions">
-    <button type="button" class="button button-soft" (click)="cancel.emit()">
-      {{ 'memoryCard.cancel' | translate }}
-    </button>
-    <button type="submit" class="button button-primary" [disabled]="saving">
-      {{
-        (saving ? 'memoryForm.saving' : memory ? 'memoryForm.saveChanges' : 'memoryForm.add')
-          | translate
-      }}
-    </button>
-  </div>
+  <button type="submit" class="button button-primary submit-button" [disabled]="saving">
+    {{
+      (saving ? 'memoryForm.saving' : memory ? 'memoryForm.saveChanges' : 'memoryForm.add')
+        | translate
+    }}
+  </button>
 </form>
