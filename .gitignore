@@ -41,6 +41,7 @@ __screenshots__/
 
 # Environment variables
 .env
+.destinations-cache.json
 src/environments/environment*.ts
 
 # System files
