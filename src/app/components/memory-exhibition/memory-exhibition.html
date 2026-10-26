@@ -31,7 +31,7 @@
               }
             </figure>
             @if (cover(memory); as photo) {
-              <ng-container *ngTemplateOutlet="plaque; context: { $implicit: photo, number: 1 }" />
+              <ng-container *ngTemplateOutlet="plaque; context: { $implicit: photo }" />
             }
           </div>
 
@@ -73,6 +73,9 @@
               </a>
             </div>
             <p class="photo-count">{{ ownPhotos(memory).length }}/{{ maxPhotos }}</p>
+            <button type="button" class="delete-memory" (click)="deleteMemory.emit(memory)">
+              {{ 'galleryPage.deleteMemory' | translate }}
+            </button>
           </div>
         </div>
 
@@ -83,9 +86,7 @@
                 <figure class="framed">
                   <img [src]="photo.url" [alt]="memory.name" loading="lazy" />
                 </figure>
-                <ng-container
-                  *ngTemplateOutlet="plaque; context: { $implicit: photo, number: p + 2 }"
-                />
+                <ng-container *ngTemplateOutlet="plaque; context: { $implicit: photo }" />
               </li>
             }
           </ul>
@@ -95,7 +96,7 @@
   </div>
 </div>
 
-<ng-template #plaque let-photo let-number="number">
+<ng-template #plaque let-photo>
   <div class="plaque">
     @if (editingPhotoId() === photo.id) {
       <form
@@ -120,10 +121,9 @@
         </button>
       </form>
     } @else {
-      <p class="plaque-text">
-        <span class="plaque-number">{{ number }}.</span>
-        <em>{{ photo.caption || ('galleryPage.untitled' | translate) }}</em>
-      </p>
+      @if (photo.caption) {
+        <p class="plaque-text">{{ photo.caption }}</p>
+      }
       <div class="plaque-actions">
         <button
           type="button"

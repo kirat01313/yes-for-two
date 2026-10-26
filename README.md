@@ -92,4 +92,4 @@ the repository secrets `SUPABASE_URL` and `SUPABASE_KEY`.
 
 ## Authors
 
-Made by Tarik for the Angular module of the UpSkill programme (IPCA), 2026.
+Made by Tarik Chaia for the Angular module of the UpSkill programme (IPCA), 2026.

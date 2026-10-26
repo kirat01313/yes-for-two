@@ -25,6 +25,7 @@ export class MemoryExhibition {
   @Output() addPhotos = new EventEmitter<{ memory: Memory; files: File[] }>();
   @Output() deletePhoto = new EventEmitter<MemoryPhoto>();
   @Output() saveCaption = new EventEmitter<{ photo: MemoryPhoto; caption: string }>();
+  @Output() deleteMemory = new EventEmitter<Memory>();
 
   readonly maxPhotos = MAX_PHOTOS;
   readonly maxCaption = MAX_CAPTION;
