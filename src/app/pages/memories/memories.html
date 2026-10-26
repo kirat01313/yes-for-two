@@ -88,24 +88,15 @@
       }
 
       @if (visible().length) {
-        <ul class="memory-list">
-          @for (memory of visible(); track memory.id) {
-            <li
-              class="memory"
-              [id]="'memory-' + memory.id"
-              [class.highlighted]="highlighted() === memory.id"
-            >
-              <app-memory-card
-                [memory]="memory"
-                [saving]="savingId() === memory.id"
-                (wentThere)="markAsWent($event)"
-                (saveNote)="saveNote($event)"
-                (edit)="openForm($event)"
-                (remove)="deleteMemory($event)"
-              />
-            </li>
-          }
-        </ul>
+        <app-memory-album
+          [memories]="visible()"
+          [photos]="photos()"
+          [savingId]="savingId()"
+          (wentThere)="markAsWent($event)"
+          (saveNote)="saveNote($event)"
+          (edit)="openForm($event)"
+          (remove)="deleteMemory($event)"
+        />
       } @else {
         <p class="no-results">{{ 'memoriesPage.noResults' | translate }}</p>
       }

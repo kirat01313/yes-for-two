@@ -12,14 +12,17 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { MemoryCard } from '../../components/memory-card/memory-card';
+import { switchMap, tap } from 'rxjs';
+import { MemoryAlbum } from '../../components/memory-album/memory-album';
 import { MemoryForm } from '../../components/memory-form/memory-form';
 import { StatusNotice } from '../../components/status-notice/status-notice';
 import { Memory, MemoryFormData } from '../../models/memory';
+import { MemoryPhoto } from '../../models/photo';
 import { PROGRAMS, ProgramType, RequestStatus } from '../../models/program';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { LanguageService } from '../../services/language.service';
 import { MemoriesService } from '../../services/memories.service';
+import { PhotosService } from '../../services/photos.service';
 
 interface Filter {
   value: ProgramType | '';
@@ -27,19 +30,21 @@ interface Filter {
 }
 
 @Component({
-  imports: [FormsModule, RouterLink, TranslatePipe, StatusNotice, MemoryCard, MemoryForm],
+  imports: [FormsModule, RouterLink, TranslatePipe, StatusNotice, MemoryAlbum, MemoryForm],
   selector: 'app-memories',
   styleUrl: './memories.css',
   templateUrl: './memories.html',
 })
 export class Memories implements OnInit {
   private readonly memoriesService = inject(MemoriesService);
+  private readonly photosService = inject(PhotosService);
   private readonly injector = inject(Injector);
   private readonly language = inject(LanguageService);
 
   @Input() id?: string;
 
   @ViewChild('formDialog') formDialog?: ElementRef<HTMLDialogElement>;
+  @ViewChild(MemoryAlbum) album?: MemoryAlbum;
 
   readonly filters: Filter[] = [
     { value: '', label: 'memoriesPage.all' },
@@ -53,7 +58,7 @@ export class Memories implements OnInit {
   readonly memories = signal<Memory[]>([]);
   readonly filter = signal<ProgramType | ''>('');
   readonly search = signal('');
-  readonly highlighted = signal<number | null>(null);
+  readonly photos = signal<Record<number, MemoryPhoto[]>>({});
   readonly savingId = signal<number | null>(null);
   readonly listError = signal('');
 
@@ -79,14 +84,22 @@ export class Memories implements OnInit {
   readonly wentCount = computed(() => this.memories().filter((memory) => memory.went).length);
 
   ngOnInit(): void {
-    this.memoriesService.list().subscribe({
-      next: (memories) => {
-        this.memories.set(memories);
-        this.status.set(memories.length ? 'success' : 'empty');
-        if (this.id) this.goTo(Number(this.id));
-      },
-      error: () => this.status.set('error'),
-    });
+    this.memoriesService
+      .list()
+      .pipe(
+        tap((memories) => {
+          this.memories.set(memories);
+          this.status.set(memories.length ? 'success' : 'empty');
+          if (this.id) this.goTo(Number(this.id));
+        }),
+        switchMap((memories) => this.photosService.list(memories.map((memory) => memory.id))),
+      )
+      .subscribe({
+        next: (photos) => this.photos.set(photos),
+        error: () => {
+          if (this.status() === 'loading') this.status.set('error');
+        },
+      });
   }
 
   chooseFilter(value: ProgramType | ''): void {
@@ -186,10 +199,6 @@ export class Memories implements OnInit {
   private goTo(id: number): void {
     this.filter.set('');
     this.search.set('');
-    this.highlighted.set(id);
-    afterNextRender(
-      () => document.getElementById(`memory-${id}`)?.scrollIntoView({ block: 'center' }),
-      { injector: this.injector },
-    );
+    afterNextRender(() => this.album?.goTo(id), { injector: this.injector });
   }
 }

@@ -292,6 +292,7 @@ export const pt: Dictionary = {
     addMemory: 'Adicionar memória',
     formLabel: 'Formulário da memória',
     saveError: 'Não foi possível guardar a memória. Tentem outra vez daqui a pouco.',
+    indexLabel: 'Índice das memórias',
   },
   memoryCard: {
     went: 'Fomos',

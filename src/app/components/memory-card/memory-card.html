@@ -1,11 +1,3 @@
-<div class="memory-image">
-  @if (memory.image) {
-    <img [src]="memory.image" alt="" loading="lazy" />
-  } @else {
-    <span class="material-symbols-outlined" aria-hidden="true">{{ memory.icon }}</span>
-  }
-</div>
-
 <div class="memory-text">
   <p class="memory-type">
     {{ memory.category }} · {{ memory.place }}

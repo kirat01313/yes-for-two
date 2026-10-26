@@ -288,6 +288,7 @@ export const en = {
     addMemory: 'Add a memory',
     formLabel: 'Memory form',
     saveError: "We couldn't save the memory. Try again in a moment.",
+    indexLabel: 'Memories index',
   },
   memoryCard: {
     went: 'We went',

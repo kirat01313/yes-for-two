@@ -72,26 +72,6 @@
   font-size: 1rem;
 }
 
-.memory-list {
-  display: grid;
-  gap: 1.25rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.memory {
-  overflow: hidden;
-  background: var(--surface);
-  box-shadow: var(--shadow-1);
-  scroll-margin: 6rem;
-}
-
-.memory.highlighted {
-  outline: 1.5px solid var(--primary);
-  box-shadow: var(--shadow-2);
-}
-
 .empty-actions {
   display: flex;
   flex-wrap: wrap;
