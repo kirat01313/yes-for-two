@@ -1,0 +1,159 @@
+:host {
+  display: block;
+}
+
+.memory-form {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.form-top {
+  margin-bottom: 0.75rem;
+}
+
+.form-top h2 {
+  margin-top: 0.35rem;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 400;
+}
+
+legend {
+  margin-bottom: 0.55rem;
+  padding: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.type {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 1rem 0.5rem 0.8rem;
+  border: 1px solid var(--linen);
+  border-radius: var(--pill);
+  background: var(--surface);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-3);
+  cursor: pointer;
+}
+
+.type input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.type .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.type:has(input:checked) {
+  border-color: var(--primary);
+  background: var(--terracotta-light);
+  color: var(--primary);
+}
+
+.type:has(input:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.field-with-button .button {
+  flex: none;
+}
+
+.chosen-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 52px;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--linen);
+  background: var(--champagne);
+  font-size: 0.95rem;
+}
+
+.chosen-location .material-symbols-outlined {
+  color: var(--primary);
+}
+
+.chosen-label {
+  flex: 1;
+}
+
+.results {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  border: 1px solid var(--linen);
+  list-style: none;
+}
+
+.results li + li {
+  border-top: 1px solid var(--linen);
+}
+
+.results button {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 0;
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+}
+
+.results button:hover,
+.results button:focus-visible {
+  background: var(--champagne);
+}
+
+.results small,
+.no-results,
+.counter {
+  color: var(--text-3);
+}
+
+.no-results {
+  margin-top: 0.4rem;
+  font-size: 0.88rem;
+}
+
+.counter {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+.text-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
