@@ -15,6 +15,7 @@ import { StatusNotice } from '../../components/status-notice/status-notice';
 import { Memory } from '../../models/memory';
 import { PROGRAMS, ProgramType, RequestStatus } from '../../models/program';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { LanguageService } from '../../services/language.service';
 import { MemoriesService } from '../../services/memories.service';
 
 interface Filter {
@@ -31,6 +32,7 @@ interface Filter {
 export class Memories implements OnInit {
   private readonly memoriesService = inject(MemoriesService);
   private readonly injector = inject(Injector);
+  private readonly language = inject(LanguageService);
 
   @Input() id?: string;
 
@@ -48,6 +50,7 @@ export class Memories implements OnInit {
   readonly search = signal('');
   readonly highlighted = signal<number | null>(null);
   readonly savingId = signal<number | null>(null);
+  readonly listError = signal('');
 
   readonly visible = computed(() => {
     const text = this.search().trim().toLowerCase();
@@ -85,6 +88,27 @@ export class Memories implements OnInit {
 
   saveNote({ memory, note }: { memory: Memory; note: string }): void {
     this.update(memory.id, { note });
+  }
+
+  deleteMemory(memory: Memory): void {
+    const question = this.language
+      .translate('memoriesPage.confirmDelete')
+      .replace('{name}', memory.name);
+    if (!confirm(question)) return;
+
+    this.savingId.set(memory.id);
+    this.listError.set('');
+    this.memoriesService.delete(memory.id).subscribe({
+      next: () => {
+        this.memories.update((memories) => memories.filter((item) => item.id !== memory.id));
+        this.savingId.set(null);
+        if (!this.memories().length) this.status.set('empty');
+      },
+      error: () => {
+        this.savingId.set(null);
+        this.listError.set('memoriesPage.deleteError');
+      },
+    });
   }
 
   private update(id: number, changes: Partial<Memory>): void {

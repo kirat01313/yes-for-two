@@ -287,6 +287,8 @@ export const pt: Dictionary = {
     emptyTitle: 'Ainda não há memórias.',
     emptyText: 'Cada sim que disserem fica guardado aqui, para recordarem depois.',
     firstYes: 'Digam o primeiro sim',
+    confirmDelete: 'Apagar «{name}» das vossas memórias? Não dá para desfazer.',
+    deleteError: 'Não foi possível apagar a memória. Tentem outra vez daqui a pouco.',
   },
   memoryCard: {
     went: 'Fomos',
@@ -302,6 +304,7 @@ export const pt: Dictionary = {
     writeNote: 'Escrever uma nota',
     editNote: 'Editar a nota',
     cancel: 'Cancelar',
+    delete: 'Apagar memória',
   },
   places: {
     walk: 'min a pé',

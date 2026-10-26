@@ -75,4 +75,15 @@
       }}
     </button>
   </div>
+
+  <div class="actions secondary-actions">
+    <button
+      type="button"
+      class="text-button danger"
+      [disabled]="saving"
+      (click)="remove.emit(memory)"
+    >
+      {{ 'memoryCard.delete' | translate }}
+    </button>
+  </div>
 </div>

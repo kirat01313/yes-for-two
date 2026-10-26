@@ -123,6 +123,25 @@ h2 {
   cursor: pointer;
 }
 
+.text-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.secondary-actions {
+  margin-top: 0;
+}
+
+.secondary-actions .text-button {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-3);
+}
+
+.secondary-actions .danger:hover {
+  color: var(--error);
+}
+
 @media (max-width: 600px) {
   :host {
     grid-template-columns: minmax(0, 1fr);

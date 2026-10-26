@@ -283,6 +283,8 @@ export const en = {
     emptyTitle: 'No memories yet.',
     emptyText: 'Every yes you say is kept here, ready to look back on.',
     firstYes: 'Say your first yes',
+    confirmDelete: 'Delete «{name}» from your memories? This cannot be undone.',
+    deleteError: "We couldn't delete the memory. Try again in a moment.",
   },
   memoryCard: {
     went: 'We went',
@@ -298,6 +300,7 @@ export const en = {
     writeNote: 'Write a note',
     editNote: 'Edit the note',
     cancel: 'Cancel',
+    delete: 'Delete memory',
   },
   places: {
     walk: 'min walk',

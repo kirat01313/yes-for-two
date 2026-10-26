@@ -82,6 +82,10 @@
   box-shadow: var(--shadow-2);
 }
 
+.list-error {
+  margin-bottom: 1.5rem;
+}
+
 .no-results {
   color: var(--text-3);
 }

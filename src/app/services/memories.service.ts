@@ -38,6 +38,10 @@ export class MemoriesService {
       .pipe(map(([row]) => row));
   }
 
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(this.url, { params: { id: `eq.${id}` } });
+  }
+
   saveSuggestion(suggestion: Suggestion): Observable<Memory> {
     const translate = (value: Suggestion['name']) => this.language.translate(value);
     return this.add({
