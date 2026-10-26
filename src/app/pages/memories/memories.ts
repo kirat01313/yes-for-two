@@ -110,6 +110,7 @@ export class Memories implements OnInit {
 
   closeForm(): void {
     this.formDialog?.nativeElement.close();
+    this.formOpen.set(false);
   }
 
   closeIfOutside(event: MouseEvent): void {
