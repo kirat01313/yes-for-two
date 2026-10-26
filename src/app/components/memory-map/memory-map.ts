@@ -9,7 +9,9 @@ import {
   OnDestroy,
   Output,
   ViewChild,
+  computed,
   inject,
+  signal,
 } from '@angular/core';
 import type { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import type { Feature, FeatureCollection } from 'geojson';
@@ -18,10 +20,12 @@ import { LAND_DOTS } from '../../data/land-dots';
 import { Memory } from '../../models/memory';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { LanguageService } from '../../services/language.service';
+import { distanceKm } from '../../utils/geo';
 
 setWorkerUrl(new URL('maplibre-gl-worker.mjs', document.baseURI).href);
 
 const WORLD_CENTER: [number, number] = [12, 22];
+const DESCENT_SCREENS = 1.4;
 
 const LAND: FeatureCollection = {
   type: 'FeatureCollection',
@@ -31,6 +35,12 @@ const LAND: FeatureCollection = {
     geometry: { type: 'Point', coordinates: [lon, lat] },
   })),
 };
+
+interface Camera {
+  lon: number;
+  lat: number;
+  zoom: number;
+}
 
 @Component({
   imports: [DatePipe, TranslatePipe],
@@ -44,13 +54,36 @@ export class MemoryMap implements AfterViewInit, OnChanges, OnDestroy {
   @Input({ required: true }) memories: Memory[] = [];
   @Output() select = new EventEmitter<number>();
 
+  @ViewChild('section') section!: ElementRef<HTMLElement>;
   @ViewChild('map') mapElement!: ElementRef<HTMLDivElement>;
+
+  readonly reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  readonly progress = signal(0);
+  readonly titleOpacity = computed(() => Math.max(0, 1 - this.progress() * 3));
+  readonly arrivalOpacity = computed(() =>
+    Math.min(1, Math.max(0, (this.progress() - 0.85) / 0.15)),
+  );
 
   private map?: MapLibreMap;
   private loaded = false;
+  private target: Camera | null = null;
+  private lastProgress = -1;
+  private frame = 0;
+
+  get latest(): Memory | null {
+    return this.memories[0] ?? null;
+  }
 
   get recent(): Memory[] {
     return this.memories.slice(0, 5);
+  }
+
+  get coordinates(): string {
+    const memory = this.latest;
+    if (!memory) return '';
+    const dms = (value: number) =>
+      `${Math.floor(Math.abs(value))}° ${Math.round((Math.abs(value) % 1) * 60)}′`;
+    return `${dms(memory.lat)} ${memory.lat >= 0 ? 'N' : 'S'} · ${dms(memory.lon)} ${memory.lon >= 0 ? 'E' : 'W'}`;
   }
 
   ngAfterViewInit(): void {
@@ -71,14 +104,25 @@ export class MemoryMap implements AfterViewInit, OnChanges, OnDestroy {
     this.map.on('load', () => {
       this.loaded = true;
       this.drawMemories();
+      this.findTarget();
+      this.updateCamera(true);
     });
+
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onResize, { passive: true });
   }
 
   ngOnChanges(): void {
-    if (this.loaded) this.drawMemories();
+    if (!this.loaded) return;
+    this.drawMemories();
+    this.findTarget();
+    this.updateCamera(true);
   }
 
   ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    cancelAnimationFrame(this.frame);
     this.map?.remove();
   }
 
@@ -89,9 +133,29 @@ export class MemoryMap implements AfterViewInit, OnChanges, OnDestroy {
         land: { type: 'geojson', data: LAND },
         yeses: { type: 'geojson', data: this.yesPoints() },
         route: { type: 'geojson', data: this.route() },
+        streets: {
+          type: 'raster',
+          tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+          tileSize: 256,
+          maxzoom: 19,
+          attribution:
+            '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · Natural Earth',
+        },
       },
       layers: [
         { id: 'background', type: 'background', paint: { 'background-color': '#faf7f2' } },
+        {
+          id: 'streets',
+          type: 'raster',
+          source: 'streets',
+          minzoom: 6.5,
+          paint: {
+            'raster-opacity': ['interpolate', ['linear'], ['zoom'], 7, 0, 10.5, 1],
+            'raster-saturation': -0.85,
+            'raster-contrast': -0.1,
+            'raster-brightness-min': 0.06,
+          },
+        },
         {
           id: 'land',
           type: 'circle',
@@ -99,7 +163,7 @@ export class MemoryMap implements AfterViewInit, OnChanges, OnDestroy {
           paint: {
             'circle-color': '#1f1917',
             'circle-radius': ['interpolate', ['exponential', 1.6], ['zoom'], 0, 1.6, 4, 3.2, 7, 7],
-            'circle-opacity': 0.2,
+            'circle-opacity': ['interpolate', ['linear'], ['zoom'], 0, 0.2, 5.5, 0.2, 8, 0],
           },
         },
         {
@@ -111,7 +175,7 @@ export class MemoryMap implements AfterViewInit, OnChanges, OnDestroy {
             'line-color': '#aa2d31',
             'line-width': 1.2,
             'line-dasharray': [2, 3],
-            'line-opacity': 0.85,
+            'line-opacity': ['interpolate', ['linear'], ['zoom'], 0, 0.85, 8, 0],
           },
         },
         {
@@ -121,6 +185,7 @@ export class MemoryMap implements AfterViewInit, OnChanges, OnDestroy {
           paint: {
             'circle-color': '#aa2d31',
             'circle-radius': ['case', ['get', 'latest'], 5.5, 3.5],
+            'circle-opacity': ['interpolate', ['linear'], ['zoom'], 0, 1, 8, 1, 9.5, 0],
           },
         },
       ],
@@ -157,4 +222,81 @@ export class MemoryMap implements AfterViewInit, OnChanges, OnDestroy {
   private worldZoom(): number {
     return Math.log2(window.innerWidth / 512);
   }
+
+  private findTarget(): void {
+    const latest = this.latest;
+    if (!latest) {
+      this.target = null;
+      return;
+    }
+
+    const near = this.memories.filter(
+      (memory) => distanceKm(latest.lat, latest.lon, memory.lat, memory.lon) < 25,
+    );
+    if (near.length === 1) {
+      this.target = { lon: latest.lon, lat: latest.lat, zoom: latest.type === 'trip' ? 11 : 15 };
+      return;
+    }
+
+    const lons = near.map((memory) => memory.lon);
+    const lats = near.map((memory) => memory.lat);
+    const lonSpan = Math.max(0.004, Math.max(...lons) - Math.min(...lons));
+    const latSpan = Math.max(0.004, Math.max(...lats) - Math.min(...lats));
+    const zoomByWidth = Math.log2((((window.innerWidth - 240) / 256) * 360) / lonSpan);
+    const zoomByHeight = Math.log2((((window.innerHeight - 260) / 256) * 170) / latSpan);
+    this.target = {
+      lon: (Math.max(...lons) + Math.min(...lons)) / 2,
+      lat: (Math.max(...lats) + Math.min(...lats)) / 2,
+      zoom: Math.min(15, zoomByWidth, zoomByHeight),
+    };
+  }
+
+  private updateCamera(force = false): void {
+    if (!this.map || !this.section) return;
+
+    const top = this.section.nativeElement.getBoundingClientRect().top;
+    const progress = this.reduceMotion ? 1 : clamp(-top / (window.innerHeight * DESCENT_SCREENS));
+    this.progress.set(progress);
+
+    if (!force && Math.abs(progress - this.lastProgress) < 0.0005) return;
+    this.lastProgress = progress;
+
+    const worldZoom = this.worldZoom();
+    const target = this.target ?? { lon: WORLD_CENTER[0], lat: WORLD_CENTER[1], zoom: worldZoom };
+
+    const travel = ease(clamp(progress / 0.5));
+    const descend = ease(clamp((progress - 0.15) / 0.85));
+    const lon = WORLD_CENTER[0] + (target.lon - WORLD_CENTER[0]) * travel;
+    const lat = WORLD_CENTER[1] + (target.lat - WORLD_CENTER[1]) * travel;
+    const zoom = worldZoom + (target.zoom - worldZoom) * descend;
+
+    const padding = {
+      top: window.innerHeight * 0.28 * (1 - descend),
+      bottom: 0,
+      left: 0,
+      right: 0,
+    };
+    this.map.jumpTo({ center: [lon, lat], zoom, padding });
+  }
+
+  private onScroll = (): void => {
+    if (this.frame) return;
+    this.frame = requestAnimationFrame(() => {
+      this.frame = 0;
+      this.updateCamera();
+    });
+  };
+
+  private onResize = (): void => {
+    this.findTarget();
+    this.updateCamera(true);
+  };
+}
+
+function clamp(value: number): number {
+  return Math.min(1, Math.max(0, value));
+}
+
+function ease(value: number): number {
+  return value < 0.5 ? 4 * value * value * value : 1 - Math.pow(-2 * value + 2, 3) / 2;
 }

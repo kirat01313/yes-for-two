@@ -391,6 +391,7 @@ export const pt: Dictionary = {
     hintStart: 'Desçam devagar até ao vosso',
     hintEnd: ' mais recente.',
     recentLabel: 'Os vossos sins mais recentes',
+    latest: 'O sim mais recente',
   },
   places: {
     walk: 'min a pé',

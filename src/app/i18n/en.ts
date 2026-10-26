@@ -386,6 +386,7 @@ export const en = {
     hintStart: 'Scroll down slowly to your latest',
     hintEnd: '.',
     recentLabel: 'Your latest yeses',
+    latest: 'Your latest yes',
   },
   places: {
     walk: 'min walk',

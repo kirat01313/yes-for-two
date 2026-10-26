@@ -1,8 +1,8 @@
-<section class="map-section">
+<section class="map-section" #section [class.still]="reduceMotion">
   <div class="screen">
     <div #map class="map" role="region" [attr.aria-label]="'memoryMap.label' | translate"></div>
 
-    <div class="top">
+    <div class="top" [style.opacity]="titleOpacity()">
       <div class="title">
         <p class="eyebrow">{{ 'memoryMap.eyebrow' | translate }}</p>
         <h1>{{ 'memoryMap.title' | translate }}</h1>
@@ -26,5 +26,19 @@
         }
       </ol>
     </div>
+
+    @if (latest; as memory) {
+      <p class="coordinates" [style.opacity]="titleOpacity()">{{ coordinates }}</p>
+
+      <div class="arrival" [style.opacity]="arrivalOpacity()">
+        <small>{{ 'memoryMap.latest' | translate }}</small>
+        <strong>{{ memory.name }}</strong>
+        <span>{{ memory.date | date: 'longDate' : '' : language.locale() }}</span>
+      </div>
+
+      <span class="scroll-down" aria-hidden="true" [style.opacity]="titleOpacity()">
+        <span class="material-symbols-outlined">keyboard_arrow_down</span>
+      </span>
+    }
   </div>
 </section>
