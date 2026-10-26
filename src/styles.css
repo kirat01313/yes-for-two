@@ -384,6 +384,29 @@ textarea {
   cursor: default;
 }
 
+.dash-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dash-link::before {
+  content: '';
+  width: 2.25rem;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.25s;
+}
+
+.dash-link:hover::before,
+.dash-link:focus-within::before {
+  width: 3.25rem;
+}
+
 .settings-page {
   max-width: 760px;
   margin: 0 auto;

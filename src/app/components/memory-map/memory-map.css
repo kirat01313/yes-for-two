@@ -6,12 +6,16 @@
 
 .map-section {
   position: relative;
-  height: 260vh;
-  height: 260svh;
+  height: 360vh;
+  height: 360svh;
 }
 
-.map-section.empty,
 .map-section.still {
+  height: 200vh;
+  height: 200svh;
+}
+
+.map-section.empty {
   height: 100vh;
   height: 100svh;
 }
@@ -34,9 +38,21 @@
 
 .top {
   position: absolute;
-  top: 6rem;
+  top: 0;
   left: 0;
   right: 0;
+  z-index: 1;
+  padding: clamp(7rem, 16vh, 9rem) 0 7rem;
+  background: linear-gradient(
+    to bottom,
+    var(--porcelain) 0%,
+    rgba(250, 247, 242, 0.92) 55%,
+    rgba(250, 247, 242, 0)
+  );
+  pointer-events: none;
+}
+
+.top-inner {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -45,8 +61,6 @@
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 1.25rem;
-  pointer-events: none;
-  z-index: 1;
 }
 
 .title {
@@ -63,10 +77,12 @@
 }
 
 .recent {
-  min-width: 240px;
+  min-width: 260px;
   margin: 0;
-  padding: 0;
+  padding: 1rem 1.25rem;
   list-style: none;
+  background: var(--surface);
+  box-shadow: var(--shadow-2);
   pointer-events: auto;
 }
 

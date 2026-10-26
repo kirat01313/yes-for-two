@@ -1,50 +1,53 @@
 :host {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
 }
 
-.form-image {
+.form-hero {
   position: relative;
-  min-height: 0;
-  background: var(--champagne);
+  display: flex;
+  flex: none;
+  align-items: flex-end;
+  height: clamp(170px, 26vh, 240px);
+  overflow: hidden;
+  background: var(--espresso);
+  color: #ffffff;
 }
 
-.form-image img {
+.hero-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: opacity 0.3s;
 }
 
-.form-image.finding img {
+.form-hero.finding .hero-image {
   opacity: 0.45;
 }
 
-.image-status {
+.hero-shade {
   position: absolute;
-  bottom: 1.25rem;
-  left: 1.25rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.45rem 0.9rem;
-  border-radius: var(--pill);
-  background: var(--porcelain);
-  font-size: 0.85rem;
-  color: var(--text-2);
+  inset: 0;
+  background: linear-gradient(to top, rgba(20, 14, 12, 0.8), rgba(20, 14, 12, 0.15) 70%);
 }
 
-.form-body {
+.hero-text {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 2.5rem 3rem 2rem;
-  background: var(--porcelain);
+  padding: 0 2.5rem 1.5rem;
+}
+
+.hero-text .eyebrow {
+  color: var(--rose-light);
+}
+
+.hero-text h2 {
+  margin-top: 0.35rem;
+  font-size: clamp(1.9rem, 3.4vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.05;
 }
 
 .close-button {
@@ -58,92 +61,96 @@
   height: 40px;
   border: 0;
   border-radius: var(--pill);
-  background: var(--porcelain);
-  color: var(--text-2);
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  backdrop-filter: blur(8px);
   cursor: pointer;
 }
 
 .close-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.image-status {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--pill);
+  background: var(--porcelain);
+  font-size: 0.85rem;
+  color: var(--text-2);
+}
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 1.75rem 2.5rem 2rem;
   background: var(--champagne);
 }
 
-.form-top {
-  margin-bottom: 0.4rem;
+.form-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  box-shadow: var(--shadow-1);
 }
 
-.form-top h2 {
-  margin-top: 0.4rem;
-  font-size: clamp(2rem, 3vw, 2.6rem);
-  font-weight: 400;
-  line-height: 1.05;
-  text-wrap: balance;
+.form-grid .bar-field {
+  border-bottom: 1px solid var(--linen);
 }
 
-.date-field {
-  max-width: 260px;
+.span-2 {
+  grid-column: span 2;
 }
 
-.types {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding-top: 0.25rem;
+.span-3,
+.results-row {
+  grid-column: 1 / -1;
 }
 
-.type {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.5rem 1rem 0.5rem 0.8rem;
-  border: 1px solid var(--linen);
-  border-radius: var(--pill);
-  background: var(--surface);
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text-3);
-  cursor: pointer;
+.form-grid .span-3 {
+  border-right: 0;
+  border-bottom: 0;
 }
 
-.type input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.type .material-symbols-outlined {
-  font-size: 18px;
-}
-
-.type:has(input:checked) {
-  border-color: var(--primary);
-  background: var(--terracotta-light);
-  color: var(--primary);
-}
-
-.type:has(input:focus-visible) {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-}
-
-.search-button {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 40px;
-  height: 40px;
+.filter-bar .field input[type='date'],
+.filter-bar .field textarea {
+  width: 100%;
+  height: 34px;
+  padding: 0;
   border: 0;
   background: transparent;
-  color: var(--primary);
-  cursor: pointer;
+  box-shadow: none;
+  font-size: 1.05rem;
+  font-weight: 500;
 }
 
-.spin {
-  animation: spin 1s linear infinite;
+.filter-bar .field textarea {
+  height: auto;
+  min-height: 3.2rem;
+  resize: vertical;
+  font-weight: 400;
+}
+
+.filter-bar .field input:focus,
+.filter-bar .field textarea:focus,
+.filter-bar .field select:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .chosen-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 34px;
   font-size: 1rem;
+  font-weight: 500;
 }
 
 .chosen-location .material-symbols-outlined {
@@ -152,30 +159,43 @@
 
 .chosen-label {
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.results-row {
+  border-bottom: 1px solid var(--linen);
+  background: var(--porcelain);
 }
 
 .results {
-  margin: 0.5rem 0 0;
-  padding: 0;
-  border: 1px solid var(--linen);
-  background: var(--surface);
+  margin: 0;
+  padding: 0.35rem 0;
   list-style: none;
-}
-
-.results li + li {
-  border-top: 1px solid var(--linen);
 }
 
 .results button {
   display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
+  align-items: flex-start;
+  gap: 0.75rem;
   width: 100%;
-  padding: 0.6rem 1rem;
+  padding: 0.6rem 1.5rem;
   border: 0;
   background: transparent;
   text-align: left;
   cursor: pointer;
+}
+
+.results button > span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.results .material-symbols-outlined {
+  color: var(--text-3);
 }
 
 .results button:hover,
@@ -190,21 +210,25 @@
 }
 
 .no-results {
-  margin-top: 0.5rem;
-  font-size: 0.88rem;
+  padding: 0.9rem 1.5rem;
+  font-size: 0.9rem;
 }
 
 .counter {
   display: block;
-  margin-top: 0.35rem;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-align: right;
 }
 
-.submit-button {
-  justify-content: center;
-  width: 100%;
-  margin-top: 0.5rem;
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -214,12 +238,23 @@
 }
 
 @media (max-width: 760px) {
-  :host {
+  .form-grid {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 150px minmax(0, 1fr);
+  }
+
+  .span-2 {
+    grid-column: auto;
+  }
+
+  .form-grid .bar-field {
+    border-right: 0;
+  }
+
+  .hero-text {
+    padding: 0 1.25rem 1.25rem;
   }
 
   .form-body {
-    padding: 2rem 1.25rem 1.75rem;
+    padding: 1.25rem;
   }
 }

@@ -4,16 +4,21 @@
 
 app-memory-map {
   margin-top: -3.5rem;
-  margin-bottom: 4rem;
+}
+
+.album-panel {
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  margin: -100vh 0 0 calc(50% - 50vw);
+  margin-top: -100svh;
+  padding: 6rem 0 7rem;
+  background: var(--champagne);
+  box-shadow: var(--shadow-panel);
 }
 
 .album-top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 2rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .album-top h2 {
@@ -29,59 +34,16 @@ app-memory-map {
   color: var(--text-2);
 }
 
-.tools {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1rem;
-}
-
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.pill {
-  padding: 0.45rem 1rem;
-  border: 1px solid var(--linen);
-  border-radius: var(--pill);
-  background: var(--surface);
-  color: var(--text-3);
-  font-size: 0.84rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.pill:hover {
-  border-color: var(--text-3);
-}
-
-.pill[aria-pressed='true'] {
-  border-color: var(--primary);
-  background: var(--terracotta-light);
-  color: var(--primary);
-}
-
-.search {
-  width: 240px;
-}
-
-.search .line {
-  min-height: 40px;
-  color: var(--text-3);
-}
-
-.search input {
-  height: 38px;
-  font-size: 1rem;
+.memories-bar {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) auto;
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow-2);
 }
 
 .form-dialog {
-  width: min(1080px, 100% - 2rem);
+  width: min(980px, 100% - 2rem);
   max-width: none;
-  height: min(780px, 100% - 2rem);
-  max-height: none;
+  max-height: calc(100% - 2rem);
   padding: 0;
   overflow: hidden;
   border: 0;
@@ -140,10 +102,4 @@ app-memory-map {
 .more a {
   font-weight: 600;
   color: var(--primary);
-}
-
-@media (max-width: 600px) {
-  .search {
-    width: 100%;
-  }
 }

@@ -75,10 +75,14 @@
     </button>
   </div>
 
-  <a class="photos-link" routerLink="/gallery" [queryParams]="{ id: memory.id }">
-    <span class="material-symbols-outlined" aria-hidden="true">photo_library</span>
-    {{ 'memoryCard.photos' | translate }}
-  </a>
+  <div class="card-links">
+    <a class="dash-link" routerLink="/gallery" [queryParams]="{ id: memory.id }">
+      {{ 'memoryCard.photos' | translate }}
+    </a>
+    <a class="dash-link" [href]="mapsLink" target="_blank" rel="noopener">
+      {{ 'memoryCard.seeOnMaps' | translate }}
+    </a>
+  </div>
 
   <div class="actions secondary-actions">
     <button type="button" class="text-button" [disabled]="saving" (click)="edit.emit(memory)">

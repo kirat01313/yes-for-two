@@ -21,85 +21,77 @@
         (add)="openForm()"
       />
 
-      <div class="album-top">
-        <div>
-          <p class="eyebrow">{{ 'memoriesPage.eyebrow' | translate }}</p>
-          <h2 id="memories-title">
-            {{ 'memoriesPage.titleStart' | translate }}
-            <span class="yes">{{ 'memoriesPage.titleYes' | translate }}</span
-            >{{ 'memoriesPage.titleEnd' | translate }}
-          </h2>
-          <p class="counter">
-            {{ wentCount() }}
-            {{ (wentCount() === 1 ? 'memoriesPage.wentOne' : 'memoriesPage.wentMany') | translate }}
-            · {{ memories().length - wentCount() }} {{ 'memoriesPage.waiting' | translate }}
-          </p>
-        </div>
-
-        <div class="tools">
-          <div
-            class="pills"
-            role="group"
-            [attr.aria-label]="'memoriesPage.filterLabel' | translate"
-          >
-            @for (option of filters; track option.value) {
-              <button
-                type="button"
-                class="pill"
-                [attr.aria-pressed]="filter() === option.value"
-                (click)="chooseFilter(option.value)"
-              >
-                {{ option.label | translate }}
-              </button>
-            }
+      <section class="album-panel" aria-labelledby="memories-title">
+        <div class="result-content">
+          <div class="album-top">
+            <p class="eyebrow">{{ 'memoriesPage.eyebrow' | translate }}</p>
+            <h2 id="memories-title">
+              {{ 'memoriesPage.titleStart' | translate }}
+              <span class="yes">{{ 'memoriesPage.titleYes' | translate }}</span
+              >{{ 'memoriesPage.titleEnd' | translate }}
+            </h2>
+            <p class="counter">
+              {{ wentCount() }}
+              {{
+                (wentCount() === 1 ? 'memoriesPage.wentOne' : 'memoriesPage.wentMany') | translate
+              }}
+              · {{ memories().length - wentCount() }} {{ 'memoriesPage.waiting' | translate }}
+            </p>
           </div>
 
-          <div class="line-field search">
-            <label for="memories-search" class="visually-hidden">
-              {{ 'memoriesPage.searchLabel' | translate }}
-            </label>
-            <div class="line">
-              <span class="material-symbols-outlined" aria-hidden="true">search</span>
+          <form class="filter-bar memories-bar" (submit)="$event.preventDefault()">
+            <div class="field bar-field">
+              <label for="memories-type">{{ 'memoriesPage.filterLabel' | translate }}</label>
+              <select id="memories-type" name="type" [(ngModel)]="filter">
+                @for (option of filters; track option.value) {
+                  <option [value]="option.value">{{ option.label | translate }}</option>
+                }
+              </select>
+            </div>
+            <div class="field bar-field">
+              <label for="memories-search">{{ 'memoriesPage.searchLabel' | translate }}</label>
               <input
                 id="memories-search"
+                name="search"
                 type="text"
                 autocomplete="off"
                 [placeholder]="'memoriesPage.searchPlaceholder' | translate"
                 [(ngModel)]="search"
               />
             </div>
-          </div>
+            <div class="bar-action">
+              <button type="button" class="button button-primary" (click)="openForm()">
+                <span class="material-symbols-outlined" aria-hidden="true">add</span>
+                {{ 'memoriesPage.addMemory' | translate }}
+              </button>
+            </div>
+          </form>
 
-          <button type="button" class="button button-primary button-small" (click)="openForm()">
-            <span class="material-symbols-outlined" aria-hidden="true">add</span>
-            {{ 'memoriesPage.addMemory' | translate }}
-          </button>
+          @if (listError()) {
+            <p class="error list-error" role="alert">{{ listError() | translate }}</p>
+          }
+
+          @if (visible().length) {
+            <app-memory-album
+              [memories]="visible()"
+              [photos]="photos()"
+              [savingId]="savingId()"
+              (wentThere)="markAsWent($event)"
+              (saveNote)="saveNote($event)"
+              (edit)="openForm($event)"
+              (remove)="deleteMemory($event)"
+            />
+          } @else {
+            <p class="no-results">{{ 'memoriesPage.noResults' | translate }}</p>
+          }
+
+          <p class="more">
+            {{ 'memoriesPage.wantMore' | translate }}
+            <a routerLink="/restaurant">{{ 'memoriesPage.oneMoreDinner' | translate }}</a
+            >.
+          </p>
         </div>
-      </div>
-
-      @if (listError()) {
-        <p class="error list-error" role="alert">{{ listError() | translate }}</p>
-      }
-
-      @if (visible().length) {
-        <app-memory-album
-          [memories]="visible()"
-          [photos]="photos()"
-          [savingId]="savingId()"
-          (wentThere)="markAsWent($event)"
-          (saveNote)="saveNote($event)"
-          (edit)="openForm($event)"
-          (remove)="deleteMemory($event)"
-        />
-      } @else {
-        <p class="no-results">{{ 'memoriesPage.noResults' | translate }}</p>
-      }
-
-      <p class="more">
-        {{ 'memoriesPage.wantMore' | translate }}
-        <a routerLink="/restaurant">{{ 'memoriesPage.oneMoreDinner' | translate }}</a
-        >.
-      </p>
+      </section>
     }
   }
 </section>
@@ -122,3 +114,5 @@
     />
   }
 </dialog>
+
+<app-confirm-dialog />

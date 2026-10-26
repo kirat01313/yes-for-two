@@ -173,8 +173,8 @@ export class MemoryMap implements AfterViewInit, OnChanges, OnDestroy {
           source: 'land',
           paint: {
             'circle-color': '#1f1917',
-            'circle-radius': ['interpolate', ['exponential', 1.6], ['zoom'], 0, 1.6, 4, 3.2, 7, 7],
-            'circle-opacity': ['interpolate', ['linear'], ['zoom'], 0, 0.2, 5.5, 0.2, 8, 0],
+            'circle-radius': ['interpolate', ['exponential', 2], ['zoom'], 1, 2.6, 5, 38],
+            'circle-opacity': ['interpolate', ['linear'], ['zoom'], 0, 0.22, 4, 0.18, 7.5, 0],
           },
         },
         {

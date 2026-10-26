@@ -1,0 +1,147 @@
+<div class="exhibition">
+  <nav class="room-index" [attr.aria-label]="'galleryPage.indexLabel' | translate">
+    <p class="room-title">{{ 'galleryPage.roomTitle' | translate }}</p>
+    <ol>
+      @for (memory of memories; track memory.id; let i = $index) {
+        <li>
+          <button type="button" (click)="goTo(memory.id)">
+            <span class="room-number">{{ number(i) }}</span>
+            <span class="room-name">{{ memory.name }}</span>
+          </button>
+        </li>
+      }
+    </ol>
+  </nav>
+
+  <div class="works">
+    @for (memory of memories; track memory.id; let i = $index) {
+      <article class="work" [id]="'work-' + memory.id">
+        <div class="work-main">
+          <div class="work-piece">
+            <figure class="work-frame">
+              @if (cover(memory); as photo) {
+                <img [src]="photo.url" [alt]="memory.name" loading="lazy" />
+              } @else {
+                <div class="work-empty">
+                  <span class="material-symbols-outlined" aria-hidden="true">{{
+                    memory.icon
+                  }}</span>
+                  <p>{{ 'galleryPage.noPhotos' | translate }}</p>
+                </div>
+              }
+            </figure>
+            @if (cover(memory); as photo) {
+              <ng-container *ngTemplateOutlet="plaque; context: { $implicit: photo, number: 1 }" />
+            }
+          </div>
+
+          <div class="work-label">
+            <p class="work-number">N.º {{ number(i) }}</p>
+            <h2>{{ memory.name }}</h2>
+            <p class="work-subtitle">{{ memory.place }}</p>
+            <p class="work-meta">
+              {{ memory.date | date: 'y' }} / {{ memory.category }} / {{ ownPhotos(memory).length }}
+              {{ 'galleryPage.photos' | translate }}
+            </p>
+            @if (memory.note) {
+              <p class="work-note">{{ memory.note }}</p>
+            }
+            <p class="work-date">{{ memory.date | date: 'longDate' : '' : language.locale() }}</p>
+
+            <div class="work-links">
+              @if (canAddPhotos(memory)) {
+                <label class="dash-link accent" [class.uploading]="uploadingId === memory.id">
+                  {{
+                    (uploadingId === memory.id ? 'galleryPage.uploading' : 'galleryPage.addPhotos')
+                      | translate
+                  }}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                    class="visually-hidden"
+                    [disabled]="uploadingId !== null"
+                    (change)="chooseFiles(memory, $event)"
+                  />
+                </label>
+              }
+              <a class="dash-link" [href]="mapsLink(memory)" target="_blank" rel="noopener">
+                {{ 'galleryPage.seeOnMaps' | translate }}
+              </a>
+              <a class="dash-link" routerLink="/memories" [queryParams]="{ id: memory.id }">
+                {{ 'galleryPage.seeInMemories' | translate }}
+              </a>
+            </div>
+            <p class="photo-count">{{ ownPhotos(memory).length }}/{{ maxPhotos }}</p>
+          </div>
+        </div>
+
+        @if (wall(memory).length) {
+          <ul class="wall" [attr.aria-label]="'galleryPage.wallLabel' | translate">
+            @for (photo of wall(memory); track photo.id; let p = $index) {
+              <li class="wall-item">
+                <figure class="framed">
+                  <img [src]="photo.url" [alt]="memory.name" loading="lazy" />
+                </figure>
+                <ng-container
+                  *ngTemplateOutlet="plaque; context: { $implicit: photo, number: p + 2 }"
+                />
+              </li>
+            }
+          </ul>
+        }
+      </article>
+    }
+  </div>
+</div>
+
+<ng-template #plaque let-photo let-number="number">
+  <div class="plaque">
+    @if (editingPhotoId() === photo.id) {
+      <form
+        class="caption-form"
+        (submit)="$event.preventDefault(); submitCaption(photo, caption.value)"
+      >
+        <label class="visually-hidden" [for]="'caption-' + photo.id">
+          {{ 'galleryPage.captionLabel' | translate }}
+        </label>
+        <input
+          #caption
+          [id]="'caption-' + photo.id"
+          type="text"
+          autocomplete="off"
+          [maxLength]="maxCaption"
+          [value]="photo.caption"
+          [placeholder]="'galleryPage.captionPlaceholder' | translate"
+        />
+        <button type="submit" class="text-button">{{ 'galleryPage.save' | translate }}</button>
+        <button type="button" class="text-button muted" (click)="editCaption(null)">
+          {{ 'galleryPage.cancel' | translate }}
+        </button>
+      </form>
+    } @else {
+      <p class="plaque-text">
+        <span class="plaque-number">{{ number }}.</span>
+        <em>{{ photo.caption || ('galleryPage.untitled' | translate) }}</em>
+      </p>
+      <div class="plaque-actions">
+        <button
+          type="button"
+          class="text-button muted"
+          [disabled]="savingCaptionId === photo.id"
+          (click)="editCaption(photo)"
+        >
+          {{ (photo.caption ? 'galleryPage.editCaption' : 'galleryPage.writeCaption') | translate }}
+        </button>
+        <button
+          type="button"
+          class="delete-photo"
+          [attr.aria-label]="'galleryPage.deletePhoto' | translate"
+          (click)="deletePhoto.emit(photo)"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+        </button>
+      </div>
+    }
+  </div>
+</ng-template>

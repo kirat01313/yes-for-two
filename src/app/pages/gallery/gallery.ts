@@ -10,7 +10,8 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { concatMap, from, switchMap, tap } from 'rxjs';
-import { MemoryBook } from '../../components/memory-book/memory-book';
+import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { MemoryExhibition } from '../../components/memory-exhibition/memory-exhibition';
 import { StatusNotice } from '../../components/status-notice/status-notice';
 import { Memory } from '../../models/memory';
 import { MemoryPhoto } from '../../models/photo';
@@ -21,7 +22,7 @@ import { MemoriesService } from '../../services/memories.service';
 import { MAX_PHOTOS, PhotosService } from '../../services/photos.service';
 
 @Component({
-  imports: [RouterLink, TranslatePipe, StatusNotice, MemoryBook],
+  imports: [RouterLink, TranslatePipe, StatusNotice, MemoryExhibition, ConfirmDialog],
   selector: 'app-gallery',
   styleUrl: './gallery.css',
   templateUrl: './gallery.html',
@@ -34,7 +35,8 @@ export class Gallery implements OnInit {
 
   @Input() id?: string;
 
-  @ViewChild(MemoryBook) book?: MemoryBook;
+  @ViewChild(MemoryExhibition) exhibition?: MemoryExhibition;
+  @ViewChild(ConfirmDialog) confirm!: ConfirmDialog;
 
   readonly status = signal<RequestStatus>('loading');
   readonly memories = signal<Memory[]>([]);
@@ -99,8 +101,9 @@ export class Gallery implements OnInit {
     });
   }
 
-  deletePhoto(photo: MemoryPhoto): void {
-    if (!confirm(this.language.translate('galleryPage.confirmDeletePhoto'))) return;
+  async deletePhoto(photo: MemoryPhoto): Promise<void> {
+    const sure = await this.confirm.ask(this.language.translate('galleryPage.confirmDeletePhoto'));
+    if (!sure) return;
 
     this.photoError.set('');
     this.photosService.delete(photo).subscribe({
@@ -123,6 +126,6 @@ export class Gallery implements OnInit {
   }
 
   private goTo(id: number): void {
-    afterNextRender(() => this.book?.goTo(id, 'auto'), { injector: this.injector });
+    afterNextRender(() => this.exhibition?.goTo(id), { injector: this.injector });
   }
 }
