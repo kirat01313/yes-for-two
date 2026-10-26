@@ -1,1 +1,122 @@
-<p>memories works!</p>
+<section class="memories-page">
+  @switch (status()) {
+    @case ('loading') {
+      <app-status-notice status="loading" title="memoriesPage.loading" />
+    }
+    @case ('error') {
+      <app-status-notice
+        status="error"
+        title="memoriesPage.errorTitle"
+        text="memoriesPage.errorText"
+      />
+    }
+    @case ('empty') {
+      <app-status-notice
+        status="empty"
+        title="memoriesPage.emptyTitle"
+        text="memoriesPage.emptyText"
+      />
+      <p class="more">
+        <a routerLink="/restaurant">{{ 'memoriesPage.firstYes' | translate }}</a>
+      </p>
+    }
+    @case ('success') {
+      <div class="album-top">
+        <div>
+          <p class="eyebrow">{{ 'memoriesPage.eyebrow' | translate }}</p>
+          <h1 id="memories-title">
+            {{ 'memoriesPage.titleStart' | translate }}
+            <span class="yes">{{ 'memoriesPage.titleYes' | translate }}</span
+            >{{ 'memoriesPage.titleEnd' | translate }}
+          </h1>
+          <p class="counter">
+            {{ wentCount() }}
+            {{ (wentCount() === 1 ? 'memoriesPage.wentOne' : 'memoriesPage.wentMany') | translate }}
+            · {{ memories().length - wentCount() }} {{ 'memoriesPage.waiting' | translate }}
+          </p>
+        </div>
+
+        <div class="tools">
+          <div
+            class="pills"
+            role="group"
+            [attr.aria-label]="'memoriesPage.filterLabel' | translate"
+          >
+            @for (option of filters; track option.value) {
+              <button
+                type="button"
+                class="pill"
+                [attr.aria-pressed]="filter() === option.value"
+                (click)="chooseFilter(option.value)"
+              >
+                {{ option.label | translate }}
+              </button>
+            }
+          </div>
+
+          <div class="field search">
+            <label for="memories-search" class="visually-hidden">
+              {{ 'memoriesPage.searchLabel' | translate }}
+            </label>
+            <input
+              id="memories-search"
+              type="text"
+              autocomplete="off"
+              [placeholder]="'memoriesPage.searchPlaceholder' | translate"
+              [(ngModel)]="search"
+            />
+          </div>
+        </div>
+      </div>
+
+      @if (visible().length) {
+        <ul class="memory-list">
+          @for (memory of visible(); track memory.id) {
+            <li
+              class="memory"
+              [id]="'memory-' + memory.id"
+              [class.highlighted]="highlighted() === memory.id"
+            >
+              <div class="memory-image">
+                @if (memory.image) {
+                  <img [src]="memory.image" alt="" loading="lazy" />
+                } @else {
+                  <span class="material-symbols-outlined" aria-hidden="true">{{
+                    memory.icon
+                  }}</span>
+                }
+              </div>
+
+              <div class="memory-text">
+                <p class="memory-type">
+                  {{ memory.category }} · {{ memory.place }}
+                  @if (memory.went) {
+                    <span class="went">· {{ 'memoriesPage.went' | translate }}</span>
+                  }
+                </p>
+                <h2>{{ memory.name }}</h2>
+                <p class="memory-date">
+                  {{ 'memoriesPage.saidYes' | translate }}
+                  <span class="yes">{{ 'memoriesPage.yes' | translate }}</span>
+                  {{ 'memoriesPage.on' | translate }}
+                  {{ memory.date | date: 'longDate' : '' : language.locale() }}
+                </p>
+                @if (memory.note) {
+                  <p class="memory-note">{{ memory.note }}</p>
+                }
+              </div>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="no-results">{{ 'memoriesPage.noResults' | translate }}</p>
+      }
+
+      <p class="more">
+        {{ 'memoriesPage.wantMore' | translate }}
+        <a routerLink="/restaurant">{{ 'memoriesPage.oneMoreDinner' | translate }}</a
+        >.
+      </p>
+    }
+  }
+</section>
