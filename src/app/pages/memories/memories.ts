@@ -143,6 +143,10 @@ export class Memories implements OnInit {
     this.formOpen.set(false);
   }
 
+  markPress(event: MouseEvent): void {
+    this.pressedOutside = event.target === event.currentTarget;
+  }
+
   closeIfOutside(event: MouseEvent): void {
     if (this.pressedOutside && event.target === event.currentTarget) this.closeForm();
     this.pressedOutside = false;
