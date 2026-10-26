@@ -60,17 +60,20 @@
             }
           </div>
 
-          <div class="field search">
+          <div class="line-field search">
             <label for="memories-search" class="visually-hidden">
               {{ 'memoriesPage.searchLabel' | translate }}
             </label>
-            <input
-              id="memories-search"
-              type="text"
-              autocomplete="off"
-              [placeholder]="'memoriesPage.searchPlaceholder' | translate"
-              [(ngModel)]="search"
-            />
+            <div class="line">
+              <span class="material-symbols-outlined" aria-hidden="true">search</span>
+              <input
+                id="memories-search"
+                type="text"
+                autocomplete="off"
+                [placeholder]="'memoriesPage.searchPlaceholder' | translate"
+                [(ngModel)]="search"
+              />
+            </div>
           </div>
 
           <button type="button" class="button button-primary button-small" (click)="openForm()">

@@ -29,12 +29,12 @@
   </p>
 
   @if (writing()) {
-    <form class="field note-form" [formGroup]="form" (ngSubmit)="submitNote()">
+    <form class="line-field note-form" [formGroup]="form" (ngSubmit)="submitNote()">
       <label [for]="'note-' + memory.id">{{ 'memoryCard.howWasIt' | translate }}</label>
       <textarea
         [id]="'note-' + memory.id"
         formControlName="note"
-        rows="4"
+        rows="2"
         [placeholder]="'memoryCard.notePlaceholder' | translate"
       ></textarea>
       <div class="note-footer">

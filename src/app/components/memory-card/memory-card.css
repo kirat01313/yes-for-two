@@ -1,13 +1,12 @@
 :host {
   display: grid;
-  grid-template-columns: 180px minmax(0, 1fr);
-  gap: 1.75rem;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+  min-height: 260px;
 }
 
 .memory-image {
   display: grid;
   place-items: center;
-  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--champagne);
   color: var(--text-3);
@@ -28,6 +27,7 @@
   flex-direction: column;
   gap: 0.6rem;
   align-self: center;
+  padding: 2rem 2.5rem;
 }
 
 .memory-type {
@@ -48,7 +48,7 @@
 }
 
 h2 {
-  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
   font-weight: 400;
   line-height: 1.1;
 }
@@ -101,23 +101,6 @@ h2 {
   margin-top: 0.4rem;
 }
 
-.text-button {
-  padding: 0;
-  border: 0;
-  background: none;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--primary);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
-
-.text-button:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
 .secondary-actions {
   margin-top: 0;
 }
@@ -135,5 +118,10 @@ h2 {
 @media (max-width: 600px) {
   :host {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 180px auto;
+  }
+
+  .memory-text {
+    padding: 1.5rem 1.25rem;
   }
 }

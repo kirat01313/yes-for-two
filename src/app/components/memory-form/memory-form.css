@@ -6,6 +6,7 @@
 }
 
 .form-image {
+  position: relative;
   min-height: 0;
   background: var(--champagne);
 }
@@ -14,6 +15,25 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 0.3s;
+}
+
+.form-image.finding img {
+  opacity: 0.45;
+}
+
+.image-status {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--pill);
+  background: var(--porcelain);
+  font-size: 0.85rem;
+  color: var(--text-2);
 }
 
 .form-body {
@@ -57,88 +77,6 @@
   font-weight: 400;
   line-height: 1.05;
   text-wrap: balance;
-}
-
-.line-field {
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.line-field > label,
-.line-field > legend {
-  display: block;
-  margin-bottom: 0.35rem;
-  padding: 0;
-  font-size: 0.85rem;
-  color: var(--text-3);
-}
-
-.line-field > input,
-.line-field textarea,
-.line {
-  width: 100%;
-  border: 0;
-  border-bottom: 1px solid var(--text-3);
-  border-radius: 0;
-  background: transparent;
-  font-size: 1.1rem;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-}
-
-.line-field > input {
-  height: 44px;
-  padding: 0;
-}
-
-.line-field textarea {
-  display: block;
-  padding: 0.6rem 0;
-  resize: vertical;
-}
-
-.line-field > input::placeholder,
-.line-field textarea::placeholder,
-.line input::placeholder {
-  color: var(--text-3);
-  opacity: 0.6;
-}
-
-.line-field > input:focus,
-.line-field textarea:focus,
-.line:focus-within {
-  outline: none;
-  border-bottom-color: var(--primary);
-  box-shadow: 0 1px 0 0 var(--primary);
-}
-
-.line {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: 44px;
-}
-
-.line input {
-  flex: 1;
-  min-width: 0;
-  height: 42px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  font-size: 1.1rem;
-}
-
-.line input:focus {
-  outline: none;
-}
-
-.line-field .error {
-  min-height: 1.1em;
-  margin-top: 0.3rem;
 }
 
 .date-field {
@@ -261,18 +199,6 @@
   margin-top: 0.35rem;
   font-size: 0.8rem;
   text-align: right;
-}
-
-.text-button {
-  padding: 0;
-  border: 0;
-  background: none;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--primary);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
 }
 
 .submit-button {

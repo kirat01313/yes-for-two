@@ -59,7 +59,17 @@
 }
 
 .search {
-  width: 220px;
+  width: 240px;
+}
+
+.search .line {
+  min-height: 40px;
+  color: var(--text-3);
+}
+
+.search input {
+  height: 38px;
+  font-size: 1rem;
 }
 
 .memory-list {
@@ -71,14 +81,14 @@
 }
 
 .memory {
-  padding: 1.25rem;
-  border: 1px solid var(--linen);
+  overflow: hidden;
   background: var(--surface);
+  box-shadow: var(--shadow-1);
   scroll-margin: 6rem;
 }
 
 .memory.highlighted {
-  border-color: var(--primary);
+  outline: 1.5px solid var(--primary);
   box-shadow: var(--shadow-2);
 }
 
