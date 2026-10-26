@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { AuthService, SignUpResult } from '../../services/auth.service';
+import { MemoriesService } from '../../services/memories.service';
 import { fieldsMatch } from '../../utils/validators';
 
 type Mode = 'sign-in' | 'create';
@@ -17,6 +18,7 @@ type Mode = 'sign-in' | 'create';
 export class SignIn implements OnInit {
   private auth = inject(AuthService);
   private router = inject(Router);
+  private memories = inject(MemoriesService);
 
   @Input() returnTo?: string;
 
@@ -105,6 +107,15 @@ export class SignIn implements OnInit {
   }
 
   private afterSignIn(): void {
-    this.router.navigateByUrl(this.returnTo?.startsWith('/') ? this.returnTo : '/memories');
+    const target = this.returnTo?.startsWith('/') ? this.returnTo : '/memories';
+    if (!this.memories.hasPending()) {
+      this.router.navigateByUrl(target);
+      return;
+    }
+    this.memories.savePending().subscribe({
+      next: (memory) =>
+        this.router.navigate(['/memories'], { queryParams: memory ? { id: memory.id } : {} }),
+      error: () => this.router.navigateByUrl(target),
+    });
   }
 }
