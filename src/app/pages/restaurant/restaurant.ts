@@ -25,6 +25,7 @@ import { Suggestion } from '../../models/suggestion';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { GeoService } from '../../services/geo.service';
 import { LanguageService } from '../../services/language.service';
+import { MemoriesService } from '../../services/memories.service';
 import { PlacesService } from '../../services/places.service';
 import { googleMapsLink, pickRandom } from '../../utils/geo';
 import { choiceGroup, selectedValues } from '../../utils/validators';
@@ -48,6 +49,7 @@ export class Restaurant implements OnDestroy {
   private readonly geo = inject(GeoService);
   private readonly places = inject(PlacesService);
   private readonly injector = inject(Injector);
+  private readonly memories = inject(MemoriesService);
   readonly language = inject(LanguageService);
 
   @ViewChild('result') result?: ElementRef<HTMLElement>;
@@ -73,6 +75,9 @@ export class Restaurant implements OnDestroy {
   readonly searchedCity = signal('');
   readonly message = signal<{ title: Text; text: Text }>({ title: '', text: '' });
   readonly suggestion = signal<Suggestion | null>(null);
+  readonly memoryId = signal<number | null>(null);
+  readonly saving = signal(false);
+  readonly saveError = signal(false);
 
   private request?: Subscription;
 
@@ -99,6 +104,8 @@ export class Restaurant implements OnDestroy {
 
     this.searchedCity.set(city);
     this.status.set('loading');
+    this.memoryId.set(null);
+    this.saveError.set(false);
     this.showResult();
     this.request?.unsubscribe();
 
@@ -141,6 +148,21 @@ export class Restaurant implements OnDestroy {
       en: `Looking for restaurants in ${city}…`,
       pt: `A procurar restaurantes em ${city}…`,
     };
+  }
+
+  sayYes(suggestion: Suggestion): void {
+    this.saving.set(true);
+    this.saveError.set(false);
+    this.memories.sayYes(suggestion).subscribe({
+      next: (memory) => {
+        this.saving.set(false);
+        if (memory) this.memoryId.set(memory.id);
+      },
+      error: () => {
+        this.saving.set(false);
+        this.saveError.set(true);
+      },
+    });
   }
 
   ngOnDestroy(): void {

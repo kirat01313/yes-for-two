@@ -28,4 +28,5 @@ export interface MemoryFormData {
   location: { name: string; lat: number; lon: number };
   date: string;
   note: string;
+  image?: string | null;
 }

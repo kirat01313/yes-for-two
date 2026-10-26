@@ -246,6 +246,7 @@ textarea {
 .field input[type='text'],
 .field input[type='email'],
 .field input[type='password'],
+.field input[type='date'],
 .field select {
   width: 100%;
   height: 52px;
@@ -256,7 +257,18 @@ textarea {
   font-size: 1rem;
 }
 
-.field input:focus {
+.field textarea {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--linen);
+  border-radius: var(--radius);
+  background: var(--surface);
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: inset 0 0 0 1px var(--primary);
@@ -271,6 +283,105 @@ textarea {
   margin-top: 0.35rem;
   font-size: 0.82rem;
   color: var(--error);
+}
+
+.line-field {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.line-field > label,
+.line-field > legend {
+  display: block;
+  margin-bottom: 0.35rem;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--text-3);
+}
+
+.line-field > input,
+.line-field textarea,
+.line {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--text-3);
+  border-radius: 0;
+  background: transparent;
+  font-size: 1.1rem;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.line-field > input {
+  height: 44px;
+  padding: 0;
+}
+
+.line-field textarea {
+  display: block;
+  padding: 0.6rem 0;
+  resize: vertical;
+}
+
+.line-field > input::placeholder,
+.line-field textarea::placeholder,
+.line input::placeholder {
+  color: var(--text-3);
+  opacity: 0.6;
+}
+
+.line-field > input:focus,
+.line-field textarea:focus,
+.line:focus-within {
+  outline: none;
+  border-bottom-color: var(--primary);
+  box-shadow: 0 1px 0 0 var(--primary);
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+}
+
+.line input {
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 1.1rem;
+}
+
+.line input:focus {
+  outline: none;
+}
+
+.line-field .error {
+  min-height: 1.1em;
+  margin-top: 0.3rem;
+}
+
+.text-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.text-button:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .settings-page {
@@ -420,6 +531,11 @@ textarea {
   min-height: 100svh;
   padding: 6rem 0 4rem;
   background: var(--champagne);
+}
+
+.save-error {
+  margin-top: 1rem;
+  text-align: center;
 }
 
 .result-content {

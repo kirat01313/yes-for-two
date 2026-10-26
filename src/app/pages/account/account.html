@@ -50,12 +50,28 @@
 
       <div class="field">
         <label for="account-new-password">{{ 'accountPage.newPassword' | translate }}</label>
-        <input
-          id="account-new-password"
-          type="password"
-          formControlName="newPassword"
-          autocomplete="new-password"
-        />
+        <div class="field-with-button">
+          <input
+            id="account-new-password"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="newPassword"
+            autocomplete="new-password"
+          />
+          <button
+            type="button"
+            class="icon-button"
+            [attr.aria-pressed]="showPassword()"
+            [attr.aria-label]="
+              (showPassword() ? 'auth.hidePassword' : 'auth.showPassword') | translate
+            "
+            [title]="(showPassword() ? 'auth.hidePassword' : 'auth.showPassword') | translate"
+            (click)="showPassword.set(!showPassword())"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">{{
+              showPassword() ? 'visibility_off' : 'visibility'
+            }}</span>
+          </button>
+        </div>
         <p class="error">
           @if (
             passwordForm.controls.newPassword.touched &&
@@ -75,7 +91,7 @@
         <label for="account-confirm">{{ 'accountPage.confirmPassword' | translate }}</label>
         <input
           id="account-confirm"
-          type="password"
+          [type]="showPassword() ? 'text' : 'password'"
           formControlName="confirmPassword"
           autocomplete="new-password"
         />

@@ -4,7 +4,7 @@
     [image]="heroImage"
     alt="tripPage.heroAlt"
     eyebrow="tripPage.eyebrow"
-    title="tripPage.title"
+    heading="tripPage.title"
   >
     <form class="filter-bar filter-bar-wide" [formGroup]="form" (ngSubmit)="draw()" novalidate>
       <div class="field bar-field">
@@ -121,9 +121,18 @@
           }
           @case ('success') {
             @if (suggestion(); as current) {
-              <app-suggestion-card [suggestion]="current" />
+              <app-suggestion-card
+                [suggestion]="current"
+                [memoryId]="memoryId()"
+                [saving]="saving()"
+                (saidYes)="sayYes($event)"
+              />
             }
           }
+        }
+
+        @if (saveError()) {
+          <p class="error save-error">{{ 'card.saveError' | translate }}</p>
         }
       </div>
     </section>

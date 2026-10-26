@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, of, retry } from 'rxjs';
+import { Observable, catchError, map, of, retry, switchMap } from 'rxjs';
 import { WikipediaGeoResponse, WikipediaSummary } from '../models/api-responses';
 import { KnownPlace } from '../models/place';
 import { distanceKm } from '../utils/geo';
@@ -50,6 +50,26 @@ export class WikipediaService {
     );
   }
 
+  placeImage(
+    name: string,
+    city: string,
+    lat: number,
+    lon: number,
+    lang: string,
+  ): Observable<string | null> {
+    return this.searchImage(`${name} ${city}`, lat, lon, lang).pipe(
+      switchMap((image) =>
+        image
+          ? of(image)
+          : this.nearbyPlaces(lat, lon, lang).pipe(
+              map((places) => places.find((place) => place.distance <= 1)?.image ?? null),
+            ),
+      ),
+      switchMap((image) => (image ? of(image) : this.image(`${lang}:${city}`))),
+      catchError(() => of(null)),
+    );
+  }
+
   nearbyPlaces(lat: number, lon: number, lang: string): Observable<KnownPlace[]> {
     const params = {
       action: 'query',
@@ -93,6 +113,40 @@ export class WikipediaService {
         ),
         retry({ count: 1, delay: 1500 }),
         catchError(() => of([])),
+      );
+  }
+
+  private searchImage(
+    text: string,
+    lat: number,
+    lon: number,
+    lang: string,
+  ): Observable<string | null> {
+    const params = {
+      action: 'query',
+      format: 'json',
+      origin: '*',
+      generator: 'search',
+      gsrsearch: text,
+      gsrlimit: 5,
+      prop: 'pageimages|coordinates',
+      piprop: 'thumbnail',
+      pithumbsize: 960,
+    };
+
+    return this.http
+      .get<WikipediaGeoResponse>(`https://${lang}.wikipedia.org/w/api.php`, { params })
+      .pipe(
+        map((response) => {
+          const page = Object.values(response.query?.pages ?? {})
+            .sort((a, b) => (a.index ?? 0) - (b.index ?? 0))
+            .find((page) => {
+              const point = page.coordinates?.[0];
+              return page.thumbnail && point && distanceKm(lat, lon, point.lat, point.lon) <= 2;
+            });
+          return page?.thumbnail?.source ?? null;
+        }),
+        catchError(() => of(null)),
       );
   }
 

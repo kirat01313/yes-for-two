@@ -51,6 +51,7 @@ export interface WikipediaGeoResponse {
       {
         pageid: number;
         title: string;
+        index?: number;
         description?: string;
         thumbnail?: { source: string };
         coordinates?: { lat: number; lon: number }[];

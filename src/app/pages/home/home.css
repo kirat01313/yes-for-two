@@ -3,7 +3,7 @@
   height: 100vh;
   height: 100svh;
   margin-left: calc(50% - 50vw);
-  margin-bottom: 25vh;
+  margin-bottom: 40vh;
   overflow: hidden;
   background: var(--espresso);
 }
@@ -92,7 +92,7 @@
   height: 145vh;
   height: 145svh;
   margin-left: calc(50% - 50vw);
-  margin-bottom: 15vh;
+  margin-bottom: 25vh;
   background: var(--porcelain);
 }
 
@@ -121,7 +121,7 @@
 
 .letter blockquote p {
   font-family: var(--font-hand);
-  font-size: clamp(1.05rem, 4.3vw, 3.6rem);
+  font-size: clamp(1.05rem, 3.5vw, 2.5rem);
   line-height: 1.85;
   white-space: nowrap;
   color: #2c2421;
@@ -155,7 +155,7 @@
   min-height: 100vh;
   min-height: 100svh;
   margin-left: calc(50% - 50vw);
-  margin-bottom: 25vh;
+  margin-bottom: 40vh;
   padding: 4.5rem 0;
   background: var(--champagne);
 }
@@ -168,7 +168,7 @@
   min-height: 100vh;
   min-height: 100svh;
   margin-left: calc(50% - 50vw);
-  margin-bottom: 25vh;
+  margin-bottom: 40vh;
   padding: 4.5rem 0;
   background: var(--porcelain);
 }

@@ -1,0 +1,99 @@
+<div class="memory-image">
+  @if (memory.image) {
+    <img [src]="memory.image" alt="" loading="lazy" />
+  } @else {
+    <span class="material-symbols-outlined" aria-hidden="true">{{ memory.icon }}</span>
+  }
+</div>
+
+<div class="memory-text">
+  <p class="memory-type">
+    {{ memory.category }} · {{ memory.place }}
+    @if (memory.went) {
+      <span class="went">· {{ 'memoryCard.went' | translate }}</span>
+    }
+    @if (memory.origin === 'manual') {
+      <span class="added">· {{ 'memoryCard.addedByYou' | translate }}</span>
+    }
+  </p>
+  <h2>{{ memory.name }}</h2>
+  <p class="memory-date">
+    @if (memory.origin === 'manual') {
+      {{ 'memoryCard.wentOn' | translate }}
+    } @else {
+      {{ 'memoryCard.saidYes' | translate }}
+      <span class="yes">{{ 'app.yes' | translate }}</span>
+      {{ 'memoryCard.on' | translate }}
+    }
+    {{ memory.date | date: 'longDate' : '' : language.locale() }}
+  </p>
+
+  @if (writing()) {
+    <form class="line-field note-form" [formGroup]="form" (ngSubmit)="submitNote()">
+      <label [for]="'note-' + memory.id">{{ 'memoryCard.howWasIt' | translate }}</label>
+      <textarea
+        [id]="'note-' + memory.id"
+        formControlName="note"
+        rows="2"
+        [placeholder]="'memoryCard.notePlaceholder' | translate"
+      ></textarea>
+      <div class="note-footer">
+        <small [class.error]="note.invalid">
+          {{ note.value.length }}/{{ noteLimit }}
+          @if (note.hasError('maxlength')) {
+            · {{ 'memoryCard.tooLong' | translate }}
+          }
+        </small>
+        <button
+          type="submit"
+          class="button button-primary button-small"
+          [disabled]="form.invalid || form.pristine || saving"
+        >
+          {{ 'memoryCard.save' | translate }}
+        </button>
+      </div>
+    </form>
+  } @else {
+    <p class="memory-note" [class.empty]="!memory.note">
+      {{ memory.note || ((memory.went ? 'memoryCard.noNote' : 'memoryCard.notYet') | translate) }}
+    </p>
+  }
+
+  <div class="actions">
+    @if (!memory.went) {
+      <button
+        type="button"
+        class="button button-primary button-small"
+        [disabled]="saving"
+        (click)="wentThere.emit(memory)"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">check</span>
+        {{ 'memoryCard.weWent' | translate }}
+      </button>
+    }
+    <button type="button" class="text-button" (click)="toggleWriting()">
+      {{
+        (writing()
+          ? 'memoryCard.cancel'
+          : memory.note
+            ? 'memoryCard.editNote'
+            : 'memoryCard.writeNote'
+        ) | translate
+      }}
+    </button>
+  </div>
+
+  <div class="actions secondary-actions">
+    <button type="button" class="text-button" [disabled]="saving" (click)="edit.emit(memory)">
+      {{ 'memoryCard.edit' | translate }}
+    </button>
+    <button
+      type="button"
+      class="text-button danger"
+      [disabled]="saving"
+      (click)="remove.emit(memory)"
+    >
+      {{ 'memoryCard.delete' | translate }}
+    </button>
+  </div>
+</div>

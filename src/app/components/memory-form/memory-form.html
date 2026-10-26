@@ -1,0 +1,164 @@
+<button
+  type="button"
+  class="close-button"
+  [attr.aria-label]="'memoryForm.close' | translate"
+  (click)="cancel.emit()"
+>
+  <span class="material-symbols-outlined" aria-hidden="true">close</span>
+</button>
+
+<div class="form-image" [class.finding]="findingImage()">
+  <img [src]="image" alt="" />
+  @if (findingImage()) {
+    <p class="image-status" role="status">
+      <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span>
+      {{ 'memoryForm.findingImage' | translate }}
+    </p>
+  }
+</div>
+
+<form class="form-body" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <header class="form-top">
+    <p class="eyebrow">
+      {{ (memory ? 'memoryForm.editEyebrow' : 'memoryForm.newEyebrow') | translate }}
+    </p>
+    <h2>{{ memory ? memory.name : ('memoryForm.newTitle' | translate) }}</h2>
+  </header>
+
+  <div class="line-field">
+    <label for="memory-name">{{ 'memoryForm.name' | translate }}</label>
+    <input
+      id="memory-name"
+      type="text"
+      formControlName="name"
+      autocomplete="off"
+      [placeholder]="'memoryForm.namePlaceholder' | translate"
+    />
+    <p class="error">
+      @if (controls.name.touched && controls.name.hasError('required')) {
+        {{ 'memoryForm.nameRequired' | translate }}
+      } @else if (controls.name.touched && controls.name.hasError('minlength')) {
+        {{ 'memoryForm.nameShort' | translate }}
+      } @else if (controls.name.hasError('maxlength')) {
+        {{ 'memoryForm.nameLong' | translate }}
+      }
+    </p>
+  </div>
+
+  <fieldset class="line-field">
+    <legend>{{ 'memoryForm.type' | translate }}</legend>
+    <div class="types">
+      @for (program of programs; track program.value) {
+        <label class="type">
+          <input type="radio" formControlName="type" [value]="program.value" />
+          <span class="material-symbols-outlined" aria-hidden="true">{{ program.icon }}</span>
+          {{ 'nav.' + program.value | translate }}
+        </label>
+      }
+    </div>
+    <p class="error">
+      @if (controls.type.touched && controls.type.hasError('required')) {
+        {{ 'memoryForm.typeRequired' | translate }}
+      }
+    </p>
+  </fieldset>
+
+  <div class="line-field">
+    <label for="memory-search">{{ 'memoryForm.where' | translate }}</label>
+    @if (controls.location.value) {
+      <div class="line chosen-location">
+        <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+        <span class="chosen-label">{{ locationLabel() }}</span>
+        <button type="button" class="text-button" (click)="changeLocation()">
+          {{ 'memoryForm.change' | translate }}
+        </button>
+      </div>
+    } @else {
+      <div class="line">
+        <input
+          id="memory-search"
+          type="text"
+          formControlName="search"
+          autocomplete="off"
+          [placeholder]="'memoryForm.searchPlaceholder' | translate"
+          (keydown.enter)="$event.preventDefault(); searchPlaces()"
+        />
+        <button
+          type="button"
+          class="search-button"
+          [disabled]="searching()"
+          [attr.aria-label]="'memoryForm.search' | translate"
+          [title]="'memoryForm.search' | translate"
+          (click)="searchPlaces()"
+        >
+          <span class="material-symbols-outlined" [class.spin]="searching()" aria-hidden="true">{{
+            searching() ? 'progress_activity' : 'search'
+          }}</span>
+        </button>
+      </div>
+
+      @if (results().length) {
+        <ul class="results" [attr.aria-label]="'memoryForm.results' | translate">
+          @for (place of results(); track $index) {
+            <li>
+              <button type="button" (click)="choose(place)">
+                <strong>{{ place.name }}</strong>
+                @if (place.description) {
+                  <small>{{ place.description }}</small>
+                }
+              </button>
+            </li>
+          }
+        </ul>
+      } @else if (searched()) {
+        <p class="no-results">{{ 'memoryForm.noResults' | translate }}</p>
+      }
+    }
+    <p class="error">
+      @if (controls.location.touched && controls.location.hasError('required')) {
+        {{ 'memoryForm.locationRequired' | translate }}
+      }
+    </p>
+  </div>
+
+  <div class="line-field date-field">
+    <label for="memory-date">
+      {{
+        (memory && memory.origin === 'draw' ? 'memoryForm.yesDate' : 'memoryForm.wentDate')
+          | translate
+      }}
+    </label>
+    <input id="memory-date" type="date" formControlName="date" [max]="today" />
+    <p class="error">
+      @if (controls.date.touched && controls.date.hasError('required')) {
+        {{ 'memoryForm.dateRequired' | translate }}
+      } @else if (controls.date.hasError('futureDate')) {
+        {{ 'memoryForm.dateFuture' | translate }}
+      }
+    </p>
+  </div>
+
+  <div class="line-field">
+    <label for="memory-note">{{ 'memoryForm.note' | translate }}</label>
+    <textarea
+      id="memory-note"
+      formControlName="note"
+      rows="2"
+      [placeholder]="'memoryCard.notePlaceholder' | translate"
+    ></textarea>
+    <small class="counter" [class.error]="controls.note.invalid">
+      {{ controls.note.value.length }}/{{ noteLimit }}
+    </small>
+  </div>
+
+  @if (error) {
+    <p class="error" role="alert">{{ error | translate }}</p>
+  }
+
+  <button type="submit" class="button button-primary submit-button" [disabled]="saving">
+    {{
+      (saving ? 'memoryForm.saving' : memory ? 'memoryForm.saveChanges' : 'memoryForm.add')
+        | translate
+    }}
+  </button>
+</form>
