@@ -1,0 +1,95 @@
+:host {
+  display: block;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+.map-section {
+  position: relative;
+}
+
+.screen {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--porcelain);
+}
+
+.map {
+  position: absolute;
+  inset: 0;
+}
+
+.top {
+  position: absolute;
+  top: 6rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  pointer-events: none;
+}
+
+.title {
+  max-width: 520px;
+}
+
+.title h1 {
+  margin: 0.4rem 0 0.75rem;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+}
+
+.title p:last-child {
+  color: var(--text-2);
+}
+
+.recent {
+  min-width: 240px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: auto;
+}
+
+.recent button {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+  padding: 0.4rem 0;
+  border: 0;
+  background: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--text-3);
+  cursor: pointer;
+}
+
+.recent button:hover {
+  color: var(--text);
+}
+
+.recent button.latest {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.recent-date {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 700px) {
+  .recent {
+    display: none;
+  }
+}

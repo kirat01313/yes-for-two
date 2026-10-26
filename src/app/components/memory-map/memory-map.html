@@ -1,0 +1,30 @@
+<section class="map-section">
+  <div class="screen">
+    <div #map class="map" role="region" [attr.aria-label]="'memoryMap.label' | translate"></div>
+
+    <div class="top">
+      <div class="title">
+        <p class="eyebrow">{{ 'memoryMap.eyebrow' | translate }}</p>
+        <h1>{{ 'memoryMap.title' | translate }}</h1>
+        <p>
+          {{ 'memoryMap.hintStart' | translate }}
+          <span class="yes">{{ 'app.yes' | translate }}</span
+          >{{ 'memoryMap.hintEnd' | translate }}
+        </p>
+      </div>
+
+      <ol class="recent" [attr.aria-label]="'memoryMap.recentLabel' | translate">
+        @for (memory of recent; track memory.id; let first = $first) {
+          <li>
+            <button type="button" [class.latest]="first" (click)="select.emit(memory.id)">
+              <span class="recent-name">{{ memory.name }}</span>
+              <span class="recent-date">{{
+                memory.date | date: 'd MMM' : '' : language.locale()
+              }}</span>
+            </button>
+          </li>
+        }
+      </ol>
+    </div>
+  </div>
+</section>

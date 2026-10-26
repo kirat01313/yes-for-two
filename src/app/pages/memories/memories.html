@@ -27,14 +27,16 @@
       </div>
     }
     @case ('success') {
+      <app-memory-map [memories]="memories()" (select)="showMemory($event)" />
+
       <div class="album-top">
         <div>
           <p class="eyebrow">{{ 'memoriesPage.eyebrow' | translate }}</p>
-          <h1 id="memories-title">
+          <h2 id="memories-title">
             {{ 'memoriesPage.titleStart' | translate }}
             <span class="yes">{{ 'memoriesPage.titleYes' | translate }}</span
             >{{ 'memoriesPage.titleEnd' | translate }}
-          </h1>
+          </h2>
           <p class="counter">
             {{ wentCount() }}
             {{ (wentCount() === 1 ? 'memoriesPage.wentOne' : 'memoriesPage.wentMany') | translate }}

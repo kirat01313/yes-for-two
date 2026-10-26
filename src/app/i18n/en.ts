@@ -379,6 +379,14 @@ export const en = {
     tooMany: 'Each memory holds up to 20 photos. We sent the ones that fit.',
     captionError: "We couldn't save the note. Try again in a moment.",
   },
+  memoryMap: {
+    label: 'Map of your memories',
+    eyebrow: 'Memories',
+    title: 'Your memories',
+    hintStart: 'Scroll down slowly to your latest',
+    hintEnd: '.',
+    recentLabel: 'Your latest yeses',
+  },
   places: {
     walk: 'min walk',
   },

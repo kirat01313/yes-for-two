@@ -384,6 +384,14 @@ export const pt: Dictionary = {
     tooMany: 'Cada memória leva até 20 fotos. Enviámos as que cabiam.',
     captionError: 'Não foi possível guardar a nota. Tentem outra vez daqui a pouco.',
   },
+  memoryMap: {
+    label: 'Mapa das vossas memórias',
+    eyebrow: 'Memórias',
+    title: 'As vossas memórias',
+    hintStart: 'Desçam devagar até ao vosso',
+    hintEnd: ' mais recente.',
+    recentLabel: 'Os vossos sins mais recentes',
+  },
   places: {
     walk: 'min a pé',
   },

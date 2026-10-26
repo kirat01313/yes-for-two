@@ -15,6 +15,7 @@ import { RouterLink } from '@angular/router';
 import { switchMap, tap } from 'rxjs';
 import { MemoryAlbum } from '../../components/memory-album/memory-album';
 import { MemoryForm } from '../../components/memory-form/memory-form';
+import { MemoryMap } from '../../components/memory-map/memory-map';
 import { StatusNotice } from '../../components/status-notice/status-notice';
 import { Memory, MemoryFormData } from '../../models/memory';
 import { MemoryPhoto } from '../../models/photo';
@@ -30,7 +31,15 @@ interface Filter {
 }
 
 @Component({
-  imports: [FormsModule, RouterLink, TranslatePipe, StatusNotice, MemoryAlbum, MemoryForm],
+  imports: [
+    FormsModule,
+    RouterLink,
+    TranslatePipe,
+    StatusNotice,
+    MemoryMap,
+    MemoryAlbum,
+    MemoryForm,
+  ],
   selector: 'app-memories',
   styleUrl: './memories.css',
   templateUrl: './memories.html',
@@ -129,6 +138,10 @@ export class Memories implements OnInit {
   closeIfOutside(event: MouseEvent): void {
     if (this.pressedOutside && event.target === event.currentTarget) this.closeForm();
     this.pressedOutside = false;
+  }
+
+  showMemory(id: number): void {
+    this.goTo(id);
   }
 
   formClosed(): void {
