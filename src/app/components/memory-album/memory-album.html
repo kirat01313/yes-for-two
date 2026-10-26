@@ -1,0 +1,92 @@
+@if (wide()) {
+  <div class="stage" #stage [style.height]="stageHeight()">
+    <div class="screen">
+      <div class="ruler" aria-hidden="true">
+        <span class="marker" [style.top.%]="progress() * 100"></span>
+      </div>
+
+      <nav class="index-column" [attr.aria-label]="'memoriesPage.indexLabel' | translate">
+        <ol class="index" #index>
+          @for (memory of list(); track memory.id; let i = $index) {
+            <li>
+              <button
+                type="button"
+                [class.active]="i === activeIndex()"
+                [attr.aria-current]="i === activeIndex()"
+                (click)="goTo(memory.id)"
+              >
+                <span class="index-name">{{ memory.name }}</span>
+                <span class="index-date">{{
+                  memory.date | date: 'd MMM' : '' : language.locale()
+                }}</span>
+              </button>
+            </li>
+          }
+        </ol>
+      </nav>
+
+      <div class="photo-column">
+        @for (memory of list(); track memory.id; let i = $index) {
+          <figure
+            class="photo"
+            [style.transform]="photoTransform(i)"
+            [style.opacity]="photoOpacity(i)"
+            [attr.aria-hidden]="i !== activeIndex()"
+          >
+            @if (centerPhoto(memory); as url) {
+              <img [src]="url" [alt]="memory.name" [attr.loading]="i < 3 ? 'eager' : 'lazy'" />
+            } @else {
+              <span class="material-symbols-outlined" aria-hidden="true">{{ memory.icon }}</span>
+            }
+          </figure>
+        }
+        <span class="corners" aria-hidden="true"></span>
+      </div>
+
+      <div class="text-column" aria-live="polite">
+        @for (memory of active() ? [active()!] : []; track memory.id) {
+          <app-memory-card
+            class="appear"
+            [memory]="memory"
+            [saving]="savingId === memory.id"
+            (wentThere)="wentThere.emit($event)"
+            (saveNote)="saveNote.emit($event)"
+            (edit)="edit.emit($event)"
+            (remove)="remove.emit($event)"
+          />
+        }
+      </div>
+
+      <div class="ruler ruler-right" aria-hidden="true">
+        <span class="marker" [style.top.%]="progress() * 100"></span>
+      </div>
+
+      <p class="count" aria-hidden="true">
+        {{ activeIndex() + 1 < 10 ? '0' : '' }}{{ activeIndex() + 1 }} /
+        {{ list().length < 10 ? '0' : '' }}{{ list().length }}
+      </p>
+    </div>
+  </div>
+} @else {
+  <div class="narrow-list">
+    @for (memory of list(); track memory.id) {
+      <article class="narrow-item" [id]="'memory-' + memory.id">
+        <figure class="narrow-photo">
+          @if (centerPhoto(memory); as url) {
+            <img [src]="url" [alt]="memory.name" loading="lazy" />
+          } @else {
+            <span class="material-symbols-outlined" aria-hidden="true">{{ memory.icon }}</span>
+          }
+        </figure>
+        <app-memory-card
+          [memory]="memory"
+          [saving]="savingId === memory.id"
+          (wentThere)="wentThere.emit($event)"
+          (saveNote)="saveNote.emit($event)"
+          (edit)="edit.emit($event)"
+          (remove)="remove.emit($event)"
+        />
+      </article>
+    }
+  </div>
+}

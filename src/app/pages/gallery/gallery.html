@@ -1,0 +1,49 @@
+<section class="gallery-page">
+  @switch (status()) {
+    @case ('loading') {
+      <app-status-notice status="loading" title="galleryPage.loading" />
+    }
+    @case ('error') {
+      <app-status-notice
+        status="error"
+        title="galleryPage.errorTitle"
+        text="galleryPage.errorText"
+      />
+    }
+    @case ('empty') {
+      <app-status-notice
+        status="empty"
+        title="galleryPage.emptyTitle"
+        text="galleryPage.emptyText"
+      />
+      <p class="more">
+        <a class="button button-primary" routerLink="/memories">
+          {{ 'galleryPage.goToMemories' | translate }}
+        </a>
+      </p>
+    }
+    @case ('success') {
+      <header class="gallery-top">
+        <p class="eyebrow">{{ 'galleryPage.eyebrow' | translate }}</p>
+        <h1>
+          {{ 'galleryPage.titleStart' | translate }}
+          <span class="yes">{{ 'galleryPage.titleYes' | translate }}</span
+          >{{ 'galleryPage.titleEnd' | translate }}
+        </h1>
+        <p class="intro">{{ 'galleryPage.intro' | translate }}</p>
+      </header>
+
+      @if (photoError()) {
+        <p class="error photo-error" role="alert">{{ photoError() | translate }}</p>
+      }
+
+      <app-memory-book
+        [memories]="memories()"
+        [photos]="photos()"
+        [uploadingId]="uploadingId()"
+        (addPhotos)="addPhotos($event)"
+        (deletePhoto)="deletePhoto($event)"
+      />
+    }
+  }
+</section>

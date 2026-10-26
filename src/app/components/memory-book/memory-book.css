@@ -1,0 +1,380 @@
+:host {
+  --paper: #fffdf8;
+  display: block;
+}
+
+.stage {
+  position: relative;
+}
+
+.screen {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  height: 100vh;
+  height: 100svh;
+}
+
+.book {
+  position: relative;
+  width: min(1100px, 100%, calc(70svh * 1.55));
+  aspect-ratio: 1.55;
+  perspective: 2400px;
+}
+
+.page {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  overflow: hidden;
+  padding: clamp(1.5rem, 3vw, 2.75rem);
+  background: var(--paper);
+}
+
+.page-left,
+.face-back {
+  left: 0;
+  box-shadow:
+    inset -28px 0 32px -24px rgba(31, 25, 23, 0.18),
+    0 24px 50px -20px rgba(31, 25, 23, 0.3);
+}
+
+.page-right,
+.face-front {
+  right: 0;
+  box-shadow:
+    inset 28px 0 32px -24px rgba(31, 25, 23, 0.18),
+    0 24px 50px -20px rgba(31, 25, 23, 0.3);
+}
+
+.leaf {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 50%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+}
+
+.leaf .page {
+  left: 0;
+  right: auto;
+  width: 100%;
+  backface-visibility: hidden;
+}
+
+.leaf .face-back {
+  transform: rotateY(180deg);
+}
+
+.spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  z-index: 2000;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, transparent, rgba(31, 25, 23, 0.25), transparent);
+  pointer-events: none;
+}
+
+.corner {
+  position: absolute;
+  bottom: 0;
+  z-index: 2001;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  transition:
+    width 0.2s,
+    height 0.2s;
+}
+
+.corner-next {
+  right: 0;
+  background: linear-gradient(to top left, transparent 50%, var(--champagne-strong) 50%);
+}
+
+.corner-previous {
+  left: 0;
+  background: linear-gradient(to top right, transparent 50%, var(--champagne-strong) 50%);
+}
+
+.corner:hover,
+.corner:focus-visible {
+  width: 84px;
+  height: 84px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--linen);
+  border-radius: var(--pill);
+  background: var(--surface);
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.arrow:hover:not(:disabled) {
+  border-color: var(--primary);
+}
+
+.arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.count {
+  min-width: 5.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-align: center;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.collage {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: center;
+  justify-items: center;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  height: 100%;
+}
+
+.collage[data-count='1'] {
+  grid-template-columns: minmax(0, 0.75fr);
+  justify-content: center;
+}
+
+.collage[data-count='3'] .polaroid:first-child {
+  grid-column: span 2;
+  width: 55%;
+}
+
+.polaroid {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 8px 8px 30px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px -8px rgba(31, 25, 23, 0.35);
+  transform: rotate(var(--tilt, 0deg));
+}
+
+.polaroid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  z-index: 1;
+  width: 70px;
+  height: 22px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgba(236, 224, 212, 0.85);
+}
+
+.delete-photo {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--pill);
+  background: rgba(255, 253, 248, 0.92);
+  color: var(--text-2);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.delete-photo .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.polaroid:hover .delete-photo,
+.delete-photo:focus-visible {
+  opacity: 1;
+}
+
+.delete-photo:hover {
+  color: var(--error);
+}
+
+.empty-collage {
+  display: grid;
+  grid-column: 1 / -1;
+  place-items: center;
+  gap: 0.75rem;
+  max-width: 260px;
+  text-align: center;
+  color: var(--text-3);
+}
+
+.empty-collage .material-symbols-outlined {
+  font-size: 56px;
+}
+
+.empty-collage p {
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+}
+
+.story {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  height: 100%;
+}
+
+.story-type {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.story h2 {
+  font-size: clamp(1.6rem, 2.4vw, 2.3rem);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.story-date {
+  font-family: var(--font-heading);
+  font-style: italic;
+  color: var(--text-2);
+}
+
+.hand-note {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  width: 100%;
+  font-family: var(--font-hand);
+  font-size: clamp(1.25rem, 1.9vw, 1.75rem);
+  line-height: 1.7;
+  text-align: center;
+  color: var(--text);
+}
+
+.hand-note.empty {
+  color: var(--text-3);
+}
+
+.extra-photos {
+  display: flex;
+  gap: 1rem;
+  align-self: center;
+}
+
+.polaroid.small {
+  width: 92px;
+  padding: 5px 5px 18px;
+}
+
+.story-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.add-photos {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--primary);
+  border-radius: var(--pill);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.add-photos:hover {
+  background: var(--terracotta-light);
+}
+
+.add-photos:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.add-photos.uploading {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+@media (hover: none) {
+  .delete-photo {
+    opacity: 1;
+  }
+}
+
+.page-number {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--text-3);
+}
+
+.narrow-book {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.narrow-spread {
+  scroll-margin-top: 6rem;
+  box-shadow: var(--shadow-2);
+}
+
+.narrow-spread .page {
+  position: relative;
+  width: 100%;
+  min-height: 420px;
+  box-shadow: none;
+}
+
+.narrow-spread .page-left {
+  border-bottom: 1px dashed var(--linen);
+}
+
+.narrow-spread .collage {
+  min-height: 360px;
+}

@@ -1,0 +1,29 @@
+.gallery-page {
+  padding: 3.5rem 0 6rem;
+}
+
+.gallery-top {
+  max-width: 640px;
+}
+
+.gallery-top h1 {
+  margin: 0.4rem 0 0.75rem;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+}
+
+.gallery-top h1 .yes {
+  font-size: 0.85em;
+}
+
+.intro {
+  color: var(--text-2);
+}
+
+.photo-error {
+  margin-top: 1.5rem;
+}
+
+.more {
+  margin-top: 1.5rem;
+  text-align: center;
+}

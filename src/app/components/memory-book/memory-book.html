@@ -1,0 +1,182 @@
+@if (wide()) {
+  <div class="stage" #stage [style.height]="stageHeight()">
+    <div class="screen">
+      <div class="book">
+        <div class="page page-left" [attr.aria-hidden]="current() !== 0">
+          <ng-container
+            *ngTemplateOutlet="leftPage; context: { $implicit: list()[0], number: 1 }"
+          />
+        </div>
+        <div class="page page-right" [attr.aria-hidden]="current() !== last()">
+          <ng-container
+            *ngTemplateOutlet="
+              rightPage;
+              context: { $implicit: list()[last()], number: (last() + 1) * 2 }
+            "
+          />
+        </div>
+
+        @for (leaf of leaves(); track leaf.front.id; let i = $index) {
+          <div
+            class="leaf"
+            [style.transform]="'rotateY(' + leafAngle(i) + 'deg)'"
+            [style.z-index]="leafLayer(i)"
+          >
+            <div class="page face face-front" [attr.aria-hidden]="current() !== i">
+              <ng-container
+                *ngTemplateOutlet="rightPage; context: { $implicit: leaf.front, number: i * 2 + 2 }"
+              />
+            </div>
+            <div class="page face face-back" [attr.aria-hidden]="current() !== i + 1">
+              <ng-container
+                *ngTemplateOutlet="leftPage; context: { $implicit: leaf.back, number: i * 2 + 3 }"
+              />
+            </div>
+          </div>
+        }
+
+        <span class="spine" aria-hidden="true"></span>
+
+        @if (current() > 0) {
+          <button
+            type="button"
+            class="corner corner-previous"
+            [attr.aria-label]="'galleryPage.previous' | translate"
+            (click)="previous()"
+          ></button>
+        }
+        @if (current() < last()) {
+          <button
+            type="button"
+            class="corner corner-next"
+            [attr.aria-label]="'galleryPage.next' | translate"
+            (click)="next()"
+          ></button>
+        }
+      </div>
+
+      <div class="controls">
+        <button
+          type="button"
+          class="arrow"
+          [disabled]="current() === 0"
+          [attr.aria-label]="'galleryPage.previous' | translate"
+          (click)="previous()"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
+        </button>
+        <p class="count" aria-live="polite">
+          {{ current() + 1 < 10 ? '0' : '' }}{{ current() + 1 }} / {{ last() + 1 < 10 ? '0' : ''
+          }}{{ last() + 1 }}
+        </p>
+        <button
+          type="button"
+          class="arrow"
+          [disabled]="current() === last()"
+          [attr.aria-label]="'galleryPage.next' | translate"
+          (click)="next()"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+        </button>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="narrow-book">
+    @for (memory of list(); track memory.id; let i = $index) {
+      <article class="narrow-spread" [id]="'book-' + memory.id">
+        <div class="page page-left">
+          <ng-container
+            *ngTemplateOutlet="leftPage; context: { $implicit: memory, number: i * 2 + 1 }"
+          />
+        </div>
+        <div class="page page-right">
+          <ng-container
+            *ngTemplateOutlet="rightPage; context: { $implicit: memory, number: i * 2 + 2 }"
+          />
+        </div>
+      </article>
+    }
+  </div>
+}
+
+<ng-template #leftPage let-memory let-number="number">
+  <div class="collage" [attr.data-count]="collage(memory).length">
+    @for (item of collage(memory); track item.url; let i = $index) {
+      <figure class="polaroid" [style.--tilt]="tilt(i)">
+        <span class="tape" aria-hidden="true"></span>
+        <img [src]="item.url" [alt]="memory.name" loading="lazy" />
+        @if (item.photo; as photo) {
+          <button
+            type="button"
+            class="delete-photo"
+            [attr.aria-label]="'galleryPage.deletePhoto' | translate"
+            (click)="deletePhoto.emit(photo)"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+          </button>
+        }
+      </figure>
+    } @empty {
+      <div class="empty-collage">
+        <span class="material-symbols-outlined" aria-hidden="true">{{ memory.icon }}</span>
+        <p>{{ 'galleryPage.noPhotos' | translate }}</p>
+      </div>
+    }
+  </div>
+  <span class="page-number">{{ number }}</span>
+</ng-template>
+
+<ng-template #rightPage let-memory let-number="number">
+  <div class="story">
+    <p class="story-type">{{ memory.category }} · {{ memory.place }}</p>
+    <h2>{{ memory.name }}</h2>
+    <p class="story-date">{{ memory.date | date: 'longDate' : '' : language.locale() }}</p>
+
+    <p class="hand-note" [class.empty]="!memory.note">
+      {{ memory.note || ('galleryPage.noNote' | translate) }}
+    </p>
+
+    @if (extraPhotos(memory).length) {
+      <div class="extra-photos">
+        @for (item of extraPhotos(memory); track item.url; let i = $index) {
+          <figure class="polaroid small" [style.--tilt]="tilt(i + 3)">
+            <img [src]="item.url" [alt]="memory.name" loading="lazy" />
+            @if (item.photo; as photo) {
+              <button
+                type="button"
+                class="delete-photo"
+                [attr.aria-label]="'galleryPage.deletePhoto' | translate"
+                (click)="deletePhoto.emit(photo)"
+              >
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+              </button>
+            }
+          </figure>
+        }
+      </div>
+    }
+
+    <div class="story-actions">
+      <label class="add-photos" [class.uploading]="uploadingId === memory.id">
+        <span class="material-symbols-outlined" aria-hidden="true">add_a_photo</span>
+        {{
+          (uploadingId === memory.id ? 'galleryPage.uploading' : 'galleryPage.addPhotos')
+            | translate
+        }}
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          multiple
+          class="visually-hidden"
+          [disabled]="uploadingId !== null"
+          (change)="chooseFiles(memory, $event)"
+        />
+      </label>
+      <a class="text-button" routerLink="/memories" [queryParams]="{ id: memory.id }">
+        {{ 'galleryPage.seeInMemories' | translate }}
+      </a>
+    </div>
+  </div>
+  <span class="page-number">{{ number }}</span>
+</ng-template>

@@ -18,7 +18,10 @@ const ALL_LINKS: MenuLink[] = [
   { path: '/experience', label: 'nav.experience' },
   { path: '/trip', label: 'nav.trip' },
   { path: '/memories', label: 'nav.memories' },
+  { path: '/gallery', label: 'nav.gallery' },
 ];
+
+const PRIVATE_PATHS = ['/memories', '/gallery'];
 
 const IMAGE_PATHS = ['/', '/restaurant', '/experience', '/trip'];
 
@@ -40,7 +43,7 @@ export class Header {
   readonly auth = inject(AuthService);
 
   readonly links = computed(() =>
-    ALL_LINKS.filter((link) => link.path !== '/memories' || this.auth.signedIn()),
+    ALL_LINKS.filter((link) => !PRIVATE_PATHS.includes(link.path) || this.auth.signedIn()),
   );
 
   private readonly url = toSignal(

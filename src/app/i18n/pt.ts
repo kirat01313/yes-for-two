@@ -15,6 +15,7 @@ export const pt: Dictionary = {
     experience: 'Experiência',
     trip: 'Viagem',
     memories: 'Memórias',
+    gallery: 'Galeria',
   },
   account: {
     signIn: 'Entrar',
@@ -38,6 +39,7 @@ export const pt: Dictionary = {
     signIn: 'Entrar · Sim a Dois',
     account: 'Conta · Sim a Dois',
     settings: 'Configurações · Sim a Dois',
+    gallery: 'Galeria · Sim a Dois',
   },
   footer: {
     motto: 'Decidido a dois',
@@ -287,11 +289,13 @@ export const pt: Dictionary = {
     emptyTitle: 'Ainda não há memórias.',
     emptyText: 'Cada sim que disserem fica guardado aqui, para recordarem depois.',
     firstYes: 'Digam o primeiro sim',
-    confirmDelete: 'Apagar «{name}» das vossas memórias? Não dá para desfazer.',
+    confirmDelete:
+      'Apagar «{name}» das vossas memórias? As fotos desta memória também são apagadas. Não dá para desfazer.',
     deleteError: 'Não foi possível apagar a memória. Tentem outra vez daqui a pouco.',
     addMemory: 'Adicionar memória',
     formLabel: 'Formulário da memória',
     saveError: 'Não foi possível guardar a memória. Tentem outra vez daqui a pouco.',
+    indexLabel: 'Índice das memórias',
   },
   memoryCard: {
     went: 'Fomos',
@@ -311,6 +315,7 @@ export const pt: Dictionary = {
     edit: 'Editar memória',
     wentOn: 'Foram a',
     addedByYou: 'Adicionada por vocês',
+    photos: 'Ver na galeria',
   },
   memoryForm: {
     newEyebrow: 'Nova memória',
@@ -341,6 +346,32 @@ export const pt: Dictionary = {
     saving: 'A guardar…',
     close: 'Fechar',
     findingImage: 'A procurar uma foto do sítio…',
+  },
+  galleryPage: {
+    eyebrow: 'A galeria',
+    titleStart: 'Cada',
+    titleYes: 'sim',
+    titleEnd: ', uma página.',
+    intro:
+      'As vossas memórias num livro de fotos e notas. Façam scroll ou usem as setas para virar as folhas.',
+    previous: 'Página anterior',
+    next: 'Página seguinte',
+    noPhotos: 'As vossas fotos deste sítio vão ficar aqui.',
+    noNote: 'Ainda sem notas.',
+    seeInMemories: 'Ver nas Memórias',
+    loading: 'A abrir o livro…',
+    errorTitle: 'Não foi possível abrir o livro.',
+    errorText: 'Tentem outra vez daqui a pouco.',
+    emptyTitle: 'O livro ainda está vazio.',
+    emptyText: 'Digam sim a um lugar ou adicionem uma memória, e ela aparece aqui.',
+    goToMemories: 'Ir para as Memórias',
+    addPhotos: 'Adicionar fotos',
+    uploading: 'A enviar fotos…',
+    deletePhoto: 'Apagar esta foto',
+    confirmDeletePhoto: 'Apagar esta foto do livro?',
+    uploadError:
+      'Não foi possível enviar uma das fotos. Experimentem uma foto JPEG ou PNG com menos de 5 MB.',
+    deletePhotoError: 'Não foi possível apagar a foto. Tentem outra vez daqui a pouco.',
   },
   places: {
     walk: 'min a pé',

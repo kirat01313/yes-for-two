@@ -17,6 +17,12 @@ export const routes: Routes = [
     title: 'titles.memories',
     canActivate: [authGuard],
   },
+  {
+    path: 'gallery',
+    loadComponent: () => import('./pages/gallery/gallery').then((m) => m.Gallery),
+    title: 'titles.gallery',
+    canActivate: [authGuard],
+  },
   { path: 'sign-in', component: SignIn, title: 'titles.signIn' },
   {
     path: 'account',

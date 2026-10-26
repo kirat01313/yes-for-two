@@ -1,33 +1,11 @@
 :host {
-  display: grid;
-  grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
-  min-height: 260px;
-}
-
-.memory-image {
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: var(--champagne);
-  color: var(--text-3);
-}
-
-.memory-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.memory-image .material-symbols-outlined {
-  font-size: 40px;
+  display: block;
 }
 
 .memory-text {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  align-self: center;
-  padding: 2rem 2.5rem;
 }
 
 .memory-type {
@@ -101,6 +79,20 @@ h2 {
   margin-top: 0.4rem;
 }
 
+.photos-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.photos-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .secondary-actions {
   margin-top: 0;
 }
@@ -113,15 +105,4 @@ h2 {
 
 .secondary-actions .danger:hover {
   color: var(--error);
-}
-
-@media (max-width: 600px) {
-  :host {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 180px auto;
-  }
-
-  .memory-text {
-    padding: 1.5rem 1.25rem;
-  }
 }
