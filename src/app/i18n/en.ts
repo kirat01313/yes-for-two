@@ -174,6 +174,7 @@ export const en = {
     saidYes: 'You said',
     saved: 'It is in your Memories.',
     seeOnMap: 'See on the map',
+    saveError: "We couldn't save it to your Memories. Try again in a moment.",
   },
   choices: {
     all: 'All',

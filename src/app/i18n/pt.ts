@@ -177,6 +177,7 @@ export const pt: Dictionary = {
     saidYes: 'Disseram',
     saved: 'Está nas Memórias.',
     seeOnMap: 'Ver no mapa',
+    saveError: 'Não foi possível guardar nas Memórias. Tentem outra vez daqui a pouco.',
   },
   choices: {
     all: 'Todas',

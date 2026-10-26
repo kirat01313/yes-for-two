@@ -16,7 +16,7 @@ export class SuggestionCard {
   readonly language = inject(LanguageService);
 
   @Input({ required: true }) suggestion!: Suggestion;
-  @Input() memoryId: string | null = null;
+  @Input() memoryId: number | null = null;
   @Input() saving = false;
 
   @Output() saidYes = new EventEmitter<Suggestion>();

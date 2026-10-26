@@ -38,6 +38,7 @@ import { DestinationsService, TripData } from '../../services/destinations.servi
 import { FlightsService } from '../../services/flights.service';
 import { GeoService } from '../../services/geo.service';
 import { LanguageService } from '../../services/language.service';
+import { MemoriesService } from '../../services/memories.service';
 import { WeatherService } from '../../services/weather.service';
 import { WikipediaService } from '../../services/wikipedia.service';
 import { pickRandom } from '../../utils/geo';
@@ -76,6 +77,7 @@ export class Trip implements OnInit, OnDestroy {
   private readonly wikipedia = inject(WikipediaService);
   private readonly geo = inject(GeoService);
   private readonly injector = inject(Injector);
+  private readonly memories = inject(MemoriesService);
   readonly language = inject(LanguageService);
 
   @ViewChild('result') result?: ElementRef<HTMLElement>;
@@ -103,6 +105,9 @@ export class Trip implements OnInit, OnDestroy {
   readonly status = signal<RequestStatus>('idle');
   readonly message = signal<{ title: Text; text: Text }>({ title: '', text: '' });
   readonly suggestion = signal<Suggestion | null>(null);
+  readonly memoryId = signal<number | null>(null);
+  readonly saving = signal(false);
+  readonly saveError = signal(false);
 
   private origin: Airport | null = null;
   private request?: Subscription;
@@ -152,6 +157,8 @@ export class Trip implements OnInit, OnDestroy {
     const regions = selectedValues(this.form.controls.regions);
 
     this.status.set('loading');
+    this.memoryId.set(null);
+    this.saveError.set(false);
     this.showResult();
     this.request?.unsubscribe();
 
@@ -226,6 +233,21 @@ export class Trip implements OnInit, OnDestroy {
           }
         },
       });
+  }
+
+  sayYes(suggestion: Suggestion): void {
+    this.saving.set(true);
+    this.saveError.set(false);
+    this.memories.sayYes(suggestion).subscribe({
+      next: (memory) => {
+        this.saving.set(false);
+        if (memory) this.memoryId.set(memory.id);
+      },
+      error: () => {
+        this.saving.set(false);
+        this.saveError.set(true);
+      },
+    });
   }
 
   ngOnDestroy(): void {

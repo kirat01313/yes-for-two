@@ -422,6 +422,11 @@ textarea {
   background: var(--champagne);
 }
 
+.save-error {
+  margin-top: 1rem;
+  text-align: center;
+}
+
 .result-content {
   width: 100%;
   max-width: var(--max-width);
