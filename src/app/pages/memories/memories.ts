@@ -90,7 +90,7 @@ export class Memories implements OnInit {
         tap((memories) => {
           this.memories.set(memories);
           this.status.set(memories.length ? 'success' : 'empty');
-          if (this.id) this.goTo(Number(this.id));
+          if (this.id) this.goTo(Number(this.id), 'auto');
         }),
         switchMap((memories) => this.photosService.list(memories.map((memory) => memory.id))),
       )
@@ -196,9 +196,9 @@ export class Memories implements OnInit {
     });
   }
 
-  private goTo(id: number): void {
+  private goTo(id: number, behavior: ScrollBehavior = 'smooth'): void {
     this.filter.set('');
     this.search.set('');
-    afterNextRender(() => this.album?.goTo(id), { injector: this.injector });
+    afterNextRender(() => this.album?.goTo(id, behavior), { injector: this.injector });
   }
 }
