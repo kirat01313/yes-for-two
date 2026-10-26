@@ -1,0 +1,66 @@
+.confirm {
+  width: min(440px, 100% - 2rem);
+  padding: 0;
+  border: 0;
+  background: var(--porcelain);
+  color: var(--text);
+  box-shadow: 0 30px 80px rgba(31, 25, 23, 0.35);
+}
+
+.confirm[open] {
+  animation: rise 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.confirm::backdrop {
+  background: rgba(31, 25, 23, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.confirm-body {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: 2.25rem 2rem 2rem;
+  text-align: center;
+}
+
+.confirm-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--pill);
+  background: var(--terracotta-light);
+  color: var(--primary);
+  font-size: 26px;
+}
+
+.confirm-body h2 {
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+.confirm-body p {
+  color: var(--text-2);
+}
+
+.confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confirm[open] {
+    animation: none;
+  }
+}

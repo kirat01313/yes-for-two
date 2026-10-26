@@ -14,6 +14,7 @@ import { RouterLink } from '@angular/router';
 import { Memory } from '../../models/memory';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { LanguageService } from '../../services/language.service';
+import { googleMapsLink } from '../../utils/geo';
 
 @Component({
   imports: [DatePipe, ReactiveFormsModule, RouterLink, TranslatePipe],
@@ -41,6 +42,10 @@ export class MemoryCard implements OnChanges {
       validators: [Validators.maxLength(this.noteLimit)],
     }),
   });
+
+  get mapsLink(): string {
+    return googleMapsLink(this.memory.name, this.memory.place);
+  }
 
   get note() {
     return this.form.controls.note;

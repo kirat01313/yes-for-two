@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { switchMap, tap } from 'rxjs';
 import { MemoryAlbum } from '../../components/memory-album/memory-album';
+import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { MemoryForm } from '../../components/memory-form/memory-form';
 import { MemoryMap } from '../../components/memory-map/memory-map';
 import { StatusNotice } from '../../components/status-notice/status-notice';
@@ -39,6 +40,7 @@ interface Filter {
     MemoryMap,
     MemoryAlbum,
     MemoryForm,
+    ConfirmDialog,
   ],
   selector: 'app-memories',
   styleUrl: './memories.css',
@@ -54,6 +56,7 @@ export class Memories implements OnInit {
 
   @ViewChild('formDialog') formDialog?: ElementRef<HTMLDialogElement>;
   @ViewChild(MemoryAlbum) album?: MemoryAlbum;
+  @ViewChild(ConfirmDialog) confirm!: ConfirmDialog;
 
   readonly filters: Filter[] = [
     { value: '', label: 'memoriesPage.all' },
@@ -119,10 +122,6 @@ export class Memories implements OnInit {
       });
   }
 
-  chooseFilter(value: ProgramType | ''): void {
-    this.filter.set(value);
-  }
-
   markAsWent(memory: Memory): void {
     this.update(memory.id, { went: true });
   }
@@ -141,6 +140,10 @@ export class Memories implements OnInit {
   closeForm(): void {
     this.formDialog?.nativeElement.close();
     this.formOpen.set(false);
+  }
+
+  markPress(event: MouseEvent): void {
+    this.pressedOutside = event.target === event.currentTarget;
   }
 
   closeIfOutside(event: MouseEvent): void {
@@ -183,11 +186,11 @@ export class Memories implements OnInit {
     });
   }
 
-  deleteMemory(memory: Memory): void {
+  async deleteMemory(memory: Memory): Promise<void> {
     const question = this.language
       .translate('memoriesPage.confirmDelete')
       .replace('{name}', memory.name);
-    if (!confirm(question)) return;
+    if (!(await this.confirm.ask(question))) return;
 
     this.savingId.set(memory.id);
     this.listError.set('');

@@ -25,10 +25,11 @@ import { ChoiceSelector } from '../../components/choice-selector/choice-selector
 import { PageHero } from '../../components/page-hero/page-hero';
 import { StatusNotice } from '../../components/status-notice/status-notice';
 import { SuggestionCard } from '../../components/suggestion-card/suggestion-card';
-import { DESTINATION_TYPES, REGIONS } from '../../data/categories';
+import { DESTINATION_TYPES } from '../../data/categories';
+import { TRIP_REGIONS, TripRegion, continentOf } from '../../data/regions';
 import { TRIP_PHRASES } from '../../data/phrases';
 import { PanelDirective } from '../../directives/panel.directive';
-import { Destination, DestinationType, Region } from '../../models/destination';
+import { Destination, DestinationType } from '../../models/destination';
 import { Airport, FlightTrip } from '../../models/flight';
 import { Text, Translated } from '../../models/language';
 import { RequestStatus } from '../../models/program';
@@ -91,14 +92,14 @@ export class Trip implements OnInit, OnDestroy {
     { value: '6-9', min: 6, max: 9 },
   ];
   readonly types = DESTINATION_TYPES;
-  readonly regions = REGIONS;
+  readonly regions = TRIP_REGIONS;
 
   readonly form = new FormGroup({
     origin: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     budget: new FormControl(400, { nonNullable: true, validators: [Validators.required] }),
     nights: new FormControl('2-3', { nonNullable: true, validators: [Validators.required] }),
     types: choiceGroup(DESTINATION_TYPES.map((type) => type.value)),
-    regions: choiceGroup(REGIONS.map((region) => region.value)),
+    regions: choiceGroup(TRIP_REGIONS.map((region) => region.value)),
   });
 
   readonly originOptions = signal<Airport[]>([]);
@@ -154,7 +155,7 @@ export class Trip implements OnInit, OnDestroy {
     const { origin, budget, nights } = this.form.getRawValue();
     const range = this.nightRanges.find((item) => item.value === nights)!;
     const types = selectedValues(this.form.controls.types) as DestinationType[];
-    const regions = selectedValues(this.form.controls.regions);
+    const regions = selectedValues(this.form.controls.regions) as TripRegion[];
 
     this.status.set('loading');
     this.memoryId.set(null);
@@ -169,9 +170,9 @@ export class Trip implements OnInit, OnDestroy {
           return forkJoin({
             flights: this.flights.trips(airport.code),
             data: this.destinations.tripData(),
-          });
+          }).pipe(map((result) => ({ ...result, airport })));
         }),
-        map(({ flights, data }) => {
+        map(({ flights, data, airport }) => {
           if (flights.trips.length === 0) throw new Error('no-flights');
           const from = flights.origin;
           const candidates = flights.trips
@@ -179,7 +180,7 @@ export class Trip implements OnInit, OnDestroy {
             .map((trip) => this.toCandidate(trip, data))
             .filter((candidate) => candidate.nights >= range.min && candidate.nights <= range.max)
             .filter((candidate) => candidate.total <= budget)
-            .filter((candidate) => regions.includes(candidate.destination.region))
+            .filter((candidate) => this.inRegions(candidate, airport, data, regions))
             .filter((candidate) =>
               candidate.destination.types.some((type) => types.includes(type)),
             );
@@ -282,12 +283,6 @@ export class Trip implements OnInit, OnDestroy {
   }
 
   private unknownDestination(trip: FlightTrip): Destination {
-    const region: Region =
-      trip.countryCode === 'PT'
-        ? 'portugal'
-        : this.isEurope(trip.countryCode)
-          ? 'europe'
-          : 'beyond';
     return {
       id: 0,
       name_en: trip.name.en,
@@ -304,60 +299,30 @@ export class Trip implements OnInit, OnDestroy {
       phrase_en: '',
       phrase_pt: '',
       types: ['city'],
-      region,
+      region: 'beyond',
       iata: trip.destination,
       country_code: trip.countryCode,
     };
   }
 
-  private isEurope(countryCode: string): boolean {
-    return [
-      'AD',
-      'AL',
-      'AT',
-      'BA',
-      'BE',
-      'BG',
-      'BY',
-      'CH',
-      'CY',
-      'CZ',
-      'DE',
-      'DK',
-      'EE',
-      'ES',
-      'FI',
-      'FR',
-      'GB',
-      'GR',
-      'HR',
-      'HU',
-      'IE',
-      'IS',
-      'IT',
-      'LI',
-      'LT',
-      'LU',
-      'LV',
-      'MC',
-      'MD',
-      'ME',
-      'MK',
-      'MT',
-      'NL',
-      'NO',
-      'PL',
-      'RO',
-      'RS',
-      'RU',
-      'SE',
-      'SI',
-      'SK',
-      'SM',
-      'TR',
-      'UA',
-      'VA',
-    ].includes(countryCode);
+  private inRegions(
+    candidate: Candidate,
+    airport: Airport,
+    data: TripData,
+    regions: TripRegion[],
+  ): boolean {
+    const country = candidate.trip.countryCode;
+    const homeCountry = data.destinations.get(airport.code)?.country_code;
+    const homeName = airport.country.trim().toLowerCase();
+    const national = homeCountry
+      ? homeCountry === country
+      : [candidate.trip.country.en, candidate.trip.country.pt].some(
+          (name) => name.toLowerCase() === homeName,
+        );
+    if (national) return regions.includes('national');
+
+    const continent = continentOf(country);
+    return continent !== null && regions.includes(continent);
   }
 
   private showResult(): void {

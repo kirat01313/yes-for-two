@@ -79,18 +79,11 @@ h2 {
   margin-top: 0.4rem;
 }
 
-.photos-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--primary);
-}
-
-.photos-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 0.4rem;
 }
 
 .secondary-actions {

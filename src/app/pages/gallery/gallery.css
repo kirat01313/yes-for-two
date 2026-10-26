@@ -1,29 +1,116 @@
-.gallery-page {
-  padding: 3.5rem 0 6rem;
+.gallery-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  margin-left: calc(50% - 50vw);
+  overflow: hidden;
+  background: #7fa8cf;
+  color: #ffffff;
 }
 
-.gallery-top {
-  max-width: 640px;
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
 }
 
-.gallery-top h1 {
-  margin: 0.4rem 0 0.75rem;
-  font-size: clamp(2.4rem, 5vw, 3.8rem);
+.hero-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(20, 14, 12, 0.35), transparent 30%),
+    linear-gradient(to top, rgba(20, 14, 12, 0.55), transparent 60%);
 }
 
-.gallery-top h1 .yes {
-  font-size: 0.85em;
+.hero-text {
+  position: relative;
+  width: min(100% - 2.5rem, var(--max-width) - 2.5rem);
+  margin: 0 auto;
+  padding-bottom: clamp(3rem, 9vh, 6rem);
+  animation: hero-rise 1.2s 0.2s ease-out both;
 }
 
-.intro {
-  color: var(--text-2);
+.hero-text .eyebrow {
+  color: #ffffff;
+  opacity: 0.85;
+}
+
+.hero-text h1 {
+  max-width: 12ch;
+  margin: 0.5rem 0 1rem;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.hero-text p:last-child {
+  max-width: 42ch;
+  font-size: 1.05rem;
+  opacity: 0.92;
+}
+
+.hero-side {
+  position: absolute;
+  top: 50%;
+  right: clamp(1rem, 3vw, 2.5rem);
+  writing-mode: vertical-rl;
+  transform: translateY(-50%) rotate(180deg);
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  letter-spacing: 0.02em;
+  opacity: 0.9;
+}
+
+.hero-down {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  font-size: 32px;
+  transform: translateX(-50%);
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.gallery-content {
+  padding: clamp(5rem, 10vw, 8rem) 0 7rem;
 }
 
 .photo-error {
-  margin-top: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .more {
   margin-top: 1.5rem;
   text-align: center;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}
+
+@keyframes bounce {
+  50% {
+    transform: translate(-50%, 8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-text,
+  .hero-down {
+    animation: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-side {
+    display: none;
+  }
 }

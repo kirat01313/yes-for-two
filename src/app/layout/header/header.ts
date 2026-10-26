@@ -23,7 +23,7 @@ const ALL_LINKS: MenuLink[] = [
 
 const PRIVATE_PATHS = ['/memories', '/gallery'];
 
-const IMAGE_PATHS = ['/', '/restaurant', '/experience', '/trip'];
+const IMAGE_PATHS = ['/', '/restaurant', '/experience', '/trip', '/gallery'];
 
 @Component({
   imports: [RouterLink, RouterLinkActive, TranslatePipe, AccountMenu],

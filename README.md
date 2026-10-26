@@ -1,59 +1,95 @@
-# YesForTwo
+# Yes for Two · Sim a Dois
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.2.
+A website for couples who can never decide what to do. Pick a few filters and the site chooses
+for you: where to have dinner tonight, what to do today or where to fly next. When you both say
+**yes**, the place is kept in your memories, on a map and in a gallery of your own photos.
 
-## Development server
+**Live site:** https://kirat01313.github.io/yes-for-two/
 
-To start a local development server, run:
+The site is bilingual (English and European Portuguese) and works on phones and computers.
 
-```bash
-ng serve
-```
+## Features
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Restaurant** – a random restaurant near you (or in any city), filtered by cuisine and distance.
+- **Experience** – a museum, park, viewpoint or other activity nearby, filtered by type.
+- **Trip** – a real round-trip flight from your city, filtered by budget, nights, kind of trip
+  (city, beach, nature) and region (your country, Europe, Americas, Africa, Asia, Oceania), with
+  the weather forecast and an estimated hotel price.
+- **Near you** – the best-known places around you, on the home page.
+- **Accounts** – sign up, sign in, change your name and password.
+- **Memories** – every yes is saved. A dotted world map flies down to your latest yes as you scroll,
+  then an album lists your memories with filters, a search box, "We went", notes, edit and delete.
+  You can also add places you have been to by hand; the site finds a photo of the place.
+- **Gallery** – your memories shown like an art exhibition, with up to 20 of your own photos per
+  memory and a short note for each photo.
 
-## Code scaffolding
+## Built with
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- [Angular 22](https://angular.dev) (standalone components, signals, reactive forms, router,
+  HttpClient with an interceptor, RxJS)
+- [Supabase](https://supabase.com) – authentication, Postgres database with row level security,
+  Storage for photos and an Edge Function for flight prices
+- [MapLibre GL](https://maplibre.org) – the memories map
+- GitHub Actions and GitHub Pages – automatic build and deploy
 
-```bash
-ng generate component component-name
-```
+### External APIs
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+| API                                                                      | Used for                                       |
+| ------------------------------------------------------------------------ | ---------------------------------------------- |
+| [Photon](https://photon.komoot.io) (OpenStreetMap)                       | Finding cities and places                      |
+| [Overpass](https://overpass-api.de) / [Nominatim](https://nominatim.org) | Restaurants and activities nearby              |
+| [Wikipedia](https://www.mediawiki.org/wiki/API:Main_page)                | Photos and well-known places                   |
+| [Open-Meteo](https://open-meteo.com)                                     | Weather forecast                               |
+| [Travelpayouts](https://www.travelpayouts.com)                           | Real flight prices (through the Edge Function) |
+| [OpenStreetMap tiles](https://www.openstreetmap.org)                     | Streets on the memories map                    |
+| [Pexels](https://www.pexels.com) / [Pixabay](https://pixabay.com)        | Page photos and videos                         |
 
-```bash
-ng generate --help
-```
+## Run it on your computer
 
-## Building
+You need [Node.js](https://nodejs.org) 24 or newer.
 
-To build the project run:
+1. Clone the repository and install the packages:
 
-```bash
-ng build
-```
+   ```bash
+   git clone https://github.com/kirat01313/yes-for-two.git
+   cd yes-for-two
+   npm install
+   ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+2. Copy `.env.example` to `.env` and fill in your Supabase project URL and publishable key
+   (Supabase → Project Settings → API). The `.env` file is never committed.
 
-## Running unit tests
+   ```bash
+   SUPABASE_URL=https://your-project.supabase.co
+   SUPABASE_KEY=sb_publishable_your-key
+   ```
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+3. Start the site and open http://localhost:4200:
 
-```bash
-ng test
-```
+   ```bash
+   npm start
+   ```
 
-## Running end-to-end tests
+`npm start` and `npm run build` first run `scripts/set-env.mjs`, which writes the Angular
+environment files from `.env`.
 
-For end-to-end (e2e) testing, run:
+### Supabase set-up
 
-```bash
-ng e2e
-```
+Run the SQL files in the Supabase SQL Editor, in this order:
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+1. `supabase/schema.sql` – tables, security rules and the photos bucket
+2. `supabase/seed.sql` – the curated destinations
+3. `supabase/trip.sql` and `supabase/destinations-flights.sql` – airports and hotel prices
 
-## Additional Resources
+Then deploy the Edge Function in `supabase/functions/flight-prices` with JWT verification turned
+off and add the secret `TRAVELPAYOUTS_TOKEN`.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Deploy
+
+Every push to `main` runs `.github/workflows/deploy.yml`: it installs the packages, builds the site
+with the production settings and publishes it on GitHub Pages. The Supabase URL and key come from
+the repository secrets `SUPABASE_URL` and `SUPABASE_KEY`.
+
+## Authors
+
+Made by Tarik for the Angular module of the UpSkill programme (IPCA), 2026.
