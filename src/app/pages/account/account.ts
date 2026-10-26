@@ -38,6 +38,7 @@ export class Account implements OnInit {
 
   readonly nameStatus = signal<SaveStatus>('');
   readonly passwordStatus = signal<SaveStatus>('');
+  readonly showPassword = signal(false);
   readonly passwordErrorKey = signal('');
 
   ngOnInit(): void {

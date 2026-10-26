@@ -33,12 +33,30 @@
 
         <div class="field">
           <label for="sign-in-password">{{ 'auth.password' | translate }}</label>
-          <input
-            id="sign-in-password"
-            type="password"
-            formControlName="password"
-            [attr.autocomplete]="currentMode() === 'sign-in' ? 'current-password' : 'new-password'"
-          />
+          <div class="field-with-button">
+            <input
+              id="sign-in-password"
+              [type]="showPassword() ? 'text' : 'password'"
+              formControlName="password"
+              [attr.autocomplete]="
+                currentMode() === 'sign-in' ? 'current-password' : 'new-password'
+              "
+            />
+            <button
+              type="button"
+              class="icon-button"
+              [attr.aria-pressed]="showPassword()"
+              [attr.aria-label]="
+                (showPassword() ? 'auth.hidePassword' : 'auth.showPassword') | translate
+              "
+              [title]="(showPassword() ? 'auth.hidePassword' : 'auth.showPassword') | translate"
+              (click)="showPassword.set(!showPassword())"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">{{
+                showPassword() ? 'visibility_off' : 'visibility'
+              }}</span>
+            </button>
+          </div>
           <p class="error">
             @if (form.controls.password.touched && form.controls.password.hasError('required')) {
               {{ 'auth.errors.passwordRequired' | translate }}
@@ -55,7 +73,7 @@
             <label for="sign-in-confirm">{{ 'auth.confirmPassword' | translate }}</label>
             <input
               id="sign-in-confirm"
-              type="password"
+              [type]="showPassword() ? 'text' : 'password'"
               formControlName="confirmPassword"
               autocomplete="new-password"
             />

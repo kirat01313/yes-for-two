@@ -31,6 +31,7 @@ export class SignIn implements OnInit {
 
   readonly currentMode = signal<Mode>('sign-in');
   readonly sending = signal(false);
+  readonly showPassword = signal(false);
   readonly errorKey = signal('');
   readonly emailSentTo = signal('');
 
