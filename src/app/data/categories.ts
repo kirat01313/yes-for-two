@@ -1,4 +1,4 @@
-import { DestinationType, Region } from '../models/destination';
+import { DestinationType } from '../models/destination';
 import { Translated } from '../models/language';
 
 type Tags = Record<string, string | undefined>;
@@ -240,10 +240,4 @@ export const DESTINATION_TYPES: { value: DestinationType; name: Translated; icon
   { value: 'city', name: { en: 'City', pt: 'Cidade' }, icon: 'location_city' },
   { value: 'beach', name: { en: 'Beach', pt: 'Praia' }, icon: 'beach_access' },
   { value: 'nature', name: { en: 'Nature', pt: 'Natureza' }, icon: 'forest' },
-];
-
-export const REGIONS: { value: Region; name: Translated; icon: string }[] = [
-  { value: 'portugal', name: { en: 'Portugal', pt: 'Portugal' }, icon: 'flag' },
-  { value: 'europe', name: { en: 'Rest of Europe', pt: 'Resto da Europa' }, icon: 'euro' },
-  { value: 'beyond', name: { en: 'Outside Europe', pt: 'Fora da Europa' }, icon: 'public' },
 ];
