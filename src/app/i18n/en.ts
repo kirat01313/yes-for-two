@@ -51,6 +51,8 @@ export const en = {
     email: 'Email',
     password: 'Password',
     confirmPassword: 'Confirm password',
+    showPassword: 'Show password',
+    hidePassword: 'Hide password',
     emailSentBefore: 'We sent an email to',
     emailSentAfter: 'Open the link to activate your account, then sign in here.',
     noAccount: "Don't have an account yet?",
@@ -173,7 +175,7 @@ export const en = {
     ofCourse: 'Yes, of course!',
     saidYes: 'You said',
     saved: 'It is in your Memories.',
-    seeOnMap: 'See on the map',
+    seeInMemories: 'See it in Memories',
     saveError: "We couldn't save it to your Memories. Try again in a moment.",
   },
   choices: {

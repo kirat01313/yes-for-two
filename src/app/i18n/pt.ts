@@ -53,6 +53,8 @@ export const pt: Dictionary = {
     email: 'Email',
     password: 'Palavra-passe',
     confirmPassword: 'Confirmar palavra-passe',
+    showPassword: 'Mostrar palavra-passe',
+    hidePassword: 'Esconder palavra-passe',
     emailSentBefore: 'Enviámos um email para',
     emailSentAfter: 'Abram o link para ativar a conta e depois entrem aqui.',
     noAccount: 'Ainda não têm conta?',
@@ -176,7 +178,7 @@ export const pt: Dictionary = {
     ofCourse: 'Claro que sim!',
     saidYes: 'Disseram',
     saved: 'Está nas Memórias.',
-    seeOnMap: 'Ver no mapa',
+    seeInMemories: 'Ver nas Memórias',
     saveError: 'Não foi possível guardar nas Memórias. Tentem outra vez daqui a pouco.',
   },
   choices: {
