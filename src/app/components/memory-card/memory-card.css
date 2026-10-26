@@ -79,6 +79,20 @@ h2 {
   margin-top: 0.4rem;
 }
 
+.photos-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.photos-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .secondary-actions {
   margin-top: 0;
 }

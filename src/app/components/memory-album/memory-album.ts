@@ -18,6 +18,7 @@ import { Memory } from '../../models/memory';
 import { MemoryPhoto } from '../../models/photo';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { LanguageService } from '../../services/language.service';
+import { scrollToStep, stagePosition } from '../../utils/scroll';
 import { MemoryCard } from '../memory-card/memory-card';
 
 const SCREENS_PER_MEMORY = 0.6;
@@ -112,12 +113,7 @@ export class MemoryAlbum {
       return;
     }
     const stage = this.stage?.nativeElement;
-    if (!stage) return;
-    const stageTop = window.scrollY + stage.getBoundingClientRect().top;
-    window.scrollTo({
-      top: stageTop + index * window.innerHeight * SCREENS_PER_MEMORY + 1,
-      behavior,
-    });
+    if (stage) scrollToStep(stage, index, SCREENS_PER_MEMORY, behavior);
   }
 
   private onScroll = (): void => {
@@ -134,23 +130,6 @@ export class MemoryAlbum {
 
   private update(): void {
     const stage = this.stage?.nativeElement;
-    const count = this.list().length;
-    if (!stage || !this.wide() || count < 2) {
-      this.position.set(0);
-      return;
-    }
-
-    const distance = stage.offsetHeight - window.innerHeight;
-    const progress = Math.min(1, Math.max(0, -stage.getBoundingClientRect().top / distance));
-
-    const raw = progress * (count - 1);
-    const base = Math.floor(raw);
-    const fraction = raw - base;
-    const slide = fraction < 0.2 ? 0 : fraction > 0.8 ? 1 : smooth((fraction - 0.2) / 0.6);
-    this.position.set(Math.min(count - 1, base + slide));
+    this.position.set(stage && this.wide() ? stagePosition(stage, this.list().length) : 0);
   }
-}
-
-function smooth(value: number): number {
-  return value * value * (3 - 2 * value);
 }

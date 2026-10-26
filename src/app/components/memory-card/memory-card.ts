@@ -10,12 +10,13 @@ import {
   signal,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { Memory } from '../../models/memory';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { LanguageService } from '../../services/language.service';
 
 @Component({
-  imports: [DatePipe, ReactiveFormsModule, TranslatePipe],
+  imports: [DatePipe, ReactiveFormsModule, RouterLink, TranslatePipe],
   selector: 'app-memory-card',
   styleUrl: './memory-card.css',
   templateUrl: './memory-card.html',

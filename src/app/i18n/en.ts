@@ -13,6 +13,7 @@ export const en = {
     experience: 'Experience',
     trip: 'Trip',
     memories: 'Memories',
+    gallery: 'Gallery',
   },
   account: {
     signIn: 'Sign in',
@@ -36,6 +37,7 @@ export const en = {
     signIn: 'Sign in · Yes for Two',
     account: 'Account · Yes for Two',
     settings: 'Settings · Yes for Two',
+    gallery: 'Gallery · Yes for Two',
   },
   footer: {
     motto: 'Decided together',
@@ -308,6 +310,7 @@ export const en = {
     edit: 'Edit memory',
     wentOn: 'You went on',
     addedByYou: 'Added by you',
+    photos: 'See it in the gallery',
   },
   memoryForm: {
     newEyebrow: 'New memory',
@@ -338,6 +341,25 @@ export const en = {
     saving: 'Saving…',
     close: 'Close',
     findingImage: 'Looking for a photo of the place…',
+  },
+  galleryPage: {
+    eyebrow: 'The gallery',
+    titleStart: 'Every',
+    titleYes: 'yes',
+    titleEnd: ', a page.',
+    intro:
+      'Your memories as a book of photos and notes. Scroll or use the arrows to turn the pages.',
+    previous: 'Previous page',
+    next: 'Next page',
+    noPhotos: 'Your photos of this place will go here.',
+    noNote: 'No notes yet.',
+    seeInMemories: 'See it in Memories',
+    loading: 'Opening the book…',
+    errorTitle: "We couldn't open the book.",
+    errorText: 'Try again in a moment.',
+    emptyTitle: 'The book is still empty.',
+    emptyText: 'Say yes to a place or add a memory, and it will show here.',
+    goToMemories: 'Go to Memories',
   },
   places: {
     walk: 'min walk',

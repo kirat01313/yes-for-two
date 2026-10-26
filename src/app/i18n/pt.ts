@@ -15,6 +15,7 @@ export const pt: Dictionary = {
     experience: 'Experiência',
     trip: 'Viagem',
     memories: 'Memórias',
+    gallery: 'Galeria',
   },
   account: {
     signIn: 'Entrar',
@@ -38,6 +39,7 @@ export const pt: Dictionary = {
     signIn: 'Entrar · Sim a Dois',
     account: 'Conta · Sim a Dois',
     settings: 'Configurações · Sim a Dois',
+    gallery: 'Galeria · Sim a Dois',
   },
   footer: {
     motto: 'Decidido a dois',
@@ -312,6 +314,7 @@ export const pt: Dictionary = {
     edit: 'Editar memória',
     wentOn: 'Foram a',
     addedByYou: 'Adicionada por vocês',
+    photos: 'Ver na galeria',
   },
   memoryForm: {
     newEyebrow: 'Nova memória',
@@ -342,6 +345,25 @@ export const pt: Dictionary = {
     saving: 'A guardar…',
     close: 'Fechar',
     findingImage: 'A procurar uma foto do sítio…',
+  },
+  galleryPage: {
+    eyebrow: 'A galeria',
+    titleStart: 'Cada',
+    titleYes: 'sim',
+    titleEnd: ', uma página.',
+    intro:
+      'As vossas memórias num livro de fotos e notas. Façam scroll ou usem as setas para virar as folhas.',
+    previous: 'Página anterior',
+    next: 'Página seguinte',
+    noPhotos: 'As vossas fotos deste sítio vão ficar aqui.',
+    noNote: 'Ainda sem notas.',
+    seeInMemories: 'Ver nas Memórias',
+    loading: 'A abrir o livro…',
+    errorTitle: 'Não foi possível abrir o livro.',
+    errorText: 'Tentem outra vez daqui a pouco.',
+    emptyTitle: 'O livro ainda está vazio.',
+    emptyText: 'Digam sim a um lugar ou adicionem uma memória, e ela aparece aqui.',
+    goToMemories: 'Ir para as Memórias',
   },
   places: {
     walk: 'min a pé',
