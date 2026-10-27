@@ -42,18 +42,45 @@ h2 {
 }
 
 .memory-note {
-  font-size: 0.88rem;
-  line-height: 1.85;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text-2);
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.memory-note .typing::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: -0.2em;
+  background: var(--primary);
+  animation: blink 0.9s steps(1) infinite;
+}
+
+.memory-note .ghost {
+  color: transparent;
 }
 
 .memory-note.empty {
+  font-family: inherit;
+  font-size: 0.88rem;
   font-style: italic;
-  letter-spacing: 0;
-  text-transform: none;
+  line-height: 1.85;
   color: var(--text-3);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .memory-note .typing::after {
+    animation: none;
+  }
 }
 
 .note-footer {

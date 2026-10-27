@@ -46,8 +46,10 @@
       <div class="text-column" aria-live="polite">
         @for (memory of active() ? [active()!] : []; track memory.id) {
           <app-memory-card
-            class="appear"
+            animate.enter="rise"
+            animate.leave="lift"
             [memory]="memory"
+            [written]="noteWritten()"
             [saving]="savingId === memory.id"
             (wentThere)="wentThere.emit($event)"
             (saveNote)="saveNote.emit($event)"

@@ -46,9 +46,19 @@
       </div>
     </form>
   } @else {
-    <p class="memory-note" [class.empty]="!memory.note">
-      {{ memory.note || ((memory.went ? 'memoryCard.noNote' : 'memoryCard.notYet') | translate) }}
-    </p>
+    @if (memory.note) {
+      <p class="memory-note">
+        <span class="visually-hidden">{{ memory.note }}</span>
+        <span aria-hidden="true"
+          ><span [class.typing]="written < 1">{{ typedNote }}</span
+          ><span class="ghost">{{ restOfNote }}</span></span
+        >
+      </p>
+    } @else {
+      <p class="memory-note empty">
+        {{ (memory.went ? 'memoryCard.noNote' : 'memoryCard.notYet') | translate }}
+      </p>
+    }
   }
 
   <div class="actions">
