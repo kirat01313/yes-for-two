@@ -375,6 +375,7 @@ export const en = {
     tooMany: 'Each memory holds up to 20 photos. We sent the ones that fit.',
     captionError: "We couldn't save the note. Try again in a moment.",
     deleteMemory: 'Delete this memory',
+    editMemory: 'Edit this memory',
   },
   confirm: {
     title: 'Delete it?',

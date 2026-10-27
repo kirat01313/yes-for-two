@@ -170,9 +170,14 @@
   outline-offset: 4px;
 }
 
-.delete-memory {
-  justify-self: start;
+.memory-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
   margin-top: 0.75rem;
+}
+
+.memory-action {
   padding: 0;
   border: 0;
   background: none;
@@ -183,7 +188,11 @@
   cursor: pointer;
 }
 
-.delete-memory:hover {
+.memory-action:hover {
+  color: var(--primary);
+}
+
+.memory-action.danger:hover {
   color: var(--error);
 }
 

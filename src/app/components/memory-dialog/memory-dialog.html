@@ -1,0 +1,18 @@
+<dialog
+  #dialog
+  class="form-dialog"
+  [attr.aria-label]="'memoriesPage.formLabel' | translate"
+  (close)="closed()"
+  (mousedown)="markPress($event)"
+  (click)="closeIfOutside($event)"
+>
+  @if (isOpen()) {
+    <app-memory-form
+      [memory]="memory()"
+      [saving]="saving"
+      [error]="error"
+      (save)="save.emit($event)"
+      (cancel)="close()"
+    />
+  }
+</dialog>

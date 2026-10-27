@@ -1,6 +1,5 @@
 import {
   Component,
-  ElementRef,
   Injector,
   Input,
   OnInit,
@@ -15,7 +14,7 @@ import { RouterLink } from '@angular/router';
 import { switchMap, tap } from 'rxjs';
 import { MemoryAlbum } from '../../components/memory-album/memory-album';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
-import { MemoryForm } from '../../components/memory-form/memory-form';
+import { MemoryDialog } from '../../components/memory-dialog/memory-dialog';
 import { MemoryMap } from '../../components/memory-map/memory-map';
 import { StatusNotice } from '../../components/status-notice/status-notice';
 import { Memory, MemoryFormData } from '../../models/memory';
@@ -39,7 +38,7 @@ interface Filter {
     StatusNotice,
     MemoryMap,
     MemoryAlbum,
-    MemoryForm,
+    MemoryDialog,
     ConfirmDialog,
   ],
   selector: 'app-memories',
@@ -54,7 +53,7 @@ export class Memories implements OnInit {
 
   @Input() id?: string;
 
-  @ViewChild('formDialog') formDialog?: ElementRef<HTMLDialogElement>;
+  @ViewChild(MemoryDialog) memoryDialog!: MemoryDialog;
   @ViewChild(MemoryAlbum) album?: MemoryAlbum;
   @ViewChild(ConfirmDialog) confirm!: ConfirmDialog;
 
@@ -74,11 +73,9 @@ export class Memories implements OnInit {
   readonly savingId = signal<number | null>(null);
   readonly listError = signal('');
 
-  readonly formOpen = signal(false);
   readonly editing = signal<Memory | null>(null);
   readonly savingForm = signal(false);
   readonly formError = signal('');
-  pressedOutside = false;
 
   readonly visible = computed(() => {
     const text = this.search().trim().toLowerCase();
@@ -133,30 +130,11 @@ export class Memories implements OnInit {
   openForm(memory: Memory | null = null): void {
     this.editing.set(memory);
     this.formError.set('');
-    this.formOpen.set(true);
-    this.formDialog?.nativeElement.showModal();
-  }
-
-  closeForm(): void {
-    this.formDialog?.nativeElement.close();
-    this.formOpen.set(false);
-  }
-
-  markPress(event: MouseEvent): void {
-    this.pressedOutside = event.target === event.currentTarget;
-  }
-
-  closeIfOutside(event: MouseEvent): void {
-    if (this.pressedOutside && event.target === event.currentTarget) this.closeForm();
-    this.pressedOutside = false;
+    this.memoryDialog.open(memory);
   }
 
   showMemory(id: number): void {
     this.goTo(id);
-  }
-
-  formClosed(): void {
-    if (!this.formDialog?.nativeElement.open) this.formOpen.set(false);
   }
 
   saveForm(data: MemoryFormData): void {
@@ -176,7 +154,7 @@ export class Memories implements OnInit {
         );
         this.status.set('success');
         this.savingForm.set(false);
-        this.closeForm();
+        this.memoryDialog.close();
         this.goTo(saved.id);
       },
       error: () => {

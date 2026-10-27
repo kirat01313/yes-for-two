@@ -381,6 +381,7 @@ export const pt: Dictionary = {
     tooMany: 'Cada memória leva até 20 fotos. Enviámos as que cabiam.',
     captionError: 'Não foi possível guardar a nota. Tentem outra vez daqui a pouco.',
     deleteMemory: 'Apagar esta memória',
+    editMemory: 'Editar esta memória',
   },
   confirm: {
     title: 'Apagar mesmo?',

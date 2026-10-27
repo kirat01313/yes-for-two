@@ -73,9 +73,18 @@
               </a>
             </div>
             <p class="photo-count">{{ ownPhotos(memory).length }}/{{ maxPhotos }}</p>
-            <button type="button" class="delete-memory" (click)="deleteMemory.emit(memory)">
-              {{ 'galleryPage.deleteMemory' | translate }}
-            </button>
+            <div class="memory-actions">
+              <button type="button" class="memory-action" (click)="editMemory.emit(memory)">
+                {{ 'galleryPage.editMemory' | translate }}
+              </button>
+              <button
+                type="button"
+                class="memory-action danger"
+                (click)="deleteMemory.emit(memory)"
+              >
+                {{ 'galleryPage.deleteMemory' | translate }}
+              </button>
+            </div>
           </div>
         </div>
 
