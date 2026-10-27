@@ -11,9 +11,10 @@ import {
 import { RouterLink } from '@angular/router';
 import { concatMap, from, switchMap, tap } from 'rxjs';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { MemoryDialog } from '../../components/memory-dialog/memory-dialog';
 import { MemoryExhibition } from '../../components/memory-exhibition/memory-exhibition';
 import { StatusNotice } from '../../components/status-notice/status-notice';
-import { Memory } from '../../models/memory';
+import { Memory, MemoryFormData } from '../../models/memory';
 import { MemoryPhoto } from '../../models/photo';
 import { RequestStatus } from '../../models/program';
 import { TranslatePipe } from '../../pipes/translate.pipe';
@@ -22,7 +23,7 @@ import { MemoriesService } from '../../services/memories.service';
 import { MAX_PHOTOS, PhotosService } from '../../services/photos.service';
 
 @Component({
-  imports: [RouterLink, TranslatePipe, StatusNotice, MemoryExhibition, ConfirmDialog],
+  imports: [RouterLink, TranslatePipe, StatusNotice, MemoryExhibition, ConfirmDialog, MemoryDialog],
   selector: 'app-gallery',
   styleUrl: './gallery.css',
   templateUrl: './gallery.html',
@@ -37,6 +38,7 @@ export class Gallery implements OnInit {
 
   @ViewChild(MemoryExhibition) exhibition?: MemoryExhibition;
   @ViewChild(ConfirmDialog) confirm!: ConfirmDialog;
+  @ViewChild(MemoryDialog) memoryDialog!: MemoryDialog;
 
   readonly status = signal<RequestStatus>('loading');
   readonly memories = signal<Memory[]>([]);
@@ -44,6 +46,9 @@ export class Gallery implements OnInit {
   readonly uploadingId = signal<number | null>(null);
   readonly savingCaptionId = signal<number | null>(null);
   readonly photoError = signal('');
+  readonly editing = signal<Memory | null>(null);
+  readonly savingForm = signal(false);
+  readonly formError = signal('');
 
   ngOnInit(): void {
     this.memoriesService
@@ -113,6 +118,33 @@ export class Gallery implements OnInit {
           [photo.memoryId]: (photos[photo.memoryId] ?? []).filter((item) => item.id !== photo.id),
         })),
       error: () => this.photoError.set('galleryPage.deletePhotoError'),
+    });
+  }
+
+  editMemory(memory: Memory): void {
+    this.editing.set(memory);
+    this.formError.set('');
+    this.memoryDialog.open(memory);
+  }
+
+  saveMemory(data: MemoryFormData): void {
+    const memory = this.editing();
+    if (!memory) return;
+
+    this.savingForm.set(true);
+    this.formError.set('');
+    this.memoriesService.edit(memory, data).subscribe({
+      next: (saved) => {
+        this.memories.update((memories) =>
+          memories.map((item) => (item.id === saved.id ? saved : item)),
+        );
+        this.savingForm.set(false);
+        this.memoryDialog.close();
+      },
+      error: () => {
+        this.savingForm.set(false);
+        this.formError.set('memoriesPage.saveError');
+      },
     });
   }
 

@@ -64,6 +64,7 @@
           (addPhotos)="addPhotos($event)"
           (deletePhoto)="deletePhoto($event)"
           (saveCaption)="saveCaption($event)"
+          (editMemory)="editMemory($event)"
           (deleteMemory)="deleteMemory($event)"
         />
       }
@@ -72,3 +73,5 @@
 </section>
 
 <app-confirm-dialog />
+
+<app-memory-dialog [saving]="savingForm()" [error]="formError()" (save)="saveMemory($event)" />
