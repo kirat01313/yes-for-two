@@ -27,6 +27,7 @@ export class MemoryCard implements OnChanges {
 
   @Input({ required: true }) memory!: Memory;
   @Input() saving = false;
+  @Input() written = 1;
 
   @Output() wentThere = new EventEmitter<Memory>();
   @Output() saveNote = new EventEmitter<{ memory: Memory; note: string }>();
@@ -45,6 +46,18 @@ export class MemoryCard implements OnChanges {
 
   get mapsLink(): string {
     return googleMapsLink(this.memory.name, this.memory.place);
+  }
+
+  get typedNote(): string {
+    return this.memory.note.slice(0, this.typedLength);
+  }
+
+  get restOfNote(): string {
+    return this.memory.note.slice(this.typedLength);
+  }
+
+  private get typedLength(): number {
+    return Math.round(this.memory.note.length * this.written);
   }
 
   get note() {

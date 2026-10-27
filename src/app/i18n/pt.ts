@@ -283,7 +283,7 @@ export const pt: Dictionary = {
     noResults: 'Nenhuma memória corresponde à pesquisa.',
     wantMore: 'Querem mais memórias?',
     oneMoreDinner: 'Digam sim a mais um jantar',
-    loading: 'A abrir as vossas memórias…',
+    loading: 'A revelar as vossas memórias…',
     errorTitle: 'Não foi possível carregar as memórias.',
     errorText: 'Tentem outra vez daqui a pouco.',
     confirmDelete:

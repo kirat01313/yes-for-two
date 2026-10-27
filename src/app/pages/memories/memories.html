@@ -1,7 +1,7 @@
 <section class="memories-page">
   @switch (status()) {
     @case ('loading') {
-      <app-status-notice status="loading" title="memoriesPage.loading" />
+      <app-memories-loader />
     }
     @case ('error') {
       <app-status-notice

@@ -22,6 +22,7 @@ import { scrollToStep, stagePosition } from '../../utils/scroll';
 import { MemoryCard } from '../memory-card/memory-card';
 
 const SCREENS_PER_MEMORY = 0.6;
+const WRITING_SPAN = 0.35;
 
 @Component({
   imports: [DatePipe, TranslatePipe, MemoryCard],
@@ -33,6 +34,7 @@ export class MemoryAlbum {
   readonly language = inject(LanguageService);
   private readonly injector = inject(Injector);
   private readonly wideQuery = window.matchMedia('(min-width: 900px)');
+  private readonly reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   private frame = 0;
 
   @Input({ required: true }) set memories(memories: Memory[]) {
@@ -62,6 +64,11 @@ export class MemoryAlbum {
   readonly progress = computed(() =>
     this.list().length > 1 ? this.position() / (this.list().length - 1) : 0,
   );
+  readonly noteWritten = computed(() => {
+    if (this.reduceMotion) return 1;
+    const offset = this.position() - this.activeIndex();
+    return Math.min(1, Math.max(0, (offset + 0.5) / WRITING_SPAN));
+  });
   readonly stageHeight = computed(
     () => `calc(100svh + ${(this.list().length - 1) * SCREENS_PER_MEMORY * 100}svh)`,
   );
