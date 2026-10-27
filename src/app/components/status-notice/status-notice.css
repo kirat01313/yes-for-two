@@ -24,14 +24,3 @@
 .notice-error .material-symbols-outlined {
   color: var(--error);
 }
-
-.spin {
-  display: inline-block;
-  animation: spin 1.2s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}

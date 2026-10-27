@@ -407,6 +407,23 @@ textarea {
   width: 3.25rem;
 }
 
+.spin {
+  display: inline-block;
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin {
+    animation-duration: 3s;
+  }
+}
+
 .settings-page {
   max-width: 760px;
   margin: 0 auto;
