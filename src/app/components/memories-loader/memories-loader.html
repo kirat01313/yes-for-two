@@ -1,0 +1,10 @@
+<div class="loader" role="status">
+  <div class="polaroids" aria-hidden="true">
+    @for (photo of photos; track photo) {
+      <figure class="polaroid">
+        <img [src]="photo" alt="" />
+      </figure>
+    }
+  </div>
+  <p class="caption">{{ 'memoriesPage.loading' | translate }}</p>
+</div>

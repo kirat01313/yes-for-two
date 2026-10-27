@@ -14,6 +14,7 @@ import { RouterLink } from '@angular/router';
 import { switchMap, tap } from 'rxjs';
 import { MemoryAlbum } from '../../components/memory-album/memory-album';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { MemoriesLoader } from '../../components/memories-loader/memories-loader';
 import { MemoryDialog } from '../../components/memory-dialog/memory-dialog';
 import { MemoryMap } from '../../components/memory-map/memory-map';
 import { StatusNotice } from '../../components/status-notice/status-notice';
@@ -36,6 +37,7 @@ interface Filter {
     RouterLink,
     TranslatePipe,
     StatusNotice,
+    MemoriesLoader,
     MemoryMap,
     MemoryAlbum,
     MemoryDialog,

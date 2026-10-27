@@ -1,0 +1,96 @@
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  min-height: 70vh;
+  min-height: 70svh;
+  padding: 0 1.5rem;
+}
+
+.polaroids {
+  position: relative;
+  width: min(440px, 100%);
+  aspect-ratio: 44 / 30;
+}
+
+.polaroid {
+  position: absolute;
+  width: 43%;
+  margin: 0;
+  padding: 2.3% 2.3% 9%;
+  background: #fff;
+  box-shadow: 0 16px 30px -14px rgba(31, 25, 23, 0.4);
+  animation: drop 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.polaroid:nth-child(1) {
+  top: 13%;
+  left: 4.5%;
+  transform: rotate(-8deg);
+}
+
+.polaroid:nth-child(2) {
+  top: 3%;
+  left: 28.5%;
+  z-index: 1;
+  transform: rotate(3deg);
+  animation-delay: 0.15s;
+}
+
+.polaroid:nth-child(3) {
+  top: 16%;
+  left: 53%;
+  transform: rotate(9deg);
+  animation-delay: 0.3s;
+}
+
+.polaroid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 0.92;
+  object-fit: cover;
+  animation: develop 3.6s ease-in-out infinite;
+}
+
+.polaroid:nth-child(2) img {
+  animation-delay: 0.5s;
+}
+
+.polaroid:nth-child(3) img {
+  animation-delay: 1s;
+}
+
+.caption {
+  font-family: var(--font-hand);
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  text-align: center;
+  color: var(--text-2);
+}
+
+@keyframes drop {
+  from {
+    opacity: 0;
+    translate: 0 -24px;
+  }
+}
+
+@keyframes develop {
+  0%,
+  100% {
+    filter: brightness(0.15) sepia(0.6) blur(2px);
+  }
+
+  55%,
+  85% {
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .polaroid,
+  .polaroid img {
+    animation: none;
+  }
+}

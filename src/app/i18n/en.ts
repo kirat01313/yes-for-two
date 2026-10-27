@@ -279,7 +279,7 @@ export const en = {
     noResults: 'No memory matches your search.',
     wantMore: 'Want more memories?',
     oneMoreDinner: 'Say yes to one more dinner',
-    loading: 'Opening your memories…',
+    loading: 'Developing your memories…',
     errorTitle: "We couldn't load your memories.",
     errorText: 'Try again in a moment.',
     confirmDelete:
