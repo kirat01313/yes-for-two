@@ -138,11 +138,14 @@ export class Trip implements OnInit, OnDestroy {
         switchMap(({ lat, lon }) => this.geo.placeName(lat, lon)),
         switchMap((name) => (name ? this.flights.searchCities(name) : of([]))),
       )
-      .subscribe((options) => {
-        if (options[0]) {
-          this.chooseOrigin(options[0]);
-          this.form.controls.origin.markAsDirty();
-        }
+      .subscribe({
+        next: (options) => {
+          if (options[0]) {
+            this.chooseOrigin(options[0]);
+            this.form.controls.origin.markAsDirty();
+          }
+        },
+        error: () => this.form.controls.origin.markAsTouched(),
       });
   }
 
@@ -284,22 +287,17 @@ export class Trip implements OnInit, OnDestroy {
 
   private unknownDestination(trip: FlightTrip): Destination {
     return {
-      id: 0,
       name_en: trip.name.en,
       name_pt: trip.name.pt,
       country_en: trip.country.en,
       country_pt: trip.country.pt,
       wikipedia_en: '',
-      wikipedia_pt: '',
       image: null,
       lat: trip.lat,
       lon: trip.lon,
-      flight: 0,
-      night: 0,
       phrase_en: '',
       phrase_pt: '',
       types: ['city'],
-      region: 'beyond',
       iata: trip.destination,
       country_code: trip.countryCode,
     };

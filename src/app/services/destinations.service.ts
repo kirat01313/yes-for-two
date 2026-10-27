@@ -4,6 +4,22 @@ import { Observable, forkJoin, map, shareReplay } from 'rxjs';
 import { CountryCost, Destination } from '../models/destination';
 import { SUPABASE_REST_URL } from '../supabase';
 
+const DESTINATION_COLUMNS = [
+  'name_en',
+  'name_pt',
+  'country_en',
+  'country_pt',
+  'wikipedia_en',
+  'image',
+  'lat',
+  'lon',
+  'phrase_en',
+  'phrase_pt',
+  'types',
+  'iata',
+  'country_code',
+].join(',');
+
 export interface TripData {
   destinations: Map<string, Destination>;
   nights: Map<string, number>;
@@ -15,10 +31,10 @@ export class DestinationsService {
 
   private readonly data$ = forkJoin({
     destinations: this.http.get<Destination[]>(`${SUPABASE_REST_URL}/destinations`, {
-      params: { select: '*', iata: 'not.is.null' },
+      params: { select: DESTINATION_COLUMNS, iata: 'not.is.null' },
     }),
     costs: this.http.get<CountryCost[]>(`${SUPABASE_REST_URL}/country_costs`, {
-      params: { select: '*' },
+      params: { select: 'country_code,night' },
     }),
   }).pipe(
     map(({ destinations, costs }) => ({

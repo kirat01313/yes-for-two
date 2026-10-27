@@ -40,7 +40,6 @@ export interface NominatimResult {
 }
 
 export interface WikipediaSummary {
-  extract?: string;
   thumbnail?: { source: string };
 }
 

@@ -31,7 +31,6 @@ export class WeatherService {
             date,
             max: Math.round(daily.temperature_2m_max[index]),
             min: Math.round(daily.temperature_2m_min[index]),
-            code: daily.weather_code[index],
             icon: this.icon(daily.weather_code[index]),
           })),
         ),
